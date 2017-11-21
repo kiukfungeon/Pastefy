@@ -1,0 +1,184 @@
+import { createRouter, createWebHistory } from 'vue-router'
+
+import { startViewTransition } from 'vue-view-transitions'
+import { eventBus } from '@/main.ts'
+import { useConfig } from '@/composables/config.ts'
+
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  scrollBehavior(to) {
+    if (to.hash) {
+      return {
+        el: to.hash,
+        top: 96,
+        behavior: 'smooth',
+      }
+    }
+
+    return {
+      top: 0,
+    }
+  },
+  routes: [
+    {
+      path: '/auth',
+      name: 'auth',
+      component: () => import('@/views/auth/LoginViaAPI.vue'),
+    },
+    {
+      path: '/:paste/embed',
+      name: 'paste-embed',
+      component: () => import('@/views/PasteEmbed.vue'),
+    },
+    {
+      path: '/tools',
+      component: () => import('@/views/layouts/ToolLayout.vue'),
+      children: [
+        {
+          path: '',
+          name: 'tool-home',
+          component: () => import('@/views/ToolIndexView.vue'),
+        },
+        {
+          path: 'category/:category',
+          name: 'tool-category',
+          component: () => import('@/views/ToolCategoryView.vue'),
+        },
+        {
+          path: 'convert/:tool',
+          name: 'tool-conversion',
+          component: () => import('@/views/ConversionToolView.vue'),
+        },
+        {
+          path: 'utility/:tool',
+          name: 'tool-utility',
+          component: () => import('@/views/UtilityToolView.vue'),
+        },
+        {
+          path: ':tool',
+          name: 'tool-preview',
+          component: () => import('@/views/PreviewToolView.vue'),
+        },
+      ],
+    },
+    {
+      path: '/',
+      component: () => import('@/views/layouts/MainLayout.vue'),
+      children: [
+        {
+          path: '/',
+          name: 'home',
+          component: () => import('@/views/HomeView.vue'),
+        },
+        {
+          path: '/home',
+          name: 'home-page',
+          component: () => import('@/views/HomeView.vue'),
+        },
+        {
+          path: '/explore',
+          name: 'explore',
+          component: () => import('@/views/ExploreView.vue'),
+        },
+        {
+          path: '/stars',
+          name: 'stars',
+          component: () => import('@/views/StarsView.vue'),
+        },
+        {
+          path: '/apikeys',
+          name: 'api-keys',
+          component: () => import('@/views/developers/ApiKeysPage.vue'),
+        },
+        {
+          path: '/analytics',
+          name: 'user-analytics',
+          component: () => import('@/views/UserAnalyticsView.vue'),
+        },
+        {
+          path: '/connect/asciinema',
+          name: 'connect-asciinema',
+          component: () => import('@/views/extra/AsciinemaConnectView.vue'),
+        },
+        {
+          path: '/connect/:ignore',
+          redirect: { name: 'connect-asciinema' },
+        },
+
+        {
+          path: '/search',
+          component: () => import('@/views/layouts/SearchLayout.vue'),
+          meta: {
+            noSpacing: true,
+          },
+          children: [
+            {
+              path: '',
+              name: 'search-pastes',
+              component: () => import('@/views/search/SearchPastes.vue'),
+            },
+          ],
+        },
+        {
+          path: '/admin',
+          component: () => import('@/views/layouts/AdminLayout.vue'),
+          children: [
+            {
+              path: '',
+              name: 'admin-home',
+              component: () => import('@/views/admin/AdminHome.vue'),
+            },
+            {
+              path: 'pastes',
+              name: 'admin-pastes',
+              component: () => import('@/views/admin/AdminPastes.vue'),
+            },
+            {
+              path: 'users',
+              name: 'admin-users',
+              component: () => import('@/views/admin/AdminUsers.vue'),
+            },
+            {
+              path: 'analytics',
+              name: 'admin-analytics',
+              component: () => import('@/views/admin/AdminAnalytics.vue'),
+            },
+          ],
+        },
+
+        {
+          path: '/folder/:folder',
+          name: 'folder',
+          component: () => import('@/views/FolderView.vue'),
+        },
+
+        {
+          path: '/@:user',
+          name: 'user',
+          component: () => import('@/views/PublicUserView.vue'),
+        },
+        {
+          path: '/tags/:tag',
+          name: 'tag',
+          component: () => import('@/views/TagView.vue'),
+        },
+
+        {
+          path: '/:paste/analytics',
+          name: 'paste-analytics',
+          component: () => import('@/views/PasteAnalyticsView.vue'),
+        },
+        {
+          path: '/:paste/article',
+          name: 'paste-article',
+          component: () => import('@/views/MarkdownArticleView.vue'),
+        },
+        {
+          path: '/:paste/presentation',
+          name: 'paste-presentation',
+          component: () => import('@/views/PreviewPresentationView.vue'),
+        },
+        {
+          path: '/:paste/share-modes',
+          name: 'paste-share-modes',
+          component: () => import('@/views/ReaderShareModesView.vue'),
