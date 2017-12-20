@@ -7,30 +7,3 @@ import { useCurrentUserStore } from '@/stores/current-user.ts'
 
 const props = defineProps<{
   paste: Paste
-  pasteId: string
-  rounded?: boolean
-  text?: boolean
-  severity?: string
-  size?: 'small' | 'large'
-}>()
-
-const currentUser = useCurrentUserStore()
-
-const { isLoading: starLoading, execute: toggleStar } = useAsyncState(
-  async () => {
-    if (props.paste?.starred) {
-      await client.delete(`/api/v2/paste/${props.pasteId}/star`)
-      props.paste.starred = false
-    } else {
-      await client.post(`/api/v2/paste/${props.pasteId}/star`)
-      props.paste.starred = true
-    }
-  },
-  undefined,
-  { immediate: false },
-)
-</script>
-
-<template>
-  <Button
-    v-if="currentUser.user?.logged_in"
