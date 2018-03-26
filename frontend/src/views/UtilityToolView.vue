@@ -120,3 +120,64 @@ const toolComponents = {
     () => import('@/components/tools/utility/HtmlEntityTool.vue'),
   ),
   'json-string-tool': defineAsyncComponent(
+    () => import('@/components/tools/utility/JsonStringTool.vue'),
+  ),
+  'regex-escape-tool': defineAsyncComponent(
+    () => import('@/components/tools/utility/RegexEscapeTool.vue'),
+  ),
+  'color-converter': defineAsyncComponent(
+    () => import('@/components/tools/utility/ColorConverterTool.vue'),
+  ),
+  'number-base-converter': defineAsyncComponent(
+    () => import('@/components/tools/utility/NumberBaseTool.vue'),
+  ),
+  'text-sorter': defineAsyncComponent(
+    () => import('@/components/tools/utility/TextSorterTool.vue'),
+  ),
+  'lorem-ipsum-generator': defineAsyncComponent(
+    () => import('@/components/tools/utility/LoremIpsumTool.vue'),
+  ),
+  'uuid-inspector': defineAsyncComponent(
+    () => import('@/components/tools/utility/UuidInspectorTool.vue'),
+  ),
+  'word-stats': defineAsyncComponent(
+    () => import('@/components/tools/utility/WordStatsTool.vue'),
+  ),
+} as const
+
+const currentComponent = computed(() =>
+  tool.value ? toolComponents[tool.value.slug as keyof typeof toolComponents] : undefined,
+)
+
+const relatedTools = computed(() =>
+  utilityTools
+    .map((entry) => localizeTool('utility', entry, t))
+    .filter((entry) => entry.slug !== tool.value?.slug)
+    .slice(0, 3),
+)
+
+const relatedToolLinks = computed(() =>
+  relatedTools.value.map((entry) => ({
+    slug: entry.slug,
+    icon: entry.icon,
+    title: entry.shortTitle,
+    meta: entry.category,
+    to: {
+      name: 'tool-utility',
+      params: {
+        tool: entry.slug,
+      },
+    },
+  })),
+)
+</script>
+
+<template>
+  <section
+    v-if="tool"
+    class="mx-auto flex max-w-[1400px] flex-col gap-6 bg-white dark:bg-[#121212]"
+    :class="focusMode ? 'fixed inset-0 z-[120] max-w-none h-[100dvh] overflow-hidden p-4 md:p-6' : ''"
+  >
+    <ToolFocusExitButton :visible="focusMode" @close="focusMode = false" />
+
+    <div
