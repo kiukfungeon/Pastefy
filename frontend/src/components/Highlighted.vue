@@ -1,0 +1,93 @@
+<script setup lang="ts">
+import { computed, onMounted, ref, watch } from 'vue'
+import { findFromFileName } from '@/utils/lang-replacements.ts'
+import { highlight } from '@/utils/highlight.ts'
+import '@/utils/highlight-imports.ts'
+import highlightWorker from '@/utils/workers/highlight.worker.ts?worker'
+import CopyButton from '@/components/CopyButton.vue'
+import PasteLineCommentAvatars from '@/components/paste/PasteLineCommentAvatars.vue'
+import type { PasteCommentMarker } from '@/types/paste-comment.ts'
+
+const props = defineProps<{
+  contents: string
+  fileName?: string
+  lang?: string
+  hideDivider?: boolean
+  startingLineNumber?: number
+  hideLineNumbering?: boolean
+  hideColorPreview?: boolean
+  showCopyButton?: boolean
+  getCopyContents?: () => Promise<string>
+  lineCommentMarkers?: PasteCommentMarker[]
+  enableLineComments?: boolean
+}>()
+
+const emit = defineEmits<{
+  lineClick: [event: Event, line: number, target: HTMLElement]
+}>()
+
+const highlightedContents = ref<string | undefined>(undefined)
+const markerByLine = computed(
+  () => new Map(props.lineCommentMarkers?.map((marker) => [marker.line, marker]) || []),
+)
+const lineCount = computed(() => {
+  let count = 1
+  for (let index = 0; index < props.contents.length; index++) {
+    if (props.contents.charCodeAt(index) === 10) count++
+  }
+  return count
+})
+
+const id = Math.random().toString(36).substring(7)
+
+const selectGutterLine = (event: MouseEvent) => {
+  if (!props.enableLineComments) return
+
+  const target = event.target
+  if (!(target instanceof Element)) return
+
+  const lineElement = target.closest<HTMLElement>('[data-comment-line]')
+  const line = Number(lineElement?.dataset.commentLine)
+  if (lineElement && Number.isInteger(line)) emit('lineClick', event, line, lineElement)
+}
+
+const addColorIndicators = () => {
+  setTimeout(() => {
+    document
+      .querySelectorAll(`.higlighted-${id} .hljs-number, .higlighted-${id} .hljs-string`)
+      .forEach((el) => {
+        let val = el.textContent?.trim() || ''
+
+        if (val.startsWith('"') && val.endsWith('"')) {
+          val = val.substring(1, val.length - 1)
+        }
+
+        if (
+          !props.hideColorPreview &&
+          ((val.startsWith('#') &&
+            (val.length === 7 || val.length === 9 || val.length === 4 || val.length === 5)) ||
+            (val.startsWith('rgb') &&
+              /rgb(a?)\(\s?[0-9]{1,3}\s?,\s?[0-9]{1,3}\s?,\s?[0-9]{1,3}\s?(,\s?[0-9]{1,3}\s?)?\)/.test(
+                val,
+              )))
+        ) {
+          const colorPreview = document.createElement('span')
+
+          ;[
+            'h-[0.75rem]',
+            'w-[0.75rem]',
+            'rounded-sm',
+            'inline-block',
+            'mr-0.5',
+            'ml-0.5',
+            'border-1',
+            'border-neutral-200',
+            'dark:border-neutral-700',
+          ].forEach((c) => {
+            colorPreview.classList.add(c)
+          })
+
+          colorPreview.style.backgroundColor = val
+          el.prepend(colorPreview)
+        }
+      })
