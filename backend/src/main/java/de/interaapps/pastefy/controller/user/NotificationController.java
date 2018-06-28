@@ -29,3 +29,35 @@ public class NotificationController extends HttpController {
         if (authKey != null)
             authKey.checkPermission("notifications:create");
 
+        ActionResponse response = new ActionResponse();
+        //Notification notification = new Notification();
+        //notification.setMessage();
+        //user.sendNotification(notification);
+
+        List<String> list = new ArrayList<>();
+
+
+        return response;
+    }
+
+    @Get
+    @With("auth")
+    public List<Notification> getNotifications(Exchange exchange, @Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
+        if (authKey != null)
+            authKey.checkPermission("notifications:read");
+
+        Query<Notification> query = Repo.get(Notification.class).where("userId", user.getId());
+
+        if (exchange.getQueryParameters().has("not_received"))
+            query.where("received", false);
+
+
+        if (exchange.getQueryParameters().has("not_read"))
+            query.where("alreadyRead", false);
+
+        List<Notification> notifications = query.all();
+        if (!notifications.isEmpty())
+            query.update(new HashMap<String, Object>() {{
+                put("received", true);
+            }});
+
