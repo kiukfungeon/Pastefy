@@ -1,0 +1,317 @@
+{
+  "common": {
+    "confirm": "potvrdi",
+    "cancel": "odustani",
+    "previous": "Natrag",
+    "next": "Dalje",
+    "options": "Opcije",
+    "preview": "Pregled",
+    "editor": "Uređivač",
+    "export": "Izvoz",
+    "content": "Sadržaj",
+    "colors": "Boje",
+    "format": "Format",
+    "delete": "Izbriši",
+    "open": "Otvori",
+    "profile": "Profil",
+    "users": "Korisnici",
+    "tags": "Oznake",
+    "page": "Stranica {{page}}",
+    "download": "Preuzmi",
+    "copyImage": "Kopiraj sliku",
+    "copy": "Kopiraj",
+    "edit": "Uredi",
+    "share": "Podijeli",
+    "fork": "Fork",
+    "raw": "RAW",
+    "filename": "Naziv datoteke",
+    "visibility": "Vidljivost",
+    "source": "Izvor",
+    "output": "Izlaz",
+    "code": "Kod",
+    "filters": "Filtri",
+    "sort": "Sortiranje",
+    "results": "Rezultati",
+    "search": "Pretraži",
+    "unlock": "Otključaj",
+    "hideEditor": "Sakrij uređivač",
+    "showEditor": "Prikaži uređivač",
+    "unknownDate": "Nepoznat datum",
+    "invalidJson": "Nevažeći JSON"
+  },
+  "settings": {
+    "title": "Postavke",
+    "app": "Postavke aplikacije",
+    "animations": "Animacije",
+    "theme": "Tema",
+    "defaultVisibility": "Zadana vidljivost",
+    "language": "Jezik",
+    "browserLanguage": "Jezik preglednika"
+  },
+  "nav": {
+    "home": "Početna",
+    "explore": "Istraži",
+    "search": "Pretraži",
+    "stars": "Favoriti",
+    "apiKeys": "API ključevi"
+  },
+  "auth": {
+    "login": "prijava",
+    "logout": "Odjava",
+    "signOut": "Odjava",
+    "accountSettings": "Postavke računa",
+    "awaitingAccess": "Pristup na čekanju",
+    "blocked": "Blokirano",
+    "awaitingMessage": "Pozdrav {{name}}, pričekaj dok administrator ne aktivira tvoj račun.",
+    "blockedMessage": "Pozdrav {{name}}, tvoj račun je blokiran.",
+    "logoutConfirm": "Jesi li siguran da se želiš odjaviti?",
+    "password": "Lozinka"
+  },
+  "paste": {
+    "myPastes": "Moji pasteovi",
+    "create": "Stvori paste",
+    "folders": "Mape",
+    "pastes": "Pasteovi",
+    "new": "novo",
+    "encryptedPaste": "Šifrirani paste",
+    "noTitle": "bez naslova",
+    "noPreview": "Pregled nije dostupan",
+    "trending": "U trendu",
+    "allTimeTrending": "Najpopularnije svih vremena",
+    "visibility": {
+      "public": "JAVNO",
+      "private": "PRIVATNO",
+      "unlisted": "NENAVEDENO"
+    },
+    "files": "DATOTEKE",
+    "filename": "Naziv datoteke",
+    "pasteHere": "Zalijepi ovdje",
+    "encrypted": "Šifrirano",
+    "expires": "Istječe",
+    "submit": "pošalji",
+    "edit": "spremi",
+    "empty": "Za ovaj odabir nije pronađen nijedan paste.",
+    "loginRequired": "Za stvaranje pasteova potrebna je prijava.",
+    "passwordOptional": "lozinka (neobavezno)",
+    "folderOptional": "mapa (neobavezno)",
+    "tagsOptional": "oznake (neobavezno, odvojene zarezima)",
+    "addMetadataWithAi": "Dodaj ekstenziju datoteke i oznake pomoću AI-ja",
+    "editing": "Uređivanje {{id}}",
+    "forking": "Fork od {{id}}",
+    "enterContentsFirst": "Prvo unesi sadržaj",
+    "loginReadRequired": "Za pregled pasteova potrebna je prijava",
+    "passwordProtected": "Paste je zaštićen lozinkom",
+    "decrypt": "dešifriraj",
+    "deleteTitle": "Izbriši paste",
+    "deleteConfirm": "Jesi li siguran da želiš izbrisati ovaj paste?",
+    "showCode": "prikaži kod",
+    "showPreview": "prikaži pregled",
+    "viewOnPastefy": "prikaži na Pastefyju",
+    "openInEditor": "otvori u uređivaču pasteova"
+  },
+  "layout": {
+    "toggleSidebar": "Uključi/isključi bočnu traku"
+  },
+  "home": {
+    "shareCode": "Podijeli kod",
+    "organize": "Organiziraj",
+    "keepSecret": "Sačuvaj tajnim",
+    "integration": "Integracija",
+    "explorePublicPastes": "Istraži javne pasteove",
+    "shareCodeDescription": "Podijeli svoje isječke koda sa svijetom. Zalijepi kod i podijeli ga s drugima.",
+    "organizeDescription": "Stvori mape i organiziraj svoje isječke koda na strukturiran način.",
+    "keepSecretDescription": "Koristi klijentsko šifriranje kako bi tvoji isječci koda ostali tajni. Čak ni mi ne možemo čitati tvoje šifrirane pasteove.",
+    "integrationDescription": "Koristi naš API za integraciju Pastefyja u svoje aplikacije ili jednostavno ugradi paste u svoju web-stranicu."
+  },
+  "tools": {
+    "all": "svi alati",
+    "allUtilities": "svi pomoćni alati",
+    "resetExample": "resetiraj primjer",
+    "focusMode": "Način fokusa",
+    "exitFocusMode": "Izađi iz načina fokusa",
+    "search": "Pretraži alate...",
+    "allConversions": "sve konverzije",
+    "backToTools": "natrag na alate",
+    "backToConversions": "natrag na konverzije",
+    "backToUtilities": "natrag na pomoćne alate",
+    "copySource": "kopiraj izvor",
+    "copyOutput": "kopiraj izlaz",
+    "createPaste": "Stvori paste",
+    "conversion": "Konverzija",
+    "previewInspect": "pregled i analiza",
+    "convert": "pretvori",
+    "utilities": "Pomoćni alati",
+    "notFound": {
+      "previewTitle": "Alat nije pronađen",
+      "conversionTitle": "Alat za konverziju nije pronađen",
+      "utilityTitle": "Pomoćni alat nije pronađen"
+    },
+    "title": "Pastefy alati",
+    "categories": "Kategorije"
+  },
+  "share": {
+    "share": "teilen",
+    "screenshot": "Snimka zaslona",
+    "embed": "ugradi",
+    "qrCode": "QR kod",
+    "articleView": "Prikaz članka",
+    "presentationView": "Prikaz prezentacije"
+  },
+  "errors": {
+    "pageNotFound": "Stranica nije pronađena"
+  },
+  "explore": {
+    "title": "Istraži Pastefy"
+  },
+  "folder": {
+    "createTitle": "Stvori mapu",
+    "name": "Naziv",
+    "create": "stvori",
+    "deleteTitle": "Izbriši mapu",
+    "deleteConfirm": "Jesi li siguran da želiš izbrisati ovu mapu?"
+  },
+  "search": {
+    "title": "Brže pronađi pravi paste",
+    "query": "Upit za pretraživanje",
+    "scope": "Opseg",
+    "clearFilters": "očisti filtre",
+    "quickModal": "brzi modal",
+    "descriptions": {
+      "mine": "Pretražuj svoje pasteove s naprednijim filtrima.",
+      "starred": "Pretražuj pasteove koje si označio za kasnije.",
+      "public": "Pretražuj javne pasteove s bogatijim filtrima."
+    }
+  },
+  "admin": {
+    "quickActions": "Brze radnje",
+    "manageUsers": "Upravljanje korisnicima",
+    "latestPastes": "Najnoviji pasteovi",
+    "users": {
+      "changeTypeTitle": "Promijeni tip korisnika",
+      "changeTypeConfirm": "Jesi li siguran da želiš promijeniti tip ovog korisnika?",
+      "deleteTitle": "Izbriši korisnika",
+      "deleteConfirm": "Jesi li siguran da želiš izbrisati ovog korisnika?"
+    },
+    "title": "Admin"
+  },
+  "components": {
+    "globalSearch": {
+      "mine": "moje",
+      "public": "javno",
+      "page": "stranica"
+    },
+    "paste": {
+      "openInCodebox": "Otvori u Codeboxu"
+    },
+    "createPaste": {
+      "detectedUrlYouMayWannaUse": "Otkriven URL. Možda želiš koristiti",
+      "punyshort": "punyshort"
+    },
+    "sidebar": {
+      "sourceCode": "Izvorni kod"
+    },
+    "pasteCard": {
+      "codebox": "Codebox",
+      "multiPaste": "Multi-Paste"
+    },
+    "pasteStarButton": {
+      "star": "Favorit"
+    },
+    "pasteSharingPopover": {
+      "createScreenshot": "Stvori snimku zaslona",
+      "embed": "Ugradi",
+      "shareCodeWithPastefy": "Podijeli kod putem Pastefyja."
+    },
+    "userMenu": {
+      "admin": "Admin"
+    }
+  },
+  "modals": {
+    "embedPasteModal": {
+      "embed": "Ugradi",
+      "hideTitle": "Sakrij naslov",
+      "hideActions": "Sakrij radnje",
+      "addPadding": "Dodaj odmak",
+      "embedViaScript": "Ugradi putem skripte",
+      "embedViaIframeTag": "Ugradi putem iframe oznake"
+    },
+    "qrModal": {
+      "qrCode": "QR kod",
+      "applyPreset": "Primijeni predložak",
+      "removeLogo": "Ukloni logotip",
+      "sizePx": "Veličina (px)",
+      "quietZone": "Tiha zona",
+      "currentPalette": "Trenutna paleta",
+      "foregroundColor": "Boja prednjeg plana",
+      "foregroundPreview": "Pregled prednjeg plana",
+      "qrModulesAndScanPattern": "QR moduli i uzorak skeniranja",
+      "backgroundColor": "Boja pozadine",
+      "backgroundPreview": "Pregled pozadine",
+      "showBackground": "Prikaži pozadinu",
+      "includeQuietZone": "Uključi tihu zonu",
+      "logo": "Logotip",
+      "logoSize": "Veličina logotipa",
+      "logoPadding": "Odmak logotipa",
+      "logoBackgroundPlate": "Pozadinska ploča logotipa"
+    },
+    "screenshotPaste": {
+      "screenshot": "Snimka zaslona",
+      "style": "Stil",
+      "background": "Pozadina",
+      "canvasWidthPx": "Širina platna (px)",
+      "outerPaddingPx": "Vanjski odmak (px)",
+      "to": "do",
+      "lineRange": "Raspon redaka",
+      "showTitleBar": "Prikaži naslovnu traku",
+      "showLineNumbers": "Prikaži brojeve redaka",
+      "sharpness": "Oštrina",
+      "options": {
+        "dark": "Tamno",
+        "light": "Svijetlo",
+        "png": "PNG",
+        "jpeg": "JPEG",
+        "1x": "1x",
+        "2x": "2x",
+        "3x": "3x"
+      }
+    }
+  },
+  "previews": {
+    "ansibleViewer": {
+      "ansibleView": "Ansible View",
+      "hostsRolesAndNamedTasksForOperationalPlaybooks": "Hosts, roles, and named tasks for operational playbooks",
+      "roles": "Uloge",
+      "namedTasks": "Imenovani zadaci",
+      "noNamedTasksDetected": "Nisu otkriveni imenovani zadaci."
+    },
+    "configViewer": {
+      "searchSectionsKeysAndValues": "Pretraži sections, keys, and values",
+      "configExplorerWithSearchAndExport": "Konfiguracija explorer with search and export",
+      "noMatchingLines": "No matching lines."
+    },
+    "gitHubActionsViewer": {
+      "gitHubActions": "GitHub Actions",
+      "jobs": "Poslovi",
+      "namedSteps": "Imenovani koraci",
+      "noNamedStepsDetected": "Nisu otkriveni imenovani koraci."
+    },
+    "hclViewer": {
+      "terraformHcl": "Terraform / HCL",
+      "description": "Resources, modules, providers, and variables at a glance"
+    },
+    "htmlViewer": {
+      "htmlPreview": "HTML Pregled"
+    },
+    "httpViewer": {
+      "httpCurlView": "HTTP / cURL View",
+      "request": "Zahtjev",
+      "headers": "Zaglavlja",
+      "noHeadersDetected": "Nisu otkrivena zaglavlja.",
+      "body": "Tijelo",
+      "noBodyDetected": "Tijelo nije otkriveno.",
+      "description": "Pregledaj request method, endpoint, headers, and body quickly"
+    },
+    "icsViewer": {
+      "addToCalendar": "Dodaj u kalendar"
+    },
+    "jsonViewer": {
