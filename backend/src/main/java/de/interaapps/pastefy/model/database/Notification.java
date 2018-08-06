@@ -17,3 +17,41 @@ public class Notification extends Model {
     private String message;
 
     @Column(size = 8)
+    public String userId;
+
+    @Column
+    public String url;
+
+    @Column
+    public boolean alreadyRead = false;
+
+    @Column
+    public boolean received = false;
+
+
+    @Column
+    public Timestamp createdAt;
+
+    @Column
+    public Timestamp updatedAt;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setAlreadyRead(boolean alreadyRead) {
+        this.alreadyRead = alreadyRead;
+    }
+

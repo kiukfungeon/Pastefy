@@ -21,3 +21,26 @@ const props = defineProps<
       }
   )
 >()
+
+const {
+  isLoading,
+  state: folders,
+  error,
+} = useAsyncState(async () => {
+  if ('folders' in props && typeof props.folders !== 'undefined') return props.folders
+
+  if (!('route' in props) || !props.route) return [] as Folder[]
+
+  return (
+    await client.get(props.route, {
+      params: {
+        shorten_content: 'true',
+        hide_children: 'true',
+        ...(props.params || {}),
+      },
+    })
+  ).data as Folder[]
+}, undefined)
+
+const creatFolderModalVisible = ref(false)
+</script>
