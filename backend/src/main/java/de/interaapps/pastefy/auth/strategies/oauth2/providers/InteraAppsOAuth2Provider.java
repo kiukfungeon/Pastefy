@@ -35,3 +35,41 @@ public class InteraAppsOAuth2Provider implements OAuth2Provider {
                         .set("client_secret", secret)
                         .set("code", queryParameters.string("code"))
                 )
+                .data()
+                .object();
+
+        List<String> scopes = Arrays.asList(this.scopes);
+
+        if (!data.bool("success"))
+            return null;
+
+        for (AbstractElement scope : data.get("scope_list").array()) {
+            if (!scopes.contains(scope.string()))
+                return null;
+        }
+
+        if (data.get("success").bool()) {
+            return new OAuth2Callback(this, data.string("access_token"), data.string("refresh_token"));
+        }
+
+        return null;
+    }
+
+    public String redirect(String callbackUrl) {
+        try {
+            return "https://accounts.interaapps.de/auth/oauth2?client_id=" + clientId + "&scope=" + URLEncoder.encode(String.join(" ", scopes), "UTF-8") + "&redirect_uri=" + URLEncoder.encode(callbackUrl, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static class OAuth2Callback extends de.interaapps.pastefy.auth.strategies.oauth2.OAuth2Callback {
+        public OAuth2Callback(OAuth2Provider provider, String accessToken, String refreshToken) {
+            super(provider, accessToken, refreshToken);
+        }
+
+        public HTTPClient createApiClient() {
+            return new HTTPClient("https://accounts.interaapps.de/api/v2").bearer(accessToken);
+        }
+
