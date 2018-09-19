@@ -1,0 +1,396 @@
+{
+  "common": {
+    "confirm": "konfirmasi",
+    "cancel": "batal",
+    "previous": "Sebelumnya",
+    "next": "Berikutnya",
+    "options": "Opsi",
+    "preview": "Pratinjau",
+    "editor": "Editor",
+    "export": "Ekspor",
+    "content": "Konten",
+    "colors": "Warna",
+    "format": "Format",
+    "delete": "Hapus",
+    "open": "Buka",
+    "profile": "Profil",
+    "users": "Pengguna",
+    "tags": "Tag",
+    "page": "Halaman {{page}}",
+    "download": "Unduh",
+    "copyImage": "Salin gambar",
+    "copy": "Salin",
+    "edit": "Edit",
+    "share": "Bagikan",
+    "fork": "Fork",
+    "raw": "RAW",
+    "filename": "Nama file",
+    "visibility": "Visibilitas",
+    "source": "Sumber",
+    "output": "Output",
+    "code": "Code",
+    "filters": "Filter",
+    "sort": "Urutkan",
+    "results": "Hasil",
+    "search": "Cari",
+    "unlock": "Buka kunci",
+    "hideEditor": "Sembunyikan editor",
+    "showEditor": "Tampilkan editor",
+    "unknownDate": "Tanggal tidak diketahui",
+    "invalidJson": "Invalid JSON"
+  },
+  "settings": {
+    "title": "Pengaturan",
+    "app": "Pengaturan aplikasi",
+    "animations": "Animasi",
+    "theme": "Tema",
+    "defaultVisibility": "Visibilitas bawaan",
+    "language": "Bahasa",
+    "browserLanguage": "Bahasa browser"
+  },
+  "nav": {
+    "home": "Beranda",
+    "explore": "Jelajahi",
+    "search": "Cari",
+    "stars": "Favorit",
+    "apiKeys": "Kunci API"
+  },
+  "auth": {
+    "login": "masuk",
+    "logout": "Keluar",
+    "signOut": "Keluar",
+    "accountSettings": "Pengaturan akun",
+    "awaitingAccess": "Menunggu akses",
+    "blocked": "Diblokir",
+    "awaitingMessage": "Hello {{name}}, please wait until an admin activates your account.",
+    "blockedMessage": "Hello {{name}}, you have been blocked.",
+    "logoutConfirm": "Yakin ingin keluar?",
+    "password": "Kata sandi"
+  },
+  "paste": {
+    "myPastes": "Paste saya",
+    "create": "Buat paste",
+    "folders": "Folder",
+    "pastes": "Paste",
+    "new": "baru",
+    "encryptedPaste": "Paste terenkripsi",
+    "noTitle": "tanpa judul",
+    "noPreview": "Pratinjau tidak tersedia",
+    "trending": "Tren",
+    "allTimeTrending": "Tren sepanjang masa",
+    "visibility": {
+      "public": "PUBLIK",
+      "private": "PRIVAT",
+      "unlisted": "TIDAK TERDAFTAR"
+    },
+    "files": "FILE",
+    "filename": "nama file",
+    "pasteHere": "Tempel di sini",
+    "encrypted": "Terenkripsi",
+    "expires": "Kedaluwarsa",
+    "submit": "kirim",
+    "edit": "simpan",
+    "empty": "Tidak ada paste untuk pilihan ini.",
+    "loginRequired": "Login is required to create pastes",
+    "passwordOptional": "password (optional)",
+    "folderOptional": "folder (optional)",
+    "tagsOptional": "tags (optional, comma-separated)",
+    "addMetadataWithAi": "Add file extension and tags with AI",
+    "editing": "Editing {{id}}",
+    "forking": "Forking {{id}}",
+    "enterContentsFirst": "Enter contents first",
+    "loginReadRequired": "Login diperlukan untuk melihat paste",
+    "passwordProtected": "Paste dilindungi kata sandi",
+    "decrypt": "dekripsi",
+    "deleteTitle": "Hapus paste",
+    "deleteConfirm": "Yakin ingin menghapus paste ini?",
+    "showCode": "tampilkan code",
+    "showPreview": "tampilkan pratinjau",
+    "viewOnPastefy": "lihat di Pastefy",
+    "openInEditor": "buka di editor paste"
+  },
+  "layout": {
+    "toggleSidebar": "Tampilkan/sembunyikan sidebar"
+  },
+  "home": {
+    "shareCode": "Bagikan kode",
+    "organize": "Atur",
+    "keepSecret": "Jaga kerahasiaan",
+    "integration": "Integrasi",
+    "explorePublicPastes": "Jelajahi paste publik",
+    "shareCodeDescription": "Bagikan potongan kode Anda kepada dunia. Tempel kode lalu bagikan kepada orang lain.",
+    "organizeDescription": "Buat folder dan atur potongan kode Anda dengan rapi.",
+    "keepSecretDescription": "Gunakan enkripsi di sisi klien untuk melindungi potongan kode Anda. Kami pun tidak dapat membaca paste terenkripsi Anda.",
+    "integrationDescription": "Gunakan API kami untuk mengintegrasikan Pastefy ke aplikasi atau menyematkan paste dengan mudah ke situs Anda."
+  },
+  "tools": {
+    "all": "semua alat",
+    "allUtilities": "semua utilitas",
+    "resetExample": "atur ulang contoh",
+    "focusMode": "Mode fokus",
+    "exitFocusMode": "Keluar dari mode fokus",
+    "search": "Cari alat...",
+    "allConversions": "semua konversi",
+    "backToTools": "kembali ke tools",
+    "backToConversions": "kembali ke konversi",
+    "backToUtilities": "kembali ke utilitas",
+    "copySource": "salin sumber",
+    "copyOutput": "salin output",
+    "createPaste": "buat paste",
+    "conversion": "Konversi",
+    "previewInspect": "pratinjau & inspeksi",
+    "convert": "konversi",
+    "utilities": "utilitas",
+    "notFound": {
+      "previewTitle": "Tool tidak ditemukan",
+      "conversionTitle": "Tool konversi tidak ditemukan",
+      "utilityTitle": "Utilitas tidak ditemukan"
+    },
+    "title": "Pastefy Tools",
+    "categories": "kategori"
+  },
+  "share": {
+    "share": "bagikan",
+    "screenshot": "tangkapan layar",
+    "embed": "sematkan",
+    "qrCode": "kode QR",
+    "articleView": "tampilan artikel",
+    "presentationView": "tampilan presentasi"
+  },
+  "errors": {
+    "pageNotFound": "Halaman tidak ditemukan"
+  },
+  "explore": {
+    "title": "Jelajahi Pastefy"
+  },
+  "folder": {
+    "createTitle": "Create folder",
+    "name": "name",
+    "create": "create",
+    "deleteTitle": "Hapus folder",
+    "deleteConfirm": "Yakin ingin menghapus folder ini?"
+  },
+  "search": {
+    "title": "Temukan paste yang tepat lebih cepat",
+    "query": "Kueri pencarian",
+    "scope": "Cakupan",
+    "clearFilters": "hapus filter",
+    "quickModal": "pencarian cepat",
+    "descriptions": {
+      "mine": "Cari paste Anda dengan filter lanjutan.",
+      "starred": "Cari paste yang Anda tandai bintang.",
+      "public": "Cari paste publik dengan filter lanjutan."
+    }
+  },
+  "admin": {
+    "quickActions": "Tindakan cepat",
+    "manageUsers": "Kelola pengguna",
+    "latestPastes": "Paste terbaru",
+    "users": {
+      "changeTypeTitle": "Ubah tipe pengguna",
+      "changeTypeConfirm": "Yakin ingin mengubah tipe pengguna ini?",
+      "deleteTitle": "Hapus pengguna",
+      "deleteConfirm": "Yakin ingin menghapus pengguna ini?"
+    },
+    "title": "Admin"
+  },
+  "components": {
+    "globalSearch": {
+      "mine": "mine",
+      "public": "public",
+      "page": "page"
+    },
+    "paste": {
+      "openInCodebox": "Open in Codebox"
+    },
+    "createPaste": {
+      "detectedUrlYouMayWannaUse": "Detected Url. You may wanna use",
+      "punyshort": "punyshort"
+    },
+    "sidebar": {
+      "sourceCode": "Source Code"
+    },
+    "pasteCard": {
+      "codebox": "Codebox",
+      "multiPaste": "Multi-Paste"
+    },
+    "pasteStarButton": {
+      "star": "Star"
+    },
+    "pasteSharingPopover": {
+      "createScreenshot": "Create Screenshot",
+      "embed": "Embed",
+      "shareCodeWithPastefy": "Share code with Pastefy."
+    },
+    "userMenu": {
+      "admin": "Admin"
+    }
+  },
+  "modals": {
+    "embedPasteModal": {
+      "embed": "Embed",
+      "hideTitle": "Hide Title",
+      "hideActions": "Hide Actions",
+      "addPadding": "Add Padding",
+      "embedViaScript": "Embed via script",
+      "embedViaIframeTag": "Embed via iframe tag"
+    },
+    "qrModal": {
+      "qrCode": "QR Code",
+      "applyPreset": "Apply preset",
+      "removeLogo": "Remove Logo",
+      "sizePx": "Size (px)",
+      "quietZone": "Quiet zone",
+      "currentPalette": "Current palette",
+      "foregroundColor": "Foreground color",
+      "foregroundPreview": "Foreground preview",
+      "qrModulesAndScanPattern": "QR modules and scan pattern",
+      "backgroundColor": "Background color",
+      "backgroundPreview": "Background preview",
+      "showBackground": "Show background",
+      "includeQuietZone": "Include quiet zone",
+      "logo": "Logo",
+      "logoSize": "Logo size",
+      "logoPadding": "Logo padding",
+      "logoBackgroundPlate": "Logo background plate"
+    },
+    "screenshotPaste": {
+      "screenshot": "Screenshot",
+      "style": "Style",
+      "background": "Background",
+      "canvasWidthPx": "Canvas width (px)",
+      "outerPaddingPx": "Outer padding (px)",
+      "to": "to",
+      "lineRange": "Line range",
+      "showTitleBar": "Show title bar",
+      "showLineNumbers": "Show line numbers",
+      "sharpness": "Sharpness",
+      "options": {
+        "dark": "Dark",
+        "light": "Light",
+        "png": "PNG",
+        "jpeg": "JPEG",
+        "1x": "1x",
+        "2x": "2x",
+        "3x": "3x"
+      }
+    }
+  },
+  "previews": {
+    "ansibleViewer": {
+      "ansibleView": "Ansible View",
+      "hostsRolesAndNamedTasksForOperationalPlaybooks": "Hosts, roles, and named tasks for operational playbooks",
+      "roles": "Roles",
+      "namedTasks": "Named Tasks",
+      "noNamedTasksDetected": "No named tasks detected."
+    },
+    "configViewer": {
+      "searchSectionsKeysAndValues": "Search sections, keys, and values",
+      "configExplorerWithSearchAndExport": "Config explorer with search and export",
+      "noMatchingLines": "No matching lines."
+    },
+    "gitHubActionsViewer": {
+      "gitHubActions": "GitHub Actions",
+      "jobs": "Jobs",
+      "namedSteps": "Named Steps",
+      "noNamedStepsDetected": "No named steps detected."
+    },
+    "hclViewer": {
+      "terraformHcl": "Terraform / HCL",
+      "description": "Resources, modules, providers, and variables at a glance"
+    },
+    "htmlViewer": {
+      "htmlPreview": "HTML Preview"
+    },
+    "httpViewer": {
+      "httpCurlView": "HTTP / cURL View",
+      "request": "Request",
+      "headers": "Headers",
+      "noHeadersDetected": "No headers detected.",
+      "body": "Body",
+      "noBodyDetected": "No body detected.",
+      "description": "Inspect request method, endpoint, headers, and body quickly"
+    },
+    "icsViewer": {
+      "addToCalendar": "Add to Calendar"
+    },
+    "jsonViewer": {
+      "searchKeysPathsAndValues": "Search keys, paths, and values",
+      "expandAll": "Expand all",
+      "collapse": "Collapse",
+      "copyPretty": "Copy pretty",
+      "jsonView": "JSON View",
+      "options": {
+        "tree": "Tree",
+        "pretty": "Pretty",
+        "raw": "Raw"
+      }
+    },
+    "logViewer": {
+      "searchLogLines": "Search log lines",
+      "logView": "Log View",
+      "filterLevelsSearchIncidentsAndScanOutputFaster": "Filter levels, search incidents, and scan output faster",
+      "noMatchingLogLines": "No matching log lines."
+    },
+    "monitoringRulesViewer": {
+      "monitoringRules": "Monitoring Rules",
+      "prometheusGrafanaAndAlertRuleOverviews": "Prometheus, Grafana, and alert rule overviews"
+    },
+    "regexViewer": {
+      "flags": "g, i, m",
+      "insertYourTestStringHere": "insert your test string here",
+      "testInput": "Test Input"
+    },
+    "xmlViewer": {
+      "searchTagsAttributesTextAndPaths": "Search tags, attributes, text, and paths",
+      "expandAll": "Expand all",
+      "collapse": "Collapse",
+      "copyPretty": "Copy pretty",
+      "xmlView": "XML View",
+      "options": {
+        "tree": "Tree",
+        "pretty": "Pretty",
+        "raw": "Raw"
+      }
+    },
+    "yamlViewer": {
+      "searchKeysValuesAndPaths": "Search keys, values, and paths",
+      "expandAll": "Expand all",
+      "collapse": "Collapse",
+      "yamlView": "YAML View",
+      "noYamlNodesFound": "No YAML nodes found.",
+      "options": {
+        "root": "root",
+        "tree": "Tree",
+        "pretty": "Pretty",
+        "raw": "Raw"
+      },
+      "description": "Collapsible tree, search, copy, and export for YAML files"
+    },
+    "githubActionsViewer": {
+      "description": "Workflow triggers, jobs, and named steps at a glance"
+    }
+  },
+  "utility": {
+    "accessLogInspectorBase": {
+      "searchIpPathStatusReferrer": "Search IP, path, status, referrer...",
+      "accessLogs": "Access logs",
+      "topStatusCodes": "Top status codes",
+      "noParsedRequestsMatchTheCurrentFilters": "No parsed requests match the current filters.",
+      "topPaths": "Top paths",
+      "topIps": "Top IPs",
+      "topUserAgents": "Top user agents",
+      "requestTable": "Request table",
+      "status": "Status",
+      "method": "Method",
+      "path": "Path",
+      "options": {
+        "allStatuses": "All statuses",
+        "2xx": "2xx",
+        "3xx": "3xx",
+        "4xx": "4xx",
+        "5xx": "5xx"
+      }
+    },
+    "base64Tool": {
+      "mode": "Mode",

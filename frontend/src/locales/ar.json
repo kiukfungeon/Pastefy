@@ -1,0 +1,634 @@
+{
+  "common": {
+    "confirm": "تأكيد",
+    "cancel": "إلغاء",
+    "previous": "السابق",
+    "next": "التالي",
+    "options": "الخيارات",
+    "preview": "معاينة",
+    "editor": "المحرر",
+    "export": "تصدير",
+    "content": "المحتوى",
+    "colors": "الألوان",
+    "format": "التنسيق",
+    "delete": "حذف",
+    "open": "فتح",
+    "profile": "الملف الشخصي",
+    "users": "المستخدمون",
+    "tags": "الوسوم",
+    "page": "الصفحة {{page}}",
+    "download": "تنزيل",
+    "copyImage": "نسخ الصورة",
+    "copy": "نسخ",
+    "edit": "تعديل",
+    "share": "مشاركة",
+    "fork": "Fork",
+    "raw": "RAW",
+    "filename": "اسم الملف",
+    "visibility": "مستوى الظهور",
+    "source": "المصدر",
+    "output": "الناتج",
+    "code": "الكود",
+    "filters": "عوامل التصفية",
+    "sort": "الترتيب",
+    "results": "النتائج",
+    "search": "بحث",
+    "unlock": "فتح القفل",
+    "hideEditor": "إخفاء المحرر",
+    "showEditor": "إظهار المحرر",
+    "unknownDate": "تاريخ غير معروف",
+    "invalidJson": "Invalid JSON"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "app": "إعدادات التطبيق",
+    "animations": "الحركات",
+    "theme": "السمة",
+    "defaultVisibility": "مستوى الظهور الافتراضي",
+    "language": "اللغة",
+    "browserLanguage": "لغة المتصفح"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "explore": "استكشاف",
+    "search": "بحث",
+    "stars": "المفضلة",
+    "apiKeys": "مفاتيح API"
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "signOut": "تسجيل الخروج",
+    "accountSettings": "إعدادات الحساب",
+    "awaitingAccess": "بانتظار منح الوصول",
+    "blocked": "محظور",
+    "awaitingMessage": "مرحبًا {{name}}، يرجى الانتظار حتى يفعّل أحد المشرفين حسابك.",
+    "blockedMessage": "مرحبًا {{name}}، تم حظر حسابك.",
+    "logoutConfirm": "هل تريد تسجيل الخروج بالتأكيد؟",
+    "password": "كلمة المرور"
+  },
+  "paste": {
+    "myPastes": "مقتطفاتي",
+    "create": "إنشاء مقتطف",
+    "folders": "المجلدات",
+    "pastes": "المقتطفات",
+    "new": "جديد",
+    "encryptedPaste": "مقتطف مشفّر",
+    "noTitle": "بلا عنوان",
+    "noPreview": "لا تتوفر معاينة",
+    "trending": "الرائج",
+    "allTimeTrending": "الأكثر رواجًا على الإطلاق",
+    "visibility": {
+      "public": "عام",
+      "private": "خاص",
+      "unlisted": "غير مدرج"
+    },
+    "files": "الملفات",
+    "filename": "اسم الملف",
+    "pasteHere": "ألصق هنا",
+    "encrypted": "مشفّر",
+    "expires": "تنتهي الصلاحية",
+    "submit": "إرسال",
+    "edit": "حفظ",
+    "empty": "لم يتم العثور على مقتطفات لهذا التحديد.",
+    "loginRequired": "يلزم تسجيل الدخول لإنشاء مقتطفات.",
+    "passwordOptional": "كلمة المرور (اختياري)",
+    "folderOptional": "المجلد (اختياري)",
+    "tagsOptional": "الوسوم (اختياري، مفصولة بفواصل)",
+    "addMetadataWithAi": "إضافة امتداد الملف والوسوم باستخدام الذكاء الاصطناعي",
+    "editing": "تعديل {{id}}",
+    "forking": "إنشاء نسخة من {{id}}",
+    "enterContentsFirst": "أدخل المحتوى أولاً",
+    "loginReadRequired": "يلزم تسجيل الدخول لعرض الـ paste",
+    "passwordProtected": "الـ paste محمي بكلمة مرور",
+    "decrypt": "فك التشفير",
+    "deleteTitle": "حذف الـ paste",
+    "deleteConfirm": "هل تريد بالتأكيد حذف هذا الـ paste؟",
+    "showCode": "إظهار الكود",
+    "showPreview": "إظهار المعاينة",
+    "viewOnPastefy": "عرض على Pastefy",
+    "openInEditor": "فتح في محرر paste"
+  },
+  "layout": {
+    "toggleSidebar": "إظهار أو إخفاء الشريط الجانبي"
+  },
+  "home": {
+    "shareCode": "مشاركة الشفرة",
+    "organize": "تنظيم",
+    "keepSecret": "الحفاظ على السرية",
+    "integration": "التكامل",
+    "explorePublicPastes": "استكشاف المقتطفات العامة",
+    "shareCodeDescription": "شارك مقتطفات الشفرة مع الجميع. ألصق الشفرة وشاركها مع الآخرين.",
+    "organizeDescription": "أنشئ مجلدات ونظّم مقتطفات الشفرة بطريقة مرتبة.",
+    "keepSecretDescription": "استخدم التشفير من جهة العميل لحماية مقتطفات الشفرة. حتى نحن لا نستطيع قراءة المقتطفات المشفّرة.",
+    "integrationDescription": "استخدم واجهة API لدمج Pastefy مع تطبيقاتك أو لتضمين مقتطف بسهولة في موقعك."
+  },
+  "tools": {
+    "all": "كل الأدوات",
+    "allUtilities": "كل الأدوات المساعدة",
+    "resetExample": "إعادة تعيين المثال",
+    "focusMode": "وضع التركيز",
+    "exitFocusMode": "الخروج من وضع التركيز",
+    "search": "البحث في الأدوات...",
+    "allConversions": "كل التحويلات",
+    "backToTools": "العودة إلى الأدوات",
+    "backToConversions": "العودة إلى التحويلات",
+    "backToUtilities": "العودة إلى الأدوات المساعدة",
+    "copySource": "نسخ المصدر",
+    "copyOutput": "نسخ الناتج",
+    "createPaste": "إنشاء paste",
+    "conversion": "تحويل",
+    "previewInspect": "معاينة وفحص",
+    "convert": "تحويل",
+    "utilities": "أدوات مساعدة",
+    "notFound": {
+      "previewTitle": "لم يتم العثور على الأداة",
+      "conversionTitle": "لم يتم العثور على أداة التحويل",
+      "utilityTitle": "لم يتم العثور على الأداة المساعدة"
+    },
+    "title": "Pastefy Tools",
+    "categories": "الفئات"
+  },
+  "share": {
+    "share": "مشاركة",
+    "screenshot": "لقطة شاشة",
+    "embed": "تضمين",
+    "qrCode": "رمز QR",
+    "articleView": "عرض المقال",
+    "presentationView": "عرض تقديمي"
+  },
+  "errors": {
+    "pageNotFound": "الصفحة غير موجودة"
+  },
+  "explore": {
+    "title": "استكشاف Pastefy"
+  },
+  "folder": {
+    "createTitle": "إنشاء مجلد",
+    "name": "الاسم",
+    "create": "إنشاء",
+    "deleteTitle": "حذف المجلد",
+    "deleteConfirm": "هل تريد بالتأكيد حذف هذا المجلد؟"
+  },
+  "search": {
+    "title": "اعثر على الـ paste المناسب بسرعة أكبر",
+    "query": "استعلام البحث",
+    "scope": "النطاق",
+    "clearFilters": "مسح عوامل التصفية",
+    "quickModal": "بحث سريع",
+    "descriptions": {
+      "mine": "ابحث في الـ paste الخاصة بك باستخدام عوامل تصفية متقدمة.",
+      "starred": "ابحث في الـ paste التي أضفتها إلى المفضلة.",
+      "public": "ابحث في الـ paste العامة باستخدام عوامل تصفية متقدمة."
+    }
+  },
+  "admin": {
+    "quickActions": "إجراءات سريعة",
+    "manageUsers": "إدارة المستخدمين",
+    "latestPastes": "أحدث الـ paste",
+    "users": {
+      "changeTypeTitle": "تغيير نوع المستخدم",
+      "changeTypeConfirm": "هل تريد بالتأكيد تغيير نوع هذا المستخدم؟",
+      "deleteTitle": "حذف المستخدم",
+      "deleteConfirm": "هل تريد بالتأكيد حذف هذا المستخدم؟"
+    },
+    "title": "الإدارة"
+  },
+  "components": {
+    "globalSearch": {
+      "mine": "mine",
+      "public": "public",
+      "page": "page"
+    },
+    "paste": {
+      "openInCodebox": "Open in Codebox"
+    },
+    "createPaste": {
+      "detectedUrlYouMayWannaUse": "Detected Url. You may wanna use",
+      "punyshort": "punyshort"
+    },
+    "sidebar": {
+      "sourceCode": "Source Code"
+    },
+    "pasteCard": {
+      "codebox": "Codebox",
+      "multiPaste": "Multi-Paste"
+    },
+    "pasteStarButton": {
+      "star": "Star"
+    },
+    "pasteSharingPopover": {
+      "createScreenshot": "Create Screenshot",
+      "embed": "Embed",
+      "shareCodeWithPastefy": "Share code with Pastefy."
+    },
+    "userMenu": {
+      "admin": "Admin"
+    }
+  },
+  "modals": {
+    "embedPasteModal": {
+      "embed": "Embed",
+      "hideTitle": "Hide Title",
+      "hideActions": "Hide Actions",
+      "addPadding": "Add Padding",
+      "embedViaScript": "Embed via script",
+      "embedViaIframeTag": "Embed via iframe tag"
+    },
+    "qrModal": {
+      "qrCode": "QR Code",
+      "applyPreset": "Apply preset",
+      "removeLogo": "Remove Logo",
+      "sizePx": "Size (px)",
+      "quietZone": "Quiet zone",
+      "currentPalette": "Current palette",
+      "foregroundColor": "Foreground color",
+      "foregroundPreview": "Foreground preview",
+      "qrModulesAndScanPattern": "QR modules and scan pattern",
+      "backgroundColor": "Background color",
+      "backgroundPreview": "Background preview",
+      "showBackground": "Show background",
+      "includeQuietZone": "Include quiet zone",
+      "logo": "Logo",
+      "logoSize": "Logo size",
+      "logoPadding": "Logo padding",
+      "logoBackgroundPlate": "Logo background plate"
+    },
+    "screenshotPaste": {
+      "screenshot": "Screenshot",
+      "style": "Style",
+      "background": "Background",
+      "canvasWidthPx": "Canvas width (px)",
+      "outerPaddingPx": "Outer padding (px)",
+      "to": "to",
+      "lineRange": "Line range",
+      "showTitleBar": "Show title bar",
+      "showLineNumbers": "Show line numbers",
+      "sharpness": "Sharpness",
+      "options": {
+        "dark": "Dark",
+        "light": "Light",
+        "png": "PNG",
+        "jpeg": "JPEG",
+        "1x": "1x",
+        "2x": "2x",
+        "3x": "3x"
+      }
+    }
+  },
+  "previews": {
+    "ansibleViewer": {
+      "ansibleView": "Ansible View",
+      "hostsRolesAndNamedTasksForOperationalPlaybooks": "Hosts, roles, and named tasks for operational playbooks",
+      "roles": "Roles",
+      "namedTasks": "Named Tasks",
+      "noNamedTasksDetected": "No named tasks detected."
+    },
+    "configViewer": {
+      "searchSectionsKeysAndValues": "Search sections, keys, and values",
+      "configExplorerWithSearchAndExport": "Config explorer with search and export",
+      "noMatchingLines": "No matching lines."
+    },
+    "gitHubActionsViewer": {
+      "gitHubActions": "GitHub Actions",
+      "jobs": "Jobs",
+      "namedSteps": "Named Steps",
+      "noNamedStepsDetected": "No named steps detected."
+    },
+    "hclViewer": {
+      "terraformHcl": "Terraform / HCL",
+      "description": "Resources, modules, providers, and variables at a glance"
+    },
+    "htmlViewer": {
+      "htmlPreview": "HTML Preview"
+    },
+    "httpViewer": {
+      "httpCurlView": "HTTP / cURL View",
+      "request": "Request",
+      "headers": "Headers",
+      "noHeadersDetected": "No headers detected.",
+      "body": "Body",
+      "noBodyDetected": "No body detected.",
+      "description": "Inspect request method, endpoint, headers, and body quickly"
+    },
+    "icsViewer": {
+      "addToCalendar": "Add to Calendar"
+    },
+    "jsonViewer": {
+      "searchKeysPathsAndValues": "Search keys, paths, and values",
+      "expandAll": "Expand all",
+      "collapse": "Collapse",
+      "copyPretty": "Copy pretty",
+      "jsonView": "JSON View",
+      "options": {
+        "tree": "Tree",
+        "pretty": "Pretty",
+        "raw": "Raw"
+      }
+    },
+    "logViewer": {
+      "searchLogLines": "Search log lines",
+      "logView": "Log View",
+      "filterLevelsSearchIncidentsAndScanOutputFaster": "Filter levels, search incidents, and scan output faster",
+      "noMatchingLogLines": "No matching log lines."
+    },
+    "monitoringRulesViewer": {
+      "monitoringRules": "Monitoring Rules",
+      "prometheusGrafanaAndAlertRuleOverviews": "Prometheus, Grafana, and alert rule overviews"
+    },
+    "regexViewer": {
+      "flags": "g, i, m",
+      "insertYourTestStringHere": "insert your test string here",
+      "testInput": "Test Input"
+    },
+    "xmlViewer": {
+      "searchTagsAttributesTextAndPaths": "Search tags, attributes, text, and paths",
+      "expandAll": "Expand all",
+      "collapse": "Collapse",
+      "copyPretty": "Copy pretty",
+      "xmlView": "XML View",
+      "options": {
+        "tree": "Tree",
+        "pretty": "Pretty",
+        "raw": "Raw"
+      }
+    },
+    "yamlViewer": {
+      "searchKeysValuesAndPaths": "Search keys, values, and paths",
+      "expandAll": "Expand all",
+      "collapse": "Collapse",
+      "yamlView": "YAML View",
+      "noYamlNodesFound": "No YAML nodes found.",
+      "options": {
+        "root": "root",
+        "tree": "Tree",
+        "pretty": "Pretty",
+        "raw": "Raw"
+      },
+      "description": "Collapsible tree, search, copy, and export for YAML files"
+    },
+    "githubActionsViewer": {
+      "description": "Workflow triggers, jobs, and named steps at a glance"
+    }
+  },
+  "utility": {
+    "accessLogInspectorBase": {
+      "searchIpPathStatusReferrer": "Search IP, path, status, referrer...",
+      "accessLogs": "Access logs",
+      "topStatusCodes": "Top status codes",
+      "noParsedRequestsMatchTheCurrentFilters": "No parsed requests match the current filters.",
+      "topPaths": "Top paths",
+      "topIps": "Top IPs",
+      "topUserAgents": "Top user agents",
+      "requestTable": "Request table",
+      "status": "Status",
+      "method": "Method",
+      "path": "Path",
+      "options": {
+        "allStatuses": "All statuses",
+        "2xx": "2xx",
+        "3xx": "3xx",
+        "4xx": "4xx",
+        "5xx": "5xx"
+      }
+    },
+    "base64Tool": {
+      "mode": "Mode",
+      "input": "Input",
+      "base64": "Base64",
+      "base64Url": "Base64Url",
+      "decoded": "Decoded",
+      "options": {
+        "encode": "Encode",
+        "decode": "Decode"
+      }
+    },
+    "caseConverterTool": {
+      "sourceText": "Source text"
+    },
+    "colorConverterTool": {
+      "hexColor": "Hex color"
+    },
+    "composeStackGeneratorTool": {
+      "includeProxyService": "Include proxy service",
+      "includePostgresService": "Include Postgres service",
+      "includeRedisService": "Include Redis service",
+      "portMappings": "Port mappings",
+      "addPort": "add port",
+      "environmentVariables": "Environment variables",
+      "production": "production",
+      "volumes": "Volumes",
+      "addVolume": "add volume",
+      "networks": "Networks",
+      "app": "app",
+      "addNetwork": "add network",
+      "dependsOnServices": "Depends on services",
+      "postgres": "postgres",
+      "addDependency": "add dependency",
+      "command": "Command",
+      "entrypoint": "Entrypoint",
+      "proxyPorts": "Proxy ports",
+      "addProxyPort": "add proxy port",
+      "postgresEnvironment": "Postgres environment",
+      "preset": "Preset",
+      "serviceName": "Service name",
+      "image": "Image",
+      "containerName": "Container name",
+      "restartPolicy": "Restart policy",
+      "replicas": "Replicas",
+      "workingDirectory": "Working directory",
+      "proxyImage": "Proxy image",
+      "postgresImage": "Postgres image",
+      "redisImage": "Redis image",
+      "options": {
+        "blankService": "Blank service",
+        "nodeWebApp": "Node web app",
+        "pythonWebApp": "Python web app",
+        "javaApp": "Java app",
+        "staticNginxSite": "Static NGINX site",
+        "proxyAppPostgres": "Proxy + app + Postgres"
+      }
+    },
+    "cronExplainerTool": {
+      "samples": "Samples",
+      "cronExpression": "Cron expression",
+      "options": {
+        "custom": "Custom",
+        "everyHour": "Every hour",
+        "dailyAtMidnight": "Daily at midnight",
+        "weeklyOnMonday": "Weekly on Monday",
+        "monthlyOnThe1st": "Monthly on the 1st",
+        "every15Minutes": "Every 15 minutes",
+        "weekdayMornings": "Weekday mornings",
+        "yearlyOnJan1st": "Yearly on Jan 1st"
+      }
+    },
+    "dataToClassDiagramTool": {
+      "inputFormat": "Input format",
+      "rootClassName": "Root class name",
+      "showInferredFieldTypes": "Show inferred field types",
+      "sourceData": "Source data",
+      "options": {
+        "autoDetect": "Auto detect",
+        "json": "JSON",
+        "yaml": "YAML",
+        "csv": "CSV"
+      }
+    },
+    "dataToMermaidErTool": {
+      "inputFormat": "Input format",
+      "rootEntityName": "Root entity name",
+      "showInferredFieldTypes": "Show inferred field types",
+      "schemaLikeData": "Schema-like data",
+      "options": {
+        "autoDetect": "Auto detect",
+        "json": "JSON",
+        "yaml": "YAML",
+        "csv": "CSV"
+      }
+    },
+    "dataToMermaidTool": {
+      "chooseAChartPreset": "Choose a chart preset",
+      "loadPreset": "load preset",
+      "revenueByMonth": "Revenue by Month",
+      "value": "Value",
+      "selectOneOrMoreFields": "Select one or more fields",
+      "optionalSeriesGrouping": "Optional series grouping",
+      "pickOneOrMoreNumericFields": "Pick one or more numeric fields",
+      "everythingElse": "Everything else",
+      "examplePreset": "Example preset",
+      "inputFormat": "Input format",
+      "chartType": "Chart type",
+      "chartTitle": "Chart title",
+      "yAxisLabel": "Y axis label",
+      "decimals": "Decimals",
+      "yAxisRange": "Y axis range",
+      "emptyLabel": "Empty label",
+      "fieldSeparator": "Field separator",
+      "yAxisMin": "Y axis min",
+      "yAxisMax": "Y axis max",
+      "sourceData": "Source data",
+      "categoryGroupFields": "Category / group fields",
+      "splitIntoSeriesByFields": "Split into series by fields",
+      "numericFieldsToVisualize": "Numeric fields to visualize",
+      "aggregation": "Aggregation",
+      "sortGroups": "Sort groups",
+      "maxGroups": "Max groups",
+      "groupHiddenEntriesIntoEverythingElse": "Group hidden entries into “everything else”",
+      "everythingElseLabel": "Everything else label",
+      "maxSeries": "Max series",
+      "includeSeriesCommentsInMermaidCode": "Include series comments in Mermaid code",
+      "hideZeroOnlySeries": "Hide zero-only series",
+      "hideZeroOnlyGroups": "Hide zero-only groups",
+      "showValuesInThePieChart": "Show values in the pie chart",
+      "options": {
+        "groupedBars": "Grouped bars",
+        "multiLineTrends": "Multi-line trends",
+        "pieShare": "Pie share",
+        "comboChart": "Combo chart",
+        "yamlBarChart": "YAML bar chart",
+        "autoDetect": "Auto detect",
+        "json": "JSON",
+        "yaml": "YAML",
+        "csv": "CSV",
+        "pieChart": "Pie chart",
+        "barChart": "Bar chart",
+        "lineChart": "Line chart",
+        "multiLine": "Multi-line",
+        "sum": "Sum",
+        "average": "Average",
+        "min": "Min",
+        "max": "Max",
+        "count": "Count",
+        "keepInputOrder": "Keep input order",
+        "labelAZ": "Label A-Z",
+        "labelZA": "Label Z-A",
+        "valueHighLow": "Value high -> low",
+        "valueLowHigh": "Value low -> high",
+        "autoRange": "Auto range",
+        "manualRange": "Manual range"
+      },
+      "descriptions": {
+        "revenueByMonthAndRegion": "Revenue by month and region.",
+        "profitTrendPerRegionOverTime": "Profit trend per region over time.",
+        "orderShareByRegion": "Order share by region.",
+        "revenueBarsWithProfitLine": "Revenue bars with profit line.",
+        "revenueValuesFromYamlGroupedByMonthAndRegion": "Revenue values from YAML grouped by month and region."
+      }
+    },
+    "diffLabTool": {
+      "before": "Before",
+      "after": "After",
+      "options": {
+        "lineDiff": "Line diff",
+        "wordDiff": "Word diff",
+        "characterDiff": "Character diff"
+      }
+    },
+    "dockerfileGeneratorTool": {
+      "useMultiStageBuild": "Use multi-stage build",
+      "addHealthcheck": "Add healthcheck",
+      "runCommands": "RUN commands",
+      "npmCi": "npm ci",
+      "addCommand": "add command",
+      "healthcheckCommand": "Healthcheck command",
+      "environmentVariables": "Environment variables",
+      "production": "production",
+      "imageLabels": "Image labels",
+      "volumes": "Volumes",
+      "addVolume": "add volume",
+      "exposedPorts": "Exposed ports",
+      "addPort": "add port",
+      "entrypointCommand": "Entrypoint command",
+      "defaultCommand": "Default command",
+      "preset": "Preset",
+      "baseImage": "Base image",
+      "runtimeImage": "Runtime image",
+      "buildWorkdir": "Build workdir",
+      "runtimeWorkdir": "Runtime workdir",
+      "copySource": "Copy source",
+      "copyTarget": "Copy target",
+      "restartPolicyHint": "Restart policy hint",
+      "networkHint": "Network hint",
+      "options": {
+        "nodeJsApp": "Node.js app",
+        "bunApp": "Bun app",
+        "javaJar": "Java JAR",
+        "pythonApp": "Python app",
+        "staticSiteOnNginx": "Static site on NGINX",
+        "goApp": "Go app",
+        "rustApp": "Rust app",
+        "phpApache": "PHP Apache",
+        "phpFpm": "PHP-FPM",
+        "dotNetApp": ".NET app",
+        "customImage": "Custom image"
+      }
+    },
+    "hashGeneratorTool": {
+      "inputText": "Input text"
+    },
+    "htmlEntityTool": {
+      "mode": "Mode",
+      "input": "Input",
+      "options": {
+        "encode": "Encode",
+        "decode": "Decode"
+      }
+    },
+    "infraToMermaidTool": {
+      "direction": "Direction",
+      "diagramTitle": "Diagram title",
+      "infraFile": "Infra file",
+      "options": {
+        "autoDetect": "Auto detect",
+        "dockerCompose": "Docker Compose",
+        "kubernetes": "Kubernetes",
+        "terraformHcl": "Terraform / HCL",
+        "gitHubActions": "GitHub Actions",
+        "leftToRight": "Left to right",
+        "topToBottom": "Top to bottom"
+      }
+    },
+    "jarStartScriptGeneratorTool": {
+      "useNohupBackgroundLaunch": "Use nohup background launch",
+      "scriptType": "Script type",
