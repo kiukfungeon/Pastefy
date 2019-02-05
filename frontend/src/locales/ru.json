@@ -1,0 +1,317 @@
+{
+  "common": {
+    "confirm": "подтвердить",
+    "cancel": "отмена",
+    "previous": "Назад",
+    "next": "Далее",
+    "options": "Параметры",
+    "preview": "Предпросмотр",
+    "editor": "Редактор",
+    "export": "Экспорт",
+    "content": "Содержимое",
+    "colors": "Цвета",
+    "format": "Формат",
+    "delete": "Удалить",
+    "open": "Открыть",
+    "profile": "Профиль",
+    "users": "Пользователи",
+    "tags": "Теги",
+    "page": "Страница {{page}}",
+    "download": "Скачать",
+    "copyImage": "Копировать изображение",
+    "copy": "Копировать",
+    "edit": "Редактировать",
+    "share": "Поделиться",
+    "fork": "Fork",
+    "raw": "RAW",
+    "filename": "Имя файла",
+    "visibility": "Видимость",
+    "source": "Исходник",
+    "output": "Результат",
+    "code": "Код",
+    "filters": "Фильтры",
+    "sort": "Сортировка",
+    "results": "Результаты",
+    "search": "Поиск",
+    "unlock": "Разблокировать",
+    "hideEditor": "Скрыть редактор",
+    "showEditor": "Показать редактор",
+    "unknownDate": "Неизвестная дата",
+    "invalidJson": "Invalid JSON"
+  },
+  "settings": {
+    "title": "Настройки",
+    "app": "Настройки приложения",
+    "animations": "Анимации",
+    "theme": "Тема",
+    "defaultVisibility": "Видимость по умолчанию",
+    "language": "Язык",
+    "browserLanguage": "Язык браузера"
+  },
+  "nav": {
+    "home": "главная",
+    "explore": "Обзор",
+    "search": "Поиск",
+    "stars": "Избранное",
+    "apiKeys": "API-ключи"
+  },
+  "auth": {
+    "login": "войти",
+    "logout": "Выйти",
+    "signOut": "Выйти",
+    "accountSettings": "Настройки аккаунта",
+    "awaitingAccess": "Ожидание доступа",
+    "blocked": "Заблокирован",
+    "awaitingMessage": "Hello {{name}}, please wait until an admin activates your account.",
+    "blockedMessage": "Hello {{name}}, you have been blocked.",
+    "logoutConfirm": "Вы уверены, что хотите выйти?",
+    "password": "Пароль"
+  },
+  "paste": {
+    "myPastes": "Мои пасты",
+    "create": "Создать пасту",
+    "folders": "Папки",
+    "pastes": "Пасты",
+    "new": "новая",
+    "encryptedPaste": "Зашифрованная паста",
+    "noTitle": "без названия",
+    "noPreview": "Предпросмотр недоступен",
+    "trending": "В тренде",
+    "allTimeTrending": "За всё время",
+    "visibility": {
+      "public": "ПУБЛИЧНЫЙ",
+      "private": "ПРИВАТНЫЙ",
+      "unlisted": "ПО ССЫЛКЕ"
+    },
+    "files": "ФАЙЛЫ",
+    "filename": "имя файла",
+    "pasteHere": "Вставьте сюда",
+    "encrypted": "Зашифровано",
+    "expires": "Срок действия",
+    "submit": "отправить",
+    "edit": "сохранить",
+    "empty": "Для выбранных параметров пасты не найдены.",
+    "loginRequired": "Login is required to create pastes",
+    "passwordOptional": "password (optional)",
+    "folderOptional": "folder (optional)",
+    "tagsOptional": "tags (optional, comma-separated)",
+    "addMetadataWithAi": "Add file extension and tags with AI",
+    "editing": "Editing {{id}}",
+    "forking": "Forking {{id}}",
+    "enterContentsFirst": "Enter contents first",
+    "loginReadRequired": "Для просмотра paste необходимо войти",
+    "passwordProtected": "Paste защищён паролем",
+    "decrypt": "расшифровать",
+    "deleteTitle": "Удалить paste",
+    "deleteConfirm": "Удалить этот paste?",
+    "showCode": "показать код",
+    "showPreview": "показать предпросмотр",
+    "viewOnPastefy": "открыть в Pastefy",
+    "openInEditor": "открыть в редакторе paste"
+  },
+  "layout": {
+    "toggleSidebar": "Переключить боковую панель"
+  },
+  "home": {
+    "shareCode": "Поделиться кодом",
+    "organize": "Организация",
+    "keepSecret": "Сохранить в секрете",
+    "integration": "Интеграция",
+    "explorePublicPastes": "Обзор публичных паст",
+    "shareCodeDescription": "Делитесь фрагментами кода со всем миром. Вставьте код и отправьте ссылку другим.",
+    "organizeDescription": "Создавайте папки и удобно упорядочивайте фрагменты кода.",
+    "keepSecretDescription": "Используйте шифрование на стороне клиента, чтобы защитить фрагменты кода. Даже мы не можем прочитать зашифрованные пасты.",
+    "integrationDescription": "Используйте наш API для интеграции Pastefy с приложениями или легко встраивайте пасты на свой сайт."
+  },
+  "tools": {
+    "all": "все инструменты",
+    "allUtilities": "все утилиты",
+    "resetExample": "сбросить пример",
+    "focusMode": "Режим фокуса",
+    "exitFocusMode": "Выйти из режима фокуса",
+    "search": "Поиск инструментов...",
+    "allConversions": "все конвертации",
+    "backToTools": "назад к инструментам",
+    "backToConversions": "назад к конвертациям",
+    "backToUtilities": "назад к утилитам",
+    "copySource": "копировать исходник",
+    "copyOutput": "копировать результат",
+    "createPaste": "создать paste",
+    "conversion": "Конвертация",
+    "previewInspect": "предпросмотр и анализ",
+    "convert": "конвертировать",
+    "utilities": "утилиты",
+    "notFound": {
+      "previewTitle": "Инструмент не найден",
+      "conversionTitle": "Конвертер не найден",
+      "utilityTitle": "Утилита не найдена"
+    },
+    "title": "Pastefy Tools",
+    "categories": "категории"
+  },
+  "share": {
+    "share": "поделиться",
+    "screenshot": "скриншот",
+    "embed": "встроить",
+    "qrCode": "QR-код",
+    "articleView": "вид статьи",
+    "presentationView": "вид презентации"
+  },
+  "errors": {
+    "pageNotFound": "Страница не найдена"
+  },
+  "explore": {
+    "title": "Обзор Pastefy"
+  },
+  "folder": {
+    "createTitle": "Create folder",
+    "name": "name",
+    "create": "create",
+    "deleteTitle": "Удалить папку",
+    "deleteConfirm": "Удалить эту папку?"
+  },
+  "search": {
+    "title": "Быстрее находите нужный paste",
+    "query": "Поисковый запрос",
+    "scope": "Область",
+    "clearFilters": "сбросить фильтры",
+    "quickModal": "быстрый поиск",
+    "descriptions": {
+      "mine": "Ищите свои paste с расширенными фильтрами.",
+      "starred": "Ищите paste, добавленные в избранное.",
+      "public": "Ищите публичные paste с расширенными фильтрами."
+    }
+  },
+  "admin": {
+    "quickActions": "Быстрые действия",
+    "manageUsers": "Управление пользователями",
+    "latestPastes": "Последние paste",
+    "users": {
+      "changeTypeTitle": "Изменить тип пользователя",
+      "changeTypeConfirm": "Изменить тип этого пользователя?",
+      "deleteTitle": "Удалить пользователя",
+      "deleteConfirm": "Удалить этого пользователя?"
+    },
+    "title": "Администрирование"
+  },
+  "components": {
+    "globalSearch": {
+      "mine": "mine",
+      "public": "public",
+      "page": "page"
+    },
+    "paste": {
+      "openInCodebox": "Open in Codebox"
+    },
+    "createPaste": {
+      "detectedUrlYouMayWannaUse": "Detected Url. You may wanna use",
+      "punyshort": "punyshort"
+    },
+    "sidebar": {
+      "sourceCode": "Source Code"
+    },
+    "pasteCard": {
+      "codebox": "Codebox",
+      "multiPaste": "Multi-Paste"
+    },
+    "pasteStarButton": {
+      "star": "Star"
+    },
+    "pasteSharingPopover": {
+      "createScreenshot": "Create Screenshot",
+      "embed": "Embed",
+      "shareCodeWithPastefy": "Share code with Pastefy."
+    },
+    "userMenu": {
+      "admin": "Admin"
+    }
+  },
+  "modals": {
+    "embedPasteModal": {
+      "embed": "Embed",
+      "hideTitle": "Hide Title",
+      "hideActions": "Hide Actions",
+      "addPadding": "Add Padding",
+      "embedViaScript": "Embed via script",
+      "embedViaIframeTag": "Embed via iframe tag"
+    },
+    "qrModal": {
+      "qrCode": "QR Code",
+      "applyPreset": "Apply preset",
+      "removeLogo": "Remove Logo",
+      "sizePx": "Size (px)",
+      "quietZone": "Quiet zone",
+      "currentPalette": "Current palette",
+      "foregroundColor": "Foreground color",
+      "foregroundPreview": "Foreground preview",
+      "qrModulesAndScanPattern": "QR modules and scan pattern",
+      "backgroundColor": "Background color",
+      "backgroundPreview": "Background preview",
+      "showBackground": "Show background",
+      "includeQuietZone": "Include quiet zone",
+      "logo": "Logo",
+      "logoSize": "Logo size",
+      "logoPadding": "Logo padding",
+      "logoBackgroundPlate": "Logo background plate"
+    },
+    "screenshotPaste": {
+      "screenshot": "Screenshot",
+      "style": "Style",
+      "background": "Background",
+      "canvasWidthPx": "Canvas width (px)",
+      "outerPaddingPx": "Outer padding (px)",
+      "to": "to",
+      "lineRange": "Line range",
+      "showTitleBar": "Show title bar",
+      "showLineNumbers": "Show line numbers",
+      "sharpness": "Sharpness",
+      "options": {
+        "dark": "Dark",
+        "light": "Light",
+        "png": "PNG",
+        "jpeg": "JPEG",
+        "1x": "1x",
+        "2x": "2x",
+        "3x": "3x"
+      }
+    }
+  },
+  "previews": {
+    "ansibleViewer": {
+      "ansibleView": "Ansible View",
+      "hostsRolesAndNamedTasksForOperationalPlaybooks": "Hosts, roles, and named tasks for operational playbooks",
+      "roles": "Roles",
+      "namedTasks": "Named Tasks",
+      "noNamedTasksDetected": "No named tasks detected."
+    },
+    "configViewer": {
+      "searchSectionsKeysAndValues": "Search sections, keys, and values",
+      "configExplorerWithSearchAndExport": "Config explorer with search and export",
+      "noMatchingLines": "No matching lines."
+    },
+    "gitHubActionsViewer": {
+      "gitHubActions": "GitHub Actions",
+      "jobs": "Jobs",
+      "namedSteps": "Named Steps",
+      "noNamedStepsDetected": "No named steps detected."
+    },
+    "hclViewer": {
+      "terraformHcl": "Terraform / HCL",
+      "description": "Resources, modules, providers, and variables at a glance"
+    },
+    "htmlViewer": {
+      "htmlPreview": "HTML Preview"
+    },
+    "httpViewer": {
+      "httpCurlView": "HTTP / cURL View",
+      "request": "Request",
+      "headers": "Headers",
+      "noHeadersDetected": "No headers detected.",
+      "body": "Body",
+      "noBodyDetected": "No body detected.",
+      "description": "Inspect request method, endpoint, headers, and body quickly"
+    },
+    "icsViewer": {
+      "addToCalendar": "Add to Calendar"
+    },
+    "jsonViewer": {

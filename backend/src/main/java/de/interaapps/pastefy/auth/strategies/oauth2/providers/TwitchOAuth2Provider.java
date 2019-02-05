@@ -42,25 +42,3 @@ public class TwitchOAuth2Provider implements OAuth2Provider {
 
         if (abstractObject.has("scope")) {
             return new OAuth2Callback(this, abstractObject.string("access_token"), abstractObject.string("refresh_token"), clientId);
-        }
-
-        return null;
-    }
-
-    public TwitchOAuth2Provider setState(String state) {
-        this.state = state;
-        return this;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public TwitchOAuth2Provider setForceVerify(boolean forceVerify) {
-        this.forceVerify = forceVerify;
-        return this;
-    }
-
-    public boolean isForceVerify() {
-        return forceVerify;
-    }
