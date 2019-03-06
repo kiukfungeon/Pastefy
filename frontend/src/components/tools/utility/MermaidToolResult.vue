@@ -11,10 +11,3 @@ withDefaults(
   }>(),
   {
     fileName: 'diagram.mmd',
-    placeholder: 'Configure the tool to generate Mermaid output.',
-  },
-)
-</script>
-
-<template>
-  <div class="space-y-4">

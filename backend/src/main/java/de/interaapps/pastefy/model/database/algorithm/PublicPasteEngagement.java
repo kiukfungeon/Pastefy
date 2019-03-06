@@ -6,3 +6,12 @@ import de.interaapps.pastefy.Pastefy;
 import org.javawebstack.orm.Model;
 import org.javawebstack.orm.Repo;
 import org.javawebstack.orm.annotation.Column;
+import org.javawebstack.orm.annotation.Dates;
+
+import java.sql.Timestamp;
+
+@Dates
+public class PublicPasteEngagement extends Model {
+    @Column
+    public int id;
+
