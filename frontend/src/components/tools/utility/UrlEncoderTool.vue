@@ -30,19 +30,3 @@ const state = computed(() => {
       value: '',
       error: 'Input could not be decoded as a valid encoded URL component.',
     }
-  }
-})
-</script>
-
-<template>
-  <UtilityShell>
-    <template #controls>
-      <label class="text-sm font-medium">{{ $t('utility.urlEncoderTool.mode') }}</label>
-      <Select v-model="mode" :options="modeOptions" option-label="label" option-value="value" />
-      <label class="text-sm font-medium">{{ $t('utility.urlEncoderTool.input') }}</label>
-      <Textarea v-model="input" auto-resize rows="8" fluid />
-    </template>
-
-    <template #result>
-      <Message v-if="state.error" severity="error">{{ state.error }}</Message>
-      <div
