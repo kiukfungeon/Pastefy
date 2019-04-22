@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Automigrate Elastic" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="de.interaapps.pastefy.Pastefy" />
+    <module name="core" />
+    <option name="PROGRAM_PARAMETERS" value="automigrateelastic" />
