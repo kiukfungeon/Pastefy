@@ -1,6 +1,3 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run CLI" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="de.interaapps.pastefy.Pastefy" />
-    <module name="core" />
-    <extension name="coverage">
-      <pattern>
