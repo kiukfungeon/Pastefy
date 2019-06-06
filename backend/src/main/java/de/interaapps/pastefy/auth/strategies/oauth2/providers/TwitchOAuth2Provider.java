@@ -20,25 +20,3 @@ public class TwitchOAuth2Provider implements OAuth2Provider {
 
     public TwitchOAuth2Provider(String clientId, String secret) {
         this.clientId = clientId;
-        this.secret = secret;
-    }
-
-    public TwitchOAuth2Provider setScopes(String... scopes) {
-        this.scopes = scopes;
-        return this;
-    }
-
-    public OAuth2Callback callback(AbstractObject queryParameters, String callbackUrl) {
-        AbstractObject abstractObject = new HTTPClient("https://id.twitch.tv").post("/oauth2/token")
-                .formBodyString(new QueryString()
-                        .set("client_id", clientId)
-                        .set("client_secret", secret)
-                        .set("code", queryParameters.string("code"))
-                        .set("grant_type", "authorization_code")
-                        .set("redirect_uri", callbackUrl)
-                        .toString())
-                .header("Accept", MimeType.JSON.getMimeTypes().get(0))
-                .data().object();
-
-        if (abstractObject.has("scope")) {
-            return new OAuth2Callback(this, abstractObject.string("access_token"), abstractObject.string("refresh_token"), clientId);

@@ -1,0 +1,793 @@
+{
+  "common": {
+    "confirm": "piştrast bike",
+    "cancel": "betalkirin",
+    "previous": "Paşve",
+    "next": "Pêşve",
+    "options": "Vebijêrk",
+    "preview": "Pêşdîtin",
+    "editor": "Edîtor",
+    "export": "Eksport",
+    "content": "Naverok",
+    "colors": "Reng",
+    "format": "Format",
+    "delete": "Jêbirin",
+    "open": "Vekirin",
+    "profile": "Profîl",
+    "users": "Bikarhêner",
+    "tags": "Etîket",
+    "page": "Rûpel {{page}}",
+    "download": "Daxistin",
+    "copyImage": "Wêne kopî bike",
+    "copy": "Kopî bike",
+    "edit": "Serrast bike",
+    "share": "Parve bike",
+    "fork": "Fork",
+    "raw": "RAW",
+    "filename": "Navê pelê",
+    "visibility": "Dîtinbarî",
+    "source": "Çavkanî",
+    "output": "Derketin",
+    "code": "Kod",
+    "filters": "Parzûn",
+    "sort": "Rêzkirin",
+    "results": "Encam",
+    "search": "Lêgerîn",
+    "unlock": "Veke",
+    "hideEditor": "Edîtorê veşêre",
+    "showEditor": "Edîtorê nîşan bide",
+    "unknownDate": "Dîroka nenas",
+    "invalidJson": "JSON ne derbasdar e"
+  },
+  "settings": {
+    "title": "Mîheng",
+    "app": "Mîhengên sepanê",
+    "animations": "Anîmasyon",
+    "theme": "Tema",
+    "defaultVisibility": "Dîtinbariya standard",
+    "language": "Ziman",
+    "browserLanguage": "Zimanê gerokê"
+  },
+  "nav": {
+    "home": "Destpêk",
+    "explore": "Populer",
+    "search": "Lêgerîn",
+    "stars": "Stêrk",
+    "apiKeys": "Kilîdên API"
+  },
+  "auth": {
+    "login": "têketin",
+    "logout": "Derketin",
+    "signOut": "Derketin",
+    "accountSettings": "Mîhengên hesabê",
+    "awaitingAccess": "Destûr hêj li bendê ye",
+    "blocked": "Astengkirî",
+    "awaitingMessage": "Silav {{name}}, ji kerema xwe bisekine heta admin hesabê te çalak bike.",
+    "blockedMessage": "Silav {{name}}, hesabê te hatiye astengkirin.",
+    "logoutConfirm": "Tu bi rastî dixwazî derkevî?",
+    "password": "Şîfre"
+  },
+  "paste": {
+    "myPastes": "Paste-yên min",
+    "create": "Paste çêbike",
+    "folders": "Peldank",
+    "pastes": "Paste",
+    "new": "nû",
+    "encryptedPaste": "Paste-ya şîfrekirî",
+    "noTitle": "bê sernav",
+    "noPreview": "Pêşdîtin tune ye",
+    "trending": "Trend",
+    "allTimeTrending": "Trendên hemû deman",
+    "visibility": {
+      "public": "GIŞTÎ",
+      "private": "TAYBET",
+      "unlisted": "NE-LÎSTEKIRÎ"
+    },
+    "files": "PEL",
+    "filename": "Navê pelê",
+    "pasteHere": "Li vir têxe",
+    "encrypted": "Şîfrekirî",
+    "expires": "Diqede",
+    "submit": "bişîne",
+    "edit": "tomar bike",
+    "empty": "Ji bo vê hilbijartinê paste nehat dîtin.",
+    "loginRequired": "Ji bo çêkirina paste têketin pêwîst e.",
+    "passwordOptional": "şîfre (ne mecbûrî)",
+    "folderOptional": "peldank (ne mecbûrî)",
+    "tagsOptional": "etîket (ne mecbûrî, bi koma veqetandî)",
+    "addMetadataWithAi": "Paşgira pelê û etîketan bi AI zêde bike",
+    "editing": "{{id}} serrast bike",
+    "forking": "Fork ji {{id}}",
+    "enterContentsFirst": "Pêşî naverokê binivîse",
+    "loginReadRequired": "Ji bo dîtina pasteyan têketin pêwîst e",
+    "passwordProtected": "Paste bi şîfreyê parastî ye",
+    "decrypt": "deşîfre bike",
+    "deleteTitle": "Paste jê bibe",
+    "deleteConfirm": "Tu bi rastî dixwazî vê pasteyê jê bibî?",
+    "showCode": "Kodê nîşan bide",
+    "showPreview": "Pêşdîtinê nîşan bide",
+    "viewOnPastefy": "li Pastefy nîşan bide",
+    "openInEditor": "di edîtora pasteyê de veke"
+  },
+  "layout": {
+    "toggleSidebar": "Sidebarê nîşan/veşêre"
+  },
+  "home": {
+    "shareCode": "Kodê parve bike",
+    "organize": "Rêxistin",
+    "keepSecret": "Veşartî bihêle",
+    "integration": "Yekgirtin",
+    "explorePublicPastes": "Paste-yên giştî keşf bike",
+    "shareCodeDescription": "Parçeyên koda xwe bi dinyayê re parve bike. Koda xwe têxe û bi yên din re parve bike.",
+    "organizeDescription": "Peldankan çêbike û parçeyên koda xwe bi rêkûpêk rêxistin bike.",
+    "keepSecretDescription": "Parçeyên koda xwe bi şîfrekirina aliyê clientê biparêze. Heta em jî nikarin paste-yên te yên şîfrekirî bixwînin.",
+    "integrationDescription": "Pastefy bi API-ya me bike nav sepanên xwe an pasteyan bi hêsanî têxe malpera xwe."
+  },
+  "tools": {
+    "all": "hemû amûr",
+    "allUtilities": "hemû amûrên alîkar",
+    "resetExample": "Mînakê vegerîne",
+    "focusMode": "Moda fokusê",
+    "exitFocusMode": "Ji moda fokusê derkeve",
+    "search": "Di amûran de bigere ...",
+    "allConversions": "hemû veguherandin",
+    "backToTools": "vegere amûran",
+    "backToConversions": "vegere veguherandinan",
+    "backToUtilities": "vegere utilities",
+    "copySource": "Çavkaniyê kopî bike",
+    "copyOutput": "Derketinê kopî bike",
+    "createPaste": "Paste çêbike",
+    "conversion": "Veguherandin",
+    "previewInspect": "Pêşdîtin û analîz",
+    "convert": "veguherîne",
+    "utilities": "Utilities",
+    "notFound": {
+      "previewTitle": "Amûr nehat dîtin",
+      "conversionTitle": "Amûra veguherandinê nehat dîtin",
+      "utilityTitle": "Utility nehat dîtin"
+    },
+    "title": "Amûrên Pastefy",
+    "categories": "Kategorî"
+  },
+  "share": {
+    "share": "parve bike",
+    "screenshot": "Screenshot",
+    "embed": "bicîhkirin",
+    "qrCode": "Koda QR",
+    "articleView": "Dîtina gotarê",
+    "presentationView": "Dîtina pêşkêşiyê"
+  },
+  "errors": {
+    "pageNotFound": "Rûpel nehat dîtin"
+  },
+  "explore": {
+    "title": "Pastefy keşf bike"
+  },
+  "folder": {
+    "createTitle": "Peldank çêbike",
+    "name": "Nav",
+    "create": "çêbike",
+    "deleteTitle": "Peldank jê bibe",
+    "deleteConfirm": "Tu bi rastî dixwazî vî peldankî jê bibî?"
+  },
+  "search": {
+    "title": "Paste-ya rast zûtir bibîne",
+    "query": "Pirsiyarê lêgerînê",
+    "scope": "Qad",
+    "clearFilters": "Parzûnan paqij bike",
+    "quickModal": "Modalê zû",
+    "descriptions": {
+      "mine": "Di paste-yên xwe de bi parzûnên kûrtir bigere.",
+      "starred": "Di paste-yên stêrkkirî de bigere.",
+      "public": "Di paste-yên giştî de bi parzûnên zêdetir bigere."
+    }
+  },
+  "admin": {
+    "quickActions": "Çalakiyên zû",
+    "manageUsers": "Bikarhêneran rêve bibe",
+    "latestPastes": "Paste-yên herî nû",
+    "users": {
+      "changeTypeTitle": "Cureyê bikarhêner biguherîne",
+      "changeTypeConfirm": "Tu bi rastî dixwazî cureyê vî bikarhênerî biguherînî?",
+      "deleteTitle": "Bikarhêner jê bibe",
+      "deleteConfirm": "Tu bi rastî dixwazî vî bikarhênerî jê bibî?"
+    },
+    "title": "Admin"
+  },
+  "components": {
+    "globalSearch": {
+      "mine": "yên min",
+      "public": "giştî",
+      "page": "rûpel"
+    },
+    "paste": {
+      "openInCodebox": "Di Codebox de veke"
+    },
+    "createPaste": {
+      "detectedUrlYouMayWannaUse": "URL hat dîtin. Dibe tu bixwazî bikar bînî",
+      "punyshort": "punyshort"
+    },
+    "sidebar": {
+      "sourceCode": "Koda çavkanî"
+    },
+    "pasteCard": {
+      "codebox": "Codebox",
+      "multiPaste": "Multi-Paste"
+    },
+    "pasteStarButton": {
+      "star": "Stêrk"
+    },
+    "pasteSharingPopover": {
+      "createScreenshot": "Screenshot çêbike",
+      "embed": "Bicîh bike",
+      "shareCodeWithPastefy": "Kodê bi Pastefy re parve bike."
+    },
+    "userMenu": {
+      "admin": "Admin"
+    }
+  },
+  "modals": {
+    "embedPasteModal": {
+      "embed": "Bicîh bike",
+      "hideTitle": "Sernavê veşêre",
+      "hideActions": "Çalakiyan veşêre",
+      "addPadding": "Padding zêde bike",
+      "embedViaScript": "Bi script bicîh bike",
+      "embedViaIframeTag": "Bi iframe tag bicîh bike"
+    },
+    "qrModal": {
+      "qrCode": "QR Code",
+      "applyPreset": "Preset bikar bîne",
+      "removeLogo": "Logo rake",
+      "sizePx": "Mezinahî (px)",
+      "quietZone": "Qada bêdeng",
+      "currentPalette": "Paleta niha",
+      "foregroundColor": "Rengê pêş",
+      "foregroundPreview": "Pêşdîtina pêş",
+      "qrModulesAndScanPattern": "Modulên QR û şêwaza scanê",
+      "backgroundColor": "Rengê paş",
+      "backgroundPreview": "Pêşdîtina paş",
+      "showBackground": "Paş nîşan bide",
+      "includeQuietZone": "Qada bêdeng têxe nav",
+      "logo": "Logo",
+      "logoSize": "Mezinahiya logo",
+      "logoPadding": "Paddinga logo",
+      "logoBackgroundPlate": "Plata paşê ya logo"
+    },
+    "screenshotPaste": {
+      "screenshot": "Screenshot",
+      "style": "Şêwe",
+      "background": "Paş",
+      "canvasWidthPx": "Firehiya canvasê (px)",
+      "outerPaddingPx": "Paddinga derve (px)",
+      "to": "heta",
+      "lineRange": "Qada rêzan",
+      "showTitleBar": "Barê sernavê nîşan bide",
+      "showLineNumbers": "Hejmarên rêzan nîşan bide",
+      "sharpness": "Tûjî",
+      "options": {
+        "dark": "Tarî",
+        "light": "Ronî",
+        "png": "PNG",
+        "jpeg": "JPEG",
+        "1x": "1x",
+        "2x": "2x",
+        "3x": "3x"
+      }
+    }
+  },
+  "previews": {
+    "ansibleViewer": {
+      "ansibleView": "Dîtina Ansible",
+      "hostsRolesAndNamedTasksForOperationalPlaybooks": "Host, rol û peywirên navdar ji bo playbookên operasyonê",
+      "roles": "Rol",
+      "namedTasks": "Peywirên navdar",
+      "noNamedTasksDetected": "Peywirên navdar nehatin dîtin."
+    },
+    "configViewer": {
+      "searchSectionsKeysAndValues": "Li beş, kilîd û nirxan bigere",
+      "configExplorerWithSearchAndExport": "Geroka configê bi lêgerîn û eksportê",
+      "noMatchingLines": "Rêzên lihevhatî tune."
+    },
+    "gitHubActionsViewer": {
+      "gitHubActions": "GitHub Actions",
+      "jobs": "Kar",
+      "namedSteps": "Gavên navdar",
+      "noNamedStepsDetected": "Gavên navdar nehatin dîtin."
+    },
+    "hclViewer": {
+      "terraformHcl": "Terraform / HCL",
+      "description": "Çavkanî, modul, provider û guhêrbar bi kurtî"
+    },
+    "htmlViewer": {
+      "htmlPreview": "Pêşdîtina HTML"
+    },
+    "httpViewer": {
+      "httpCurlView": "Dîtina HTTP / cURL",
+      "request": "Daxwaz",
+      "headers": "Header",
+      "noHeadersDetected": "Header nehatin dîtin.",
+      "body": "Laş",
+      "noBodyDetected": "Laş nehat dîtin.",
+      "description": "Metoda daxwazê, endpoint, header û laşê zû kontrol bike"
+    },
+    "icsViewer": {
+      "addToCalendar": "Têxe salnameyê"
+    },
+    "jsonViewer": {
+      "searchKeysPathsAndValues": "Search keys, paths, and values",
+      "expandAll": "Expand all",
+      "collapse": "Collapse",
+      "copyPretty": "Copy pretty",
+      "jsonView": "Dîtina JSON",
+      "options": {
+        "tree": "Dar",
+        "pretty": "Xweşik",
+        "raw": "Raw"
+      }
+    },
+    "logViewer": {
+      "searchLogLines": "Search log lines",
+      "logView": "Dîtina logê",
+      "filterLevelsSearchIncidentsAndScanOutputFaster": "Astên logê parzûn bike, di bûyeran de bigere û derketina scanê zûtir bibîne",
+      "noMatchingLogLines": "Rêzên logê yên lihevhatî tune."
+    },
+    "monitoringRulesViewer": {
+      "monitoringRules": "Rêzikên monitoringê",
+      "prometheusGrafanaAndAlertRuleOverviews": "Kurtenêrînên rêzikên Prometheus, Grafana û alertê"
+    },
+    "regexViewer": {
+      "flags": "g, i, m",
+      "insertYourTestStringHere": "rêza ceribandinê li vir têxe",
+      "testInput": "Têketina testê"
+    },
+    "xmlViewer": {
+      "searchTagsAttributesTextAndPaths": "Search tags, attributes, text, and paths",
+      "expandAll": "Expand all",
+      "collapse": "Collapse",
+      "copyPretty": "Copy pretty",
+      "xmlView": "Dîtina XML",
+      "options": {
+        "tree": "Dar",
+        "pretty": "Xweşik",
+        "raw": "Raw"
+      }
+    },
+    "yamlViewer": {
+      "searchKeysValuesAndPaths": "Search keys, values, and paths",
+      "expandAll": "Expand all",
+      "collapse": "Collapse",
+      "yamlView": "Dîtina YAML",
+      "noYamlNodesFound": "Node-yên YAML nehatin dîtin.",
+      "options": {
+        "root": "kok",
+        "tree": "Dar",
+        "pretty": "Xweşik",
+        "raw": "Raw"
+      },
+      "description": "Darê girtinbar, lêgerîn, kopî û eksport ji bo pelên YAML"
+    },
+    "githubActionsViewer": {
+      "description": "Trigger, kar û gavên navdar ên workflowyê bi kurtî"
+    }
+  },
+  "utility": {
+    "accessLogInspectorBase": {
+      "searchIpPathStatusReferrer": "Search IP, path, status, referrer...",
+      "accessLogs": "Access logs",
+      "topStatusCodes": "Top status codes",
+      "noParsedRequestsMatchTheCurrentFilters": "No parsed requests match the current filters.",
+      "topPaths": "Top paths",
+      "topIps": "Top IPs",
+      "topUserAgents": "Top user agents",
+      "requestTable": "Request table",
+      "status": "Status",
+      "method": "Method",
+      "path": "Path",
+      "options": {
+        "allStatuses": "All statuses",
+        "2xx": "2xx",
+        "3xx": "3xx",
+        "4xx": "4xx",
+        "5xx": "5xx"
+      }
+    },
+    "base64Tool": {
+      "mode": "Mod",
+      "input": "Têketin",
+      "base64": "Base64",
+      "base64Url": "Base64Url",
+      "decoded": "Deşîfrekirî",
+      "options": {
+        "encode": "Encode",
+        "decode": "Decode"
+      }
+    },
+    "caseConverterTool": {
+      "sourceText": "Teksta çavkanî"
+    },
+    "colorConverterTool": {
+      "hexColor": "Rengê hex"
+    },
+    "composeStackGeneratorTool": {
+      "includeProxyService": "Xizmeta proxy têxe nav",
+      "includePostgresService": "Xizmeta Postgres têxe nav",
+      "includeRedisService": "Xizmeta Redis têxe nav",
+      "portMappings": "Girêdanên portê",
+      "addPort": "port zêde bike",
+      "environmentVariables": "Guhêrbarên hawirdorê",
+      "production": "production",
+      "volumes": "Volume",
+      "addVolume": "volume zêde bike",
+      "networks": "Tor",
+      "app": "app",
+      "addNetwork": "tor zêde bike",
+      "dependsOnServices": "Bi xizmetan ve girêdayî ye",
+      "postgres": "postgres",
+      "addDependency": "girêdan zêde bike",
+      "command": "Ferman",
+      "entrypoint": "Entrypoint",
+      "proxyPorts": "Portên proxy",
+      "addProxyPort": "portê proxy zêde bike",
+      "postgresEnvironment": "Hawirdora Postgres",
+      "preset": "Preset",
+      "serviceName": "Navê xizmetê",
+      "image": "Image",
+      "containerName": "Navê containerê",
+      "restartPolicy": "Siyaseta restartê",
+      "replicas": "Replica",
+      "workingDirectory": "Peldanka xebatê",
+      "proxyImage": "Image-a proxy",
+      "postgresImage": "Image-a Postgres",
+      "redisImage": "Image-a Redis",
+      "options": {
+        "blankService": "Xizmeta vala",
+        "nodeWebApp": "Appa webê ya Node",
+        "pythonWebApp": "Appa webê ya Python",
+        "javaApp": "Appa Java",
+        "staticNginxSite": "Malpera statîk a NGINX",
+        "proxyAppPostgres": "Proxy + app + Postgres"
+      }
+    },
+    "cronExplainerTool": {
+      "samples": "Mînak",
+      "cronExpression": "Derbirîna cron",
+      "options": {
+        "custom": "Taybet",
+        "everyHour": "Her saet",
+        "dailyAtMidnight": "Her roj nîvê şevê",
+        "weeklyOnMonday": "Her hefte roja duşemê",
+        "monthlyOnThe1st": "Her meh roja 1ê",
+        "every15Minutes": "Her 15 xulek",
+        "weekdayMornings": "Sibehên rojên xebatê",
+        "yearlyOnJan1st": "Her sal 1ê Çile"
+      }
+    },
+    "dataToClassDiagramTool": {
+      "inputFormat": "Forma têketinê",
+      "rootClassName": "Navê klasa kok",
+      "showInferredFieldTypes": "Cureyên qadên texmînkirî nîşan bide",
+      "sourceData": "Daneyên çavkanî",
+      "options": {
+        "autoDetect": "Xweber bibîne",
+        "json": "JSON",
+        "yaml": "YAML",
+        "csv": "CSV"
+      }
+    },
+    "dataToMermaidErTool": {
+      "inputFormat": "Forma têketinê",
+      "rootEntityName": "Navê entity ya kok",
+      "showInferredFieldTypes": "Cureyên qadên texmînkirî nîşan bide",
+      "schemaLikeData": "Daneyên wek schema",
+      "options": {
+        "autoDetect": "Xweber bibîne",
+        "json": "JSON",
+        "yaml": "YAML",
+        "csv": "CSV"
+      }
+    },
+    "dataToMermaidTool": {
+      "chooseAChartPreset": "Preset-a chartê hilbijêre",
+      "loadPreset": "preset bar bike",
+      "revenueByMonth": "Hatina mehane",
+      "value": "Nirx",
+      "selectOneOrMoreFields": "Yek an zêdetir qadan hilbijêre",
+      "optionalSeriesGrouping": "Komkirina series ne mecbûrî",
+      "pickOneOrMoreNumericFields": "Yek an zêdetir qadên hejmarî hilbijêre",
+      "everythingElse": "Her tiştê din",
+      "examplePreset": "Preset-a mînak",
+      "inputFormat": "Forma têketinê",
+      "chartType": "Cureyê chartê",
+      "chartTitle": "Sernavê chartê",
+      "yAxisLabel": "Etîketa eksê Y",
+      "decimals": "Dehanî",
+      "yAxisRange": "Qada eksê Y",
+      "emptyLabel": "Etîketa vala",
+      "fieldSeparator": "Veqetînera qadê",
+      "yAxisMin": "Y min",
+      "yAxisMax": "Y max",
+      "sourceData": "Daneyên çavkanî",
+      "categoryGroupFields": "Qadên kategorî / kom",
+      "splitIntoSeriesByFields": "Li gor qadan bike series",
+      "numericFieldsToVisualize": "Qadên hejmarî ji bo dîtbarîkirinê",
+      "aggregation": "Komkirin",
+      "sortGroups": "Koman rêz bike",
+      "maxGroups": "Zêdetirîn kom",
+      "groupHiddenEntriesIntoEverythingElse": "Têketinên veşartî bike “her tiştê din”",
+      "everythingElseLabel": "Etîketa her tiştê din",
+      "maxSeries": "Zêdetirîn series",
+      "includeSeriesCommentsInMermaidCode": "Şîroveyên seriesê têxe koda Mermaid",
+      "hideZeroOnlySeries": "Seriesên tenê sifir veşêre",
+      "hideZeroOnlyGroups": "Komên tenê sifir veşêre",
+      "showValuesInThePieChart": "Nirxan di pie chart de nîşan bide",
+      "options": {
+        "groupedBars": "Barên komkirî",
+        "multiLineTrends": "Trendên pir-rêz",
+        "pieShare": "Parê pie",
+        "comboChart": "Chart-a combo",
+        "yamlBarChart": "Chart-a bar a YAML",
+        "autoDetect": "Xweber bibîne",
+        "json": "JSON",
+        "yaml": "YAML",
+        "csv": "CSV",
+        "pieChart": "Pie chart",
+        "barChart": "Bar chart",
+        "lineChart": "Line chart",
+        "multiLine": "Pir-rêz",
+        "sum": "Kom",
+        "average": "Navîn",
+        "min": "Min",
+        "max": "Max",
+        "count": "Hejmar",
+        "keepInputOrder": "Rêza têketinê biparêze",
+        "labelAZ": "Etîket A-Z",
+        "labelZA": "Etîket Z-A",
+        "valueHighLow": "Nirx bilind -> nizm",
+        "valueLowHigh": "Nirx nizm -> bilind",
+        "autoRange": "Qada xweber",
+        "manualRange": "Qada destî"
+      },
+      "descriptions": {
+        "revenueByMonthAndRegion": "Revenue by month and region.",
+        "profitTrendPerRegionOverTime": "Profit trend per region over time.",
+        "orderShareByRegion": "Order share by region.",
+        "revenueBarsWithProfitLine": "Revenue bars with profit line.",
+        "revenueValuesFromYamlGroupedByMonthAndRegion": "Revenue values from YAML grouped by month and region."
+      }
+    },
+    "diffLabTool": {
+      "before": "Berî",
+      "after": "Piştî",
+      "options": {
+        "lineDiff": "Cudahiyên rêzan",
+        "wordDiff": "Cudahiyên peyvan",
+        "characterDiff": "Cudahiyên karakteran"
+      }
+    },
+    "dockerfileGeneratorTool": {
+      "useMultiStageBuild": "Multi-stage build bikar bîne",
+      "addHealthcheck": "Healthcheck zêde bike",
+      "runCommands": "Fermanên RUN",
+      "npmCi": "npm ci",
+      "addCommand": "ferman zêde bike",
+      "healthcheckCommand": "Fermana healthcheck",
+      "environmentVariables": "Guhêrbarên hawirdorê",
+      "production": "production",
+      "imageLabels": "Etîketên image",
+      "volumes": "Volume",
+      "addVolume": "volume zêde bike",
+      "exposedPorts": "Portên vekirî",
+      "addPort": "port zêde bike",
+      "entrypointCommand": "Fermana entrypoint",
+      "defaultCommand": "Fermana standard",
+      "preset": "Preset",
+      "baseImage": "Image-a bingehîn",
+      "runtimeImage": "Image-a runtime",
+      "buildWorkdir": "Peldanka xebatê ya build",
+      "runtimeWorkdir": "Peldanka xebatê ya runtime",
+      "copySource": "Çavkaniyê kopî bike",
+      "copyTarget": "Armanca kopîkirinê",
+      "restartPolicyHint": "Nîşana siyaseta restartê",
+      "networkHint": "Nîşana torê",
+      "options": {
+        "nodeJsApp": "Appa Node.js",
+        "bunApp": "Appa Bun",
+        "javaJar": "Java JAR",
+        "pythonApp": "Appa Python",
+        "staticSiteOnNginx": "Malpera statîk li ser NGINX",
+        "goApp": "Appa Go",
+        "rustApp": "Appa Rust",
+        "phpApache": "PHP Apache",
+        "phpFpm": "PHP-FPM",
+        "dotNetApp": "Appa .NET",
+        "customImage": "Image-a taybet"
+      }
+    },
+    "hashGeneratorTool": {
+      "inputText": "Teksta têketinê"
+    },
+    "htmlEntityTool": {
+      "mode": "Mod",
+      "input": "Têketin",
+      "options": {
+        "encode": "Encode",
+        "decode": "Decode"
+      }
+    },
+    "infraToMermaidTool": {
+      "direction": "Alî",
+      "diagramTitle": "Diagram title",
+      "infraFile": "Infra file",
+      "options": {
+        "autoDetect": "Xweber bibîne",
+        "dockerCompose": "Docker Compose",
+        "kubernetes": "Kubernetes",
+        "terraformHcl": "Terraform / HCL",
+        "gitHubActions": "GitHub Actions",
+        "leftToRight": "Ji çep ber bi rast",
+        "topToBottom": "Ji jor ber bi jêr"
+      }
+    },
+    "jarStartScriptGeneratorTool": {
+      "useNohupBackgroundLaunch": "Use nohup background launch",
+      "scriptType": "Script type",
+      "appName": "App name",
+      "jarFile": "JAR file",
+      "workingDirectory": "Peldanka xebatê",
+      "xms": "Xms",
+      "xmx": "Xmx",
+      "springProfile": "Spring profile",
+      "port": "Port",
+      "extraJvmArgs": "Extra JVM args",
+      "extraAppArgs": "Extra app args",
+      "logFile": "Log file",
+      "options": {
+        "startSh": "start.sh",
+        "startBat": "start.bat"
+      }
+    },
+    "jsonStringTool": {
+      "mode": "Mod",
+      "input": "Têketin",
+      "options": {
+        "escape": "Escape",
+        "unescape": "Unescape"
+      }
+    },
+    "jwtInspectorTool": {
+      "header": "Header",
+      "payload": "Payload"
+    },
+    "keyValueListField": {
+      "removeEntry": "Têketinê rake",
+      "noEntriesYet": "Hêj têketin tune."
+    },
+    "loremIpsumTool": {
+      "generateAgain": "dîsa çêbike",
+      "mode": "Mod",
+      "count": "Hejmar",
+      "options": {
+        "paragraphs": "Paragraf",
+        "sentences": "Hevok",
+        "words": "Peyv"
+      }
+    },
+    "markdownToMermaidTool": {
+      "mode": "Mod",
+      "direction": "Alî",
+      "maxDepth": "Kûrahiya herî zêde",
+      "markdown": "Markdown",
+      "options": {
+        "mindmap": "Mindmap",
+        "flowchart": "Flowchart",
+        "topToBottom": "Ji jor ber bi jêr",
+        "leftToRight": "Ji çep ber bi rast"
+      }
+    },
+    "mermaidImageExportTool": {
+      "copyMermaid": "Mermaid kopî bike",
+      "scale": "Pîvan",
+      "padding": "Padding",
+      "background": "Paş",
+      "watermark": "Watermark",
+      "mermaidCode": "Koda Mermaid",
+      "options": {
+        "png": "PNG",
+        "svg": "SVG"
+      }
+    },
+    "mermaidThemeBuilderTool": {
+      "addMermaidCodeToPreviewTheThemedDiagram": "Koda Mermaid zêde bike da ku diagramê tema-kirî pêşbibînî.",
+      "curve": "Curve",
+      "fontFamily": "Malbata fontê",
+      "primaryColor": "Rengê sereke",
+      "primaryTextColor": "Rengê teksta sereke",
+      "borderColor": "Rengê sînorê",
+      "lineColor": "Rengê xetê",
+      "tertiaryColor": "Rengê sêyem",
+      "background": "Paş",
+      "nodeSpacing": "Navbera nodeyan",
+      "rankSpacing": "Navbera rankan",
+      "padding": "Padding",
+      "mermaidSource": "Mermaid source",
+      "options": {
+        "base": "Bingeh",
+        "default": "Standard",
+        "dark": "Tarî",
+        "forest": "Daristan",
+        "neutral": "Neytral",
+        "basis": "Basis",
+        "linear": "Linear",
+        "step": "Step",
+        "monotone": "Monotone"
+      }
+    },
+    "numberBaseTool": {
+      "inputBase": "Bingeha têketinê",
+      "value": "Nirx",
+      "options": {
+        "binary": "Binary",
+        "octal": "Octal",
+        "decimal": "Decimal",
+        "hex": "Hex"
+      }
+    },
+    "passwordGeneratorTool": {
+      "generateAgain": "dîsa çêbike",
+      "count": "Hejmar",
+      "length": "Length",
+      "uppercaseLetters": "Tîpên mezin",
+      "lowercaseLetters": "Tîpên biçûk",
+      "numbers": "Hejmar",
+      "symbols": "Sembol",
+      "excludeAmbiguousCharacters": "Karakterên nezelal derxe"
+    },
+    "queryStringTool": {
+      "queryString": "Query string",
+      "rebuilt": "Ji nû ve çêkirî",
+      "parsed": "Parsekirî"
+    },
+    "regexEscapeTool": {
+      "mode": "Mod",
+      "input": "Têketin",
+      "options": {
+        "escape": "Escape",
+        "unescape": "Unescape"
+      }
+    },
+    "sqlToMermaidErTool": {
+      "showSqlFieldTypes": "Show SQL field types",
+      "sqlSchema": "Schema ya SQL"
+    },
+    "secretGeneratorTool": {
+      "generateAgain": "dîsa çêbike",
+      "mode": "Mod",
+      "count": "Hejmar",
+      "length": "Length",
+      "options": {
+        "uuid": "UUID",
+        "hexToken": "Token-a hex",
+        "base64UrlToken": "Token-a Base64Url"
+      }
+    },
+    "slugGeneratorTool": {
+      "sourceText": "Teksta çavkanî"
+    },
+    "stringListField": {
+      "removeEntry": "Têketinê rake",
+      "noEntriesYet": "Hêj têketin tune."
+    },
+    "systemdServiceGeneratorTool": {
+      "serviceName": "Navê xizmetê",
+      "description": "Description",
+      "user": "User",
+      "group": "Group",
+      "workingDirectory": "Peldanka xebatê",
+      "restartPolicy": "Siyaseta restartê",
+      "execStartCommand": "ExecStart command",
+      "environmentVariables": "Guhêrbarên hawirdorê"
+    },
+    "textSorterTool": {
+      "lines": "Rêz",
+      "removeDuplicates": "Dubareyan rake",
