@@ -5,18 +5,3 @@ services:
      image: mariadb:10.11
      volumes:
        - dbvol:/var/lib/mysql
-
-     environment:
-       MYSQL_ROOT_PASSWORD: pastefy
-       MYSQL_DATABASE: pastefy
-       MYSQL_USER: pastefy
-       MYSQL_PASSWORD: pastefy
-
-   pastefy:
-     depends_on:
-       - db
-     image: interaapps/pastefy:latest
-     ports:
-       - "9999:80"
-       
-     environment:

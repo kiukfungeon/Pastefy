@@ -1,0 +1,396 @@
+{
+  "common": {
+    "confirm": "確認",
+    "cancel": "キャンセル",
+    "previous": "前へ",
+    "next": "次へ",
+    "options": "オプション",
+    "preview": "プレビュー",
+    "editor": "エディター",
+    "export": "エクスポート",
+    "content": "コンテンツ",
+    "colors": "色",
+    "format": "形式",
+    "delete": "削除",
+    "open": "開く",
+    "profile": "プロフィール",
+    "users": "ユーザー",
+    "tags": "タグ",
+    "page": "ページ {{page}}",
+    "download": "ダウンロード",
+    "copyImage": "画像をコピー",
+    "copy": "コピー",
+    "edit": "編集",
+    "share": "共有",
+    "fork": "Fork",
+    "raw": "RAW",
+    "filename": "ファイル名",
+    "visibility": "公開範囲",
+    "source": "ソース",
+    "output": "出力",
+    "code": "コード",
+    "filters": "フィルター",
+    "sort": "並び順",
+    "results": "結果",
+    "search": "検索",
+    "unlock": "ロック解除",
+    "hideEditor": "エディターを隠す",
+    "showEditor": "エディターを表示",
+    "unknownDate": "日付不明",
+    "invalidJson": "Invalid JSON"
+  },
+  "settings": {
+    "title": "設定",
+    "app": "アプリ設定",
+    "animations": "アニメーション",
+    "theme": "テーマ",
+    "defaultVisibility": "デフォルトの公開範囲",
+    "language": "言語",
+    "browserLanguage": "ブラウザーの言語"
+  },
+  "nav": {
+    "home": "ホーム",
+    "explore": "探索",
+    "search": "検索",
+    "stars": "お気に入り",
+    "apiKeys": "API キー"
+  },
+  "auth": {
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "signOut": "ログアウト",
+    "accountSettings": "アカウント設定",
+    "awaitingAccess": "アクセス承認待ち",
+    "blocked": "ブロック済み",
+    "awaitingMessage": "{{name}} さん、管理者がアカウントを有効にするまでお待ちください。",
+    "blockedMessage": "{{name}} さん、アカウントはブロックされています。",
+    "logoutConfirm": "ログアウトしますか？",
+    "password": "パスワード"
+  },
+  "paste": {
+    "myPastes": "自分の Paste",
+    "create": "Paste を作成",
+    "folders": "フォルダー",
+    "pastes": "Paste",
+    "new": "新規",
+    "encryptedPaste": "暗号化された Paste",
+    "noTitle": "タイトルなし",
+    "noPreview": "プレビューできません",
+    "trending": "トレンド",
+    "allTimeTrending": "歴代トレンド",
+    "visibility": {
+      "public": "公開",
+      "private": "非公開",
+      "unlisted": "限定公開"
+    },
+    "files": "ファイル",
+    "filename": "ファイル名",
+    "pasteHere": "ここに貼り付け",
+    "encrypted": "暗号化",
+    "expires": "有効期限",
+    "submit": "送信",
+    "edit": "保存",
+    "empty": "この条件に一致する Paste はありません。",
+    "loginRequired": "Paste を作成するにはログインが必要です。",
+    "passwordOptional": "パスワード（任意）",
+    "folderOptional": "フォルダー（任意）",
+    "tagsOptional": "タグ（任意、カンマ区切り）",
+    "addMetadataWithAi": "AI で拡張子とタグを追加",
+    "editing": "{{id}} を編集中",
+    "forking": "{{id}} をフォーク中",
+    "enterContentsFirst": "先に内容を入力してください",
+    "loginReadRequired": "Paste を表示するにはログインが必要です",
+    "passwordProtected": "Paste はパスワードで保護されています",
+    "decrypt": "復号",
+    "deleteTitle": "Paste を削除",
+    "deleteConfirm": "この Paste を削除しますか？",
+    "showCode": "コードを表示",
+    "showPreview": "プレビューを表示",
+    "viewOnPastefy": "Pastefy で表示",
+    "openInEditor": "Paste エディターで開く"
+  },
+  "layout": {
+    "toggleSidebar": "サイドバーを切り替え"
+  },
+  "home": {
+    "shareCode": "コードを共有",
+    "organize": "整理",
+    "keepSecret": "秘密を守る",
+    "integration": "連携",
+    "explorePublicPastes": "公開 Paste を探索",
+    "shareCodeDescription": "コードスニペットを世界と共有しましょう。コードを貼り付けて、ほかの人と共有できます。",
+    "organizeDescription": "フォルダーを作成して、コードスニペットを整理できます。",
+    "keepSecretDescription": "クライアント側の暗号化でコードスニペットを保護できます。暗号化された Paste は私たちにも読めません。",
+    "integrationDescription": "API を使って Pastefy をアプリに連携したり、Paste をウェブサイトへ簡単に埋め込んだりできます。"
+  },
+  "tools": {
+    "all": "すべてのツール",
+    "allUtilities": "すべてのユーティリティ",
+    "resetExample": "例をリセット",
+    "focusMode": "フォーカスモード",
+    "exitFocusMode": "フォーカスモードを終了",
+    "search": "ツールを検索...",
+    "allConversions": "すべての変換",
+    "backToTools": "ツールに戻る",
+    "backToConversions": "変換に戻る",
+    "backToUtilities": "ユーティリティに戻る",
+    "copySource": "ソースをコピー",
+    "copyOutput": "出力をコピー",
+    "createPaste": "Paste を作成",
+    "conversion": "変換",
+    "previewInspect": "プレビューと検査",
+    "convert": "変換",
+    "utilities": "ユーティリティ",
+    "notFound": {
+      "previewTitle": "ツールが見つかりません",
+      "conversionTitle": "変換ツールが見つかりません",
+      "utilityTitle": "ユーティリティが見つかりません"
+    },
+    "title": "Pastefy Tools",
+    "categories": "カテゴリー"
+  },
+  "share": {
+    "share": "共有",
+    "screenshot": "スクリーンショット",
+    "embed": "埋め込み",
+    "qrCode": "QR コード",
+    "articleView": "記事ビュー",
+    "presentationView": "プレゼンテーションビュー"
+  },
+  "errors": {
+    "pageNotFound": "ページが見つかりません"
+  },
+  "explore": {
+    "title": "Pastefy を探索"
+  },
+  "folder": {
+    "createTitle": "フォルダーを作成",
+    "name": "名前",
+    "create": "作成",
+    "deleteTitle": "フォルダーを削除",
+    "deleteConfirm": "このフォルダーを削除しますか？"
+  },
+  "search": {
+    "title": "目的の Paste をすばやく検索",
+    "query": "検索クエリ",
+    "scope": "範囲",
+    "clearFilters": "フィルターをクリア",
+    "quickModal": "クイック検索",
+    "descriptions": {
+      "mine": "高度なフィルターで自分の Paste を検索します。",
+      "starred": "スターを付けた Paste を検索します。",
+      "public": "高度なフィルターで公開 Paste を検索します。"
+    }
+  },
+  "admin": {
+    "quickActions": "クイックアクション",
+    "manageUsers": "ユーザー管理",
+    "latestPastes": "最新の Paste",
+    "users": {
+      "changeTypeTitle": "ユーザー種別を変更",
+      "changeTypeConfirm": "このユーザーの種別を変更しますか？",
+      "deleteTitle": "ユーザーを削除",
+      "deleteConfirm": "このユーザーを削除しますか？"
+    },
+    "title": "管理"
+  },
+  "components": {
+    "globalSearch": {
+      "mine": "mine",
+      "public": "public",
+      "page": "page"
+    },
+    "paste": {
+      "openInCodebox": "Open in Codebox"
+    },
+    "createPaste": {
+      "detectedUrlYouMayWannaUse": "Detected Url. You may wanna use",
+      "punyshort": "punyshort"
+    },
+    "sidebar": {
+      "sourceCode": "Source Code"
+    },
+    "pasteCard": {
+      "codebox": "Codebox",
+      "multiPaste": "Multi-Paste"
+    },
+    "pasteStarButton": {
+      "star": "Star"
+    },
+    "pasteSharingPopover": {
+      "createScreenshot": "Create Screenshot",
+      "embed": "Embed",
+      "shareCodeWithPastefy": "Share code with Pastefy."
+    },
+    "userMenu": {
+      "admin": "Admin"
+    }
+  },
+  "modals": {
+    "embedPasteModal": {
+      "embed": "Embed",
+      "hideTitle": "Hide Title",
+      "hideActions": "Hide Actions",
+      "addPadding": "Add Padding",
+      "embedViaScript": "Embed via script",
+      "embedViaIframeTag": "Embed via iframe tag"
+    },
+    "qrModal": {
+      "qrCode": "QR Code",
+      "applyPreset": "Apply preset",
+      "removeLogo": "Remove Logo",
+      "sizePx": "Size (px)",
+      "quietZone": "Quiet zone",
+      "currentPalette": "Current palette",
+      "foregroundColor": "Foreground color",
+      "foregroundPreview": "Foreground preview",
+      "qrModulesAndScanPattern": "QR modules and scan pattern",
+      "backgroundColor": "Background color",
+      "backgroundPreview": "Background preview",
+      "showBackground": "Show background",
+      "includeQuietZone": "Include quiet zone",
+      "logo": "Logo",
+      "logoSize": "Logo size",
+      "logoPadding": "Logo padding",
+      "logoBackgroundPlate": "Logo background plate"
+    },
+    "screenshotPaste": {
+      "screenshot": "Screenshot",
+      "style": "Style",
+      "background": "Background",
+      "canvasWidthPx": "Canvas width (px)",
+      "outerPaddingPx": "Outer padding (px)",
+      "to": "to",
+      "lineRange": "Line range",
+      "showTitleBar": "Show title bar",
+      "showLineNumbers": "Show line numbers",
+      "sharpness": "Sharpness",
+      "options": {
+        "dark": "Dark",
+        "light": "Light",
+        "png": "PNG",
+        "jpeg": "JPEG",
+        "1x": "1x",
+        "2x": "2x",
+        "3x": "3x"
+      }
+    }
+  },
+  "previews": {
+    "ansibleViewer": {
+      "ansibleView": "Ansible View",
+      "hostsRolesAndNamedTasksForOperationalPlaybooks": "Hosts, roles, and named tasks for operational playbooks",
+      "roles": "Roles",
+      "namedTasks": "Named Tasks",
+      "noNamedTasksDetected": "No named tasks detected."
+    },
+    "configViewer": {
+      "searchSectionsKeysAndValues": "Search sections, keys, and values",
+      "configExplorerWithSearchAndExport": "Config explorer with search and export",
+      "noMatchingLines": "No matching lines."
+    },
+    "gitHubActionsViewer": {
+      "gitHubActions": "GitHub Actions",
+      "jobs": "Jobs",
+      "namedSteps": "Named Steps",
+      "noNamedStepsDetected": "No named steps detected."
+    },
+    "hclViewer": {
+      "terraformHcl": "Terraform / HCL",
+      "description": "Resources, modules, providers, and variables at a glance"
+    },
+    "htmlViewer": {
+      "htmlPreview": "HTML Preview"
+    },
+    "httpViewer": {
+      "httpCurlView": "HTTP / cURL View",
+      "request": "Request",
+      "headers": "Headers",
+      "noHeadersDetected": "No headers detected.",
+      "body": "Body",
+      "noBodyDetected": "No body detected.",
+      "description": "Inspect request method, endpoint, headers, and body quickly"
+    },
+    "icsViewer": {
+      "addToCalendar": "Add to Calendar"
+    },
+    "jsonViewer": {
+      "searchKeysPathsAndValues": "Search keys, paths, and values",
+      "expandAll": "Expand all",
+      "collapse": "Collapse",
+      "copyPretty": "Copy pretty",
+      "jsonView": "JSON View",
+      "options": {
+        "tree": "Tree",
+        "pretty": "Pretty",
+        "raw": "Raw"
+      }
+    },
+    "logViewer": {
+      "searchLogLines": "Search log lines",
+      "logView": "Log View",
+      "filterLevelsSearchIncidentsAndScanOutputFaster": "Filter levels, search incidents, and scan output faster",
+      "noMatchingLogLines": "No matching log lines."
+    },
+    "monitoringRulesViewer": {
+      "monitoringRules": "Monitoring Rules",
+      "prometheusGrafanaAndAlertRuleOverviews": "Prometheus, Grafana, and alert rule overviews"
+    },
+    "regexViewer": {
+      "flags": "g, i, m",
+      "insertYourTestStringHere": "insert your test string here",
+      "testInput": "Test Input"
+    },
+    "xmlViewer": {
+      "searchTagsAttributesTextAndPaths": "Search tags, attributes, text, and paths",
+      "expandAll": "Expand all",
+      "collapse": "Collapse",
+      "copyPretty": "Copy pretty",
+      "xmlView": "XML View",
+      "options": {
+        "tree": "Tree",
+        "pretty": "Pretty",
+        "raw": "Raw"
+      }
+    },
+    "yamlViewer": {
+      "searchKeysValuesAndPaths": "Search keys, values, and paths",
+      "expandAll": "Expand all",
+      "collapse": "Collapse",
+      "yamlView": "YAML View",
+      "noYamlNodesFound": "No YAML nodes found.",
+      "options": {
+        "root": "root",
+        "tree": "Tree",
+        "pretty": "Pretty",
+        "raw": "Raw"
+      },
+      "description": "Collapsible tree, search, copy, and export for YAML files"
+    },
+    "githubActionsViewer": {
+      "description": "Workflow triggers, jobs, and named steps at a glance"
+    }
+  },
+  "utility": {
+    "accessLogInspectorBase": {
+      "searchIpPathStatusReferrer": "Search IP, path, status, referrer...",
+      "accessLogs": "Access logs",
+      "topStatusCodes": "Top status codes",
+      "noParsedRequestsMatchTheCurrentFilters": "No parsed requests match the current filters.",
+      "topPaths": "Top paths",
+      "topIps": "Top IPs",
+      "topUserAgents": "Top user agents",
+      "requestTable": "Request table",
+      "status": "Status",
+      "method": "Method",
+      "path": "Path",
+      "options": {
+        "allStatuses": "All statuses",
+        "2xx": "2xx",
+        "3xx": "3xx",
+        "4xx": "4xx",
+        "5xx": "5xx"
+      }
+    },
+    "base64Tool": {
+      "mode": "Mode",
