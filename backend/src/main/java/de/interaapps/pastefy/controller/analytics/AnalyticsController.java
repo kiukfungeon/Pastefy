@@ -21,27 +21,3 @@ import java.util.Objects;
 @PathPrefix("/api/v2/analytics")
 @With("auth")
 public class AnalyticsController extends HttpController {
-    @Get("/admin")
-    @With("admin")
-    public AnalyticsResponse admin(Exchange exchange, @Attrib("authkey") AuthKey authKey) {
-        authKey.checkPermission("analytics:read");
-        return query(exchange);
-    }
-
-    @Get("/pastes/{id}")
-    public AnalyticsResponse paste(Exchange exchange, @Path("id") String id, @Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
-        authKey.checkPermission("analytics:read");
-        Paste paste = Paste.get(id);
-        if (paste == null || (!user.isAdmin() && !Objects.equals(user.getId(), paste.getUserId()))) {
-            throw new PermissionsDeniedException();
-        }
-        AnalyticsQuery query = AnalyticsQuery.from(exchange);
-        query.filters.put("paste_key", paste.getKey());
-        return query(query);
-    }
-
-    @Get("/user")
-    public AnalyticsResponse user(Exchange exchange, @Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
-        authKey.checkPermission("analytics:read");
-        AnalyticsQuery query = AnalyticsQuery.from(exchange);
-        query.filters.put("paste_user_id", user.getId());

@@ -20,3 +20,69 @@ public class TwitchOAuth2Provider implements OAuth2Provider {
 
     public TwitchOAuth2Provider(String clientId, String secret) {
         this.clientId = clientId;
+        this.secret = secret;
+    }
+
+    public TwitchOAuth2Provider setScopes(String... scopes) {
+        this.scopes = scopes;
+        return this;
+    }
+
+    public OAuth2Callback callback(AbstractObject queryParameters, String callbackUrl) {
+        AbstractObject abstractObject = new HTTPClient("https://id.twitch.tv").post("/oauth2/token")
+                .formBodyString(new QueryString()
+                        .set("client_id", clientId)
+                        .set("client_secret", secret)
+                        .set("code", queryParameters.string("code"))
+                        .set("grant_type", "authorization_code")
+                        .set("redirect_uri", callbackUrl)
+                        .toString())
+                .header("Accept", MimeType.JSON.getMimeTypes().get(0))
+                .data().object();
+
+        if (abstractObject.has("scope")) {
+            return new OAuth2Callback(this, abstractObject.string("access_token"), abstractObject.string("refresh_token"), clientId);
+        }
+
+        return null;
+    }
+
+    public TwitchOAuth2Provider setState(String state) {
+        this.state = state;
+        return this;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public TwitchOAuth2Provider setForceVerify(boolean forceVerify) {
+        this.forceVerify = forceVerify;
+        return this;
+    }
+
+    public boolean isForceVerify() {
+        return forceVerify;
+    }
+
+    public String redirect(String callbackUrl) {
+        try {
+            return "https://id.twitch.tv/oauth2/authorize?client_id=" + clientId + "&response_type=code&scope=" + URLEncoder.encode(String.join(" ", scopes), "UTF-8") + "&redirect_uri=" + URLEncoder.encode(callbackUrl, "UTF-8") + "&force_verify=" + forceVerify + "&state=" + state;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static class OAuth2Callback extends de.interaapps.pastefy.auth.strategies.oauth2.OAuth2Callback {
+        private String clientId;
+
+        public OAuth2Callback(OAuth2Provider provider, String accessToken, String refreshToken, String clientId) {
+            super(provider, accessToken, refreshToken);
+            this.clientId = clientId;
+        }
+
+        public HTTPClient createApiClient() {
+            return new HTTPClient("https://api.twitch.tv/helix").bearer(accessToken);
+        }
+
