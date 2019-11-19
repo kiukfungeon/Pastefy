@@ -112,3 +112,117 @@ const updateLogo = (event: Event) => {
     if (typeof reader.result === 'string') {
       logoDataUrl.value = reader.result
     }
+  }
+  reader.readAsDataURL(file)
+  input.value = ''
+}
+
+const clearLogo = () => {
+  logoDataUrl.value = undefined
+}
+
+const buildOptions = () => ({
+  type:
+    exportFormat.value === 'image/svg+xml'
+      ? 'image/png'
+      : (exportFormat.value as 'image/png' | 'image/jpeg'),
+  width: Math.max(180, width.value),
+  margin: includeQuietZone.value ? Math.max(0, margin.value) : 0,
+  color: {
+    dark: darkColor.value,
+    light: showBackground.value ? lightColor.value : '#0000',
+  },
+})
+
+const renderQRCode = async () => {
+  try {
+    if (exportFormat.value === 'image/svg+xml') {
+      qrCodeDataUrl.value = await QRCode.toString(props.text, {
+        type: 'svg',
+        width: Math.max(180, width.value),
+        margin: includeQuietZone.value ? Math.max(0, margin.value) : 0,
+        color: {
+          dark: darkColor.value,
+          light: showBackground.value ? lightColor.value : '#0000',
+        },
+      }).then((svg) => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`)
+      return
+    }
+
+    qrCodeDataUrl.value = await QRCode.toDataURL(props.text, buildOptions())
+  } catch (error) {
+    console.error(error)
+    toast.add({
+      severity: 'error',
+      summary: 'QR generation failed',
+      detail: 'The QR code could not be generated.',
+      life: 4000,
+    })
+  }
+}
+
+const fetchBlob = async () => {
+  if (!qrCodeDataUrl.value) throw new Error('QR code is not ready yet.')
+  const response = await fetch(qrCodeDataUrl.value)
+  return await response.blob()
+}
+
+const download = async () => {
+  try {
+    const blob = await fetchBlob()
+    const link = document.createElement('a')
+    const objectUrl = URL.createObjectURL(blob)
+
+    link.download = `${fileName.value || 'pastefy-qr'}.${downloadExtension.value}`
+    link.href = objectUrl
+    link.click()
+
+    setTimeout(() => URL.revokeObjectURL(objectUrl), 1000)
+  } catch (error) {
+    console.error(error)
+    toast.add({
+      severity: 'error',
+      summary: 'Download failed',
+      detail: 'The QR code could not be downloaded.',
+      life: 4000,
+    })
+  }
+}
+
+const copyImage = async () => {
+  if (!canCopyImage.value || exportFormat.value === 'image/svg+xml') return
+
+  try {
+    const blob = await fetchBlob()
+    await navigator.clipboard.write([
+      new ClipboardItem({
+        [blob.type]: blob,
+      }),
+    ])
+    toast.add({
+      severity: 'success',
+      summary: 'Copied',
+      detail: 'The QR code was copied to your clipboard.',
+      life: 2500,
+    })
+  } catch (error) {
+    console.error(error)
+    toast.add({
+      severity: 'error',
+      summary: 'Copy failed',
+      detail: 'Your browser did not allow copying the QR image.',
+      life: 4000,
+    })
+  }
+}
+
+watch(
+  [
+    () => props.text,
+    visible,
+    exportFormat,
+    width,
+    margin,
+    darkColor,
+    lightColor,
+    showBackground,
