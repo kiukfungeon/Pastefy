@@ -13,3 +13,10 @@ public class PasteContentCache {
             if (Pastefy.getInstance().isDevMode()) e.printStackTrace();
             return null;
         }
+    }
+
+    public static void setCachedContent(Paste paste) {
+        if (!Pastefy.getInstance().isRedisEnabled()) return;
+        try {
+            Pastefy.getInstance().getRedisClient()
+                    .setex("paste:" + paste.getId(), 60 * 30, paste.getContent(false));
