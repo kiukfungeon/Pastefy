@@ -11,16 +11,3 @@ const filters = defineModel<{
     <Select
       :options="['UNLISTED', 'PUBLIC', 'PRIVATE']"
       v-model="filters.visibility"
-      size="small"
-      show-clear
-      fluid
-      class="min-h-[2.1rem]"
-    >
-      <template #value="{ value: option }">
-        <div class="flex items-center gap-1">
-          <PasteVisibilityIcon :visibility="option" class="text-lg" />
-          <span>{{ $t(`paste.visibility.${option.toLowerCase()}`) }}</span>
-        </div>
-      </template>
-      <template #option="{ option }">
-        <div class="flex items-center gap-1">
