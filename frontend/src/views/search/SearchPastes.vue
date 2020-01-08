@@ -1,0 +1,264 @@
+<script setup lang="ts">
+import { useTranslation } from 'i18next-vue'
+import Button from 'primevue/button'
+import InputText from 'primevue/inputtext'
+import Select from 'primevue/select'
+import Tag from 'primevue/tag'
+import { useDebounceFn, useTitle } from '@vueuse/core'
+import { useRouteQuery } from '@vueuse/router'
+import { computed, ref, watch } from 'vue'
+
+import PasteList from '@/components/lists/PasteList.vue'
+import { client } from '@/main.ts'
+import { useAppStore } from '@/stores/app.ts'
+import { useCurrentUserStore } from '@/stores/current-user.ts'
+import type { PublicUser } from '@/types/user.ts'
+
+const { t } = useTranslation()
+type Scope = 'public' | 'mine' | 'starred'
+type VisibilityFilter = 'all' | 'PUBLIC' | 'UNLISTED' | 'PRIVATE'
+type TypeFilter = 'all' | 'PASTE' | 'MULTI_PASTE'
+type EncryptionFilter = 'all' | 'plain' | 'encrypted'
+type FolderFilter = 'all' | 'root' | 'foldered'
+
+const appStore = useAppStore()
+const currentUserStore = useCurrentUserStore()
+
+useTitle('Search | Pastefy')
+
+const page = useRouteQuery('page', 1, { transform: Number })
+const search = useRouteQuery<string>('search', '')
+const scope = useRouteQuery<Scope>('scope', currentUserStore.user ? 'mine' : 'public')
+const sort = useRouteQuery('sort', 'createdAt')
+const pageLimit = useRouteQuery('page_limit', 12, { transform: Number })
+const visibility = useRouteQuery<VisibilityFilter>('visibility', 'all')
+const pasteType = useRouteQuery<TypeFilter>('type', 'all')
+const encryption = useRouteQuery<EncryptionFilter>('encrypted', 'all')
+const folder = useRouteQuery<FolderFilter>('folder', 'all')
+const tags = useRouteQuery<string>('tags', '')
+
+const searchInput = ref(search.value)
+const tagsInput = ref(tags.value)
+const matchedUser = ref<PublicUser | null | undefined>(undefined)
+
+const commitSearch = useDebounceFn((value: string) => {
+  search.value = value.trim()
+}, 250)
+
+const commitTags = useDebounceFn((value: string) => {
+  tags.value = value.trim()
+}, 250)
+
+watch(
+  () => search.value,
+  (value) => {
+    if (value !== searchInput.value) searchInput.value = value
+  },
+)
+
+watch(
+  () => tags.value,
+  (value) => {
+    if (value !== tagsInput.value) tagsInput.value = value
+  },
+)
+
+watch(
+  () => currentUserStore.user,
+  (user) => {
+    if (user) return
+    if (scope.value !== 'public') scope.value = 'public'
+  },
+)
+
+const scopeOptions = computed(
+  () =>
+    [
+      {
+        get label() { return t('views.searchPastes.options.public') },
+        value: 'public' as Scope,
+        icon: 'world',
+        get description() { return t('views.searchPastes.descriptions.searchAllPublicPastes') },
+      },
+      ...(currentUserStore.user
+        ? [
+            {
+              get label() { return t('views.searchPastes.options.mine') },
+              value: 'mine' as Scope,
+              icon: 'user',
+              get description() { return t('views.searchPastes.descriptions.searchYourOwnPastes') },
+            },
+            {
+              get label() { return t('views.searchPastes.options.starred') },
+              value: 'starred' as Scope,
+              icon: 'star',
+              get description() { return t('views.searchPastes.descriptions.searchYourStarredCollection') },
+            },
+          ]
+        : []),
+    ] as const,
+)
+
+const sortOptions = [
+  { get label() { return t('views.searchPastes.options.newestFirst') }, value: 'createdAt' },
+  { get label() { return t('views.searchPastes.options.oldestFirst') }, value: '+createdAt' },
+  { get label() { return t('views.searchPastes.options.titleAZ') }, value: '+title' },
+  { get label() { return t('views.searchPastes.options.titleZA') }, value: 'title' },
+]
+
+const pageLimitOptions = [
+  { get label() { return t('views.searchPastes.options.12PerPage') }, value: 12 },
+  { get label() { return t('views.searchPastes.options.24PerPage') }, value: 24 },
+  { get label() { return t('views.searchPastes.options.48PerPage') }, value: 48 },
+]
+
+const visibilityOptions = [
+  { get label() { return t('views.searchPastes.options.allVisibilities') }, value: 'all' as VisibilityFilter },
+  { get label() { return t('views.searchPastes.options.public') }, value: 'PUBLIC' as VisibilityFilter },
+  { get label() { return t('views.searchPastes.options.unlisted') }, value: 'UNLISTED' as VisibilityFilter },
+  { get label() { return t('views.searchPastes.options.private') }, value: 'PRIVATE' as VisibilityFilter },
+]
+
+const typeOptions = [
+  { get label() { return t('views.searchPastes.options.allPasteTypes') }, value: 'all' as TypeFilter },
+  { get label() { return t('views.searchPastes.options.singlePastes') }, value: 'PASTE' as TypeFilter },
+  { get label() { return t('views.searchPastes.options.multiPastes') }, value: 'MULTI_PASTE' as TypeFilter },
+]
+
+const encryptionOptions = [
+  { get label() { return t('views.searchPastes.options.allEncryptionStates') }, value: 'all' as EncryptionFilter },
+  { get label() { return t('views.searchPastes.options.plainOnly') }, value: 'plain' as EncryptionFilter },
+  { get label() { return t('views.searchPastes.options.encryptedOnly') }, value: 'encrypted' as EncryptionFilter },
+]
+
+const folderOptions = [
+  { get label() { return t('views.searchPastes.options.allFolderStates') }, value: 'all' as FolderFilter },
+  { get label() { return t('views.searchPastes.options.rootLevelOnly') }, value: 'root' as FolderFilter },
+  { get label() { return t('views.searchPastes.options.onlyInsideFolders') }, value: 'foldered' as FolderFilter },
+]
+
+const endpoint = computed(() => {
+  if (scope.value === 'mine') return '/api/v2/user/pastes'
+  if (scope.value === 'starred') return '/api/v2/user/starred-pastes'
+  return '/api/v2/public-pastes/latest'
+})
+
+const normalizedTags = computed(() =>
+  tags.value
+    .split(',')
+    .map((entry) => entry.trim())
+    .filter(Boolean)
+    .join(','),
+)
+
+const userLookupName = computed(() => {
+  const match = search.value.trim().match(/^@([a-zA-Z0-9-]+)$/)
+  return match?.[1]
+})
+
+const effectiveSearchQuery = computed(() => {
+  const value = search.value.trim()
+  return userLookupName.value || value
+})
+
+const loadMatchedUser = useDebounceFn(async (name?: string) => {
+  if (!name) {
+    matchedUser.value = undefined
+    return
+  }
+
+  try {
+    matchedUser.value = (await client.get(`/api/v2/public/user/${name}`)).data as PublicUser
+  } catch {
+    matchedUser.value = null
+  }
+}, 250)
+
+watch(
+  userLookupName,
+  (value) => {
+    loadMatchedUser(value)
+  },
+  { immediate: true },
+)
+
+const filters = computed(() => {
+  const andFilters: Record<string, unknown>[] = []
+
+  if (matchedUser.value?.id) {
+    andFilters.push({ userId: matchedUser.value.id })
+  }
+
+  if (visibility.value !== 'all' && scope.value !== 'public') {
+    andFilters.push({ visibility: visibility.value })
+  }
+
+  if (pasteType.value !== 'all') {
+    andFilters.push({ type: pasteType.value })
+  }
+
+  if (encryption.value !== 'all') {
+    andFilters.push({ encrypted: encryption.value === 'encrypted' ? 'true' : 'false' })
+  }
+
+  if (folder.value === 'root') {
+    andFilters.push({ folder: { $null: true } })
+  } else if (folder.value === 'foldered') {
+    andFilters.push({ folder: { $notNull: true } })
+  }
+
+  if (!andFilters.length) return undefined
+  if (andFilters.length === 1) return JSON.stringify(andFilters[0])
+  return JSON.stringify({ $and: andFilters })
+})
+
+const requestParams = computed(() => ({
+  ...(effectiveSearchQuery.value && !matchedUser.value?.id
+    ? { search: effectiveSearchQuery.value }
+    : {}),
+  ...(sort.value ? { sort: sort.value } : {}),
+  ...(normalizedTags.value ? { filter_tags: normalizedTags.value } : {}),
+  ...(filters.value ? { filters: filters.value } : {}),
+}))
+
+const requestSignature = computed(() =>
+  JSON.stringify({
+    endpoint: endpoint.value,
+    params: requestParams.value,
+    pageLimit: pageLimit.value,
+  }),
+)
+
+watch(requestSignature, () => {
+  page.value = 1
+})
+
+const activeFilters = computed(() => {
+  const entries: string[] = []
+  if (scope.value !== 'public') {
+    const selectedScope = scopeOptions.value.find((entry) => entry.value === scope.value)
+    if (selectedScope) entries.push(`Scope: ${selectedScope.label}`)
+  }
+  if (visibility.value !== 'all' && scope.value !== 'public') {
+    entries.push(`Visibility: ${visibility.value.toLowerCase()}`)
+  }
+  if (pasteType.value !== 'all') {
+    entries.push(`Type: ${pasteType.value === 'MULTI_PASTE' ? 'multi' : 'single'}`)
+  }
+  if (encryption.value !== 'all') {
+    entries.push(`Encryption: ${encryption.value}`)
+  }
+  if (folder.value !== 'all') {
+    entries.push(`Folder: ${folder.value}`)
+  }
+  if (normalizedTags.value) {
+    entries.push(
+      ...normalizedTags.value
+        .split(',')
+        .filter(Boolean)
+        .map((tag) => `Tag: ${tag}`),
+    )
+  }
+  if (userLookupName.value) {
+    entries.push(
+      matchedUser.value?.id
