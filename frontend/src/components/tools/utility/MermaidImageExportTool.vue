@@ -33,3 +33,110 @@ const formatOptions = [
   { get label() { return t('utility.mermaidImageExportTool.options.png') }, value: 'png' as const },
   { get label() { return t('utility.mermaidImageExportTool.options.svg') }, value: 'svg' as const },
 ]
+
+const download = async () => {
+  const node = exportAreaRef.value
+  if (!node) return
+  isExporting.value = true
+  try {
+    const safeName = (fileName.value || 'diagram').replace(/[^a-zA-Z0-9-_]+/g, '-')
+    if (format.value === 'svg') {
+      const dataUrl = await (domtoimage as any).toSvg(node, {
+        bgcolor: background.value,
+        style: {
+          transform: `scale(${scale.value})`,
+          transformOrigin: 'top left',
+          width: `${node.offsetWidth}px`,
+          height: `${node.offsetHeight}px`,
+        },
+        width: node.offsetWidth * scale.value,
+        height: node.offsetHeight * scale.value,
+      })
+      const link = document.createElement('a')
+      link.download = `${safeName}.svg`
+      link.href = dataUrl
+      link.click()
+      return
+    }
+
+    const blob = await domtoimage.toBlob(node, {
+      bgcolor: background.value,
+      style: {
+        transform: `scale(${scale.value})`,
+        transformOrigin: 'top left',
+        width: `${node.offsetWidth}px`,
+        height: `${node.offsetHeight}px`,
+      },
+      width: node.offsetWidth * scale.value,
+      height: node.offsetHeight * scale.value,
+    })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.download = `${safeName}.png`
+    link.href = url
+    link.click()
+    setTimeout(() => URL.revokeObjectURL(url), 1000)
+  } finally {
+    isExporting.value = false
+  }
+}
+
+const outputCode = computed(() => source.value)
+
+const copyMermaid = async () => {
+  await navigator.clipboard?.writeText(outputCode.value)
+}
+</script>
+
+<template>
+  <UtilityShell
+    control-title="Export Setup"
+    control-description="Render a Mermaid diagram and export it as PNG or SVG with padding, background, and watermark options."
+    result-title="Export Preview"
+    result-description="Preview the export surface exactly as it will be rendered."
+  >
+    <template #controls>
+      <div class="grid gap-3 md:grid-cols-2">
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('common.filename') }}</label>
+          <InputText v-model="fileName" fluid />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('common.format') }}</label>
+          <Select
+            v-model="format"
+            :options="formatOptions"
+            option-label="label"
+            option-value="value"
+            fluid
+          />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.mermaidImageExportTool.scale') }}</label>
+          <InputNumber v-model="scale" :min="1" :max="4" fluid />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.mermaidImageExportTool.padding') }}</label>
+          <InputNumber v-model="padding" :min="0" :max="120" fluid />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400"
+            >{{ $t('utility.mermaidImageExportTool.background') }}</label
+          >
+          <InputText v-model="background" fluid />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.mermaidImageExportTool.watermark') }}</label>
+          <InputText v-model="watermark" fluid />
+        </div>
+      </div>
+      <div>
+        <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400"
+          >{{ $t('utility.mermaidImageExportTool.mermaidCode') }}</label
+        >
+        <Textarea v-model="source" auto-resize rows="18" fluid />
+      </div>
+    </template>
+    <template #result>
+      <div
+        ref="exportAreaRef"
