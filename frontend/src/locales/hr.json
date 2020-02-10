@@ -315,3 +315,955 @@
       "addToCalendar": "Dodaj u kalendar"
     },
     "jsonViewer": {
+      "searchKeysPathsAndValues": "Pretraži ključeve, putanje i vrijednosti",
+      "expandAll": "Proširi sve",
+      "collapse": "Sažmi",
+      "copyPretty": "Kopiraj formatirano",
+      "jsonView": "JSON View",
+      "options": {
+        "tree": "Stablo",
+        "pretty": "Formatirano",
+        "raw": "Sirovo"
+      }
+    },
+    "logViewer": {
+      "searchLogLines": "Pretraži log lines",
+      "logView": "Log View",
+      "filterLevelsSearchIncidentsAndScanOutputFaster": "Filter levels, search incidents, and scan output faster",
+      "noMatchingLogLines": "No matching log lines."
+    },
+    "monitoringRulesViewer": {
+      "monitoringRules": "Monitoring Rules",
+      "prometheusGrafanaAndAlertRuleOverviews": "Prometheus, Grafana, and alert rule overviews"
+    },
+    "regexViewer": {
+      "flags": "g, i, m",
+      "insertYourTestStringHere": "insert your test string here",
+      "testInput": "Test Input"
+    },
+    "xmlViewer": {
+      "searchTagsAttributesTextAndPaths": "Pretraži oznake, atribute, tekst i putanje",
+      "expandAll": "Proširi sve",
+      "collapse": "Sažmi",
+      "copyPretty": "Kopiraj formatirano",
+      "xmlView": "XML View",
+      "options": {
+        "tree": "Stablo",
+        "pretty": "Formatirano",
+        "raw": "Sirovo"
+      }
+    },
+    "yamlViewer": {
+      "searchKeysValuesAndPaths": "Pretraži keys, values, and paths",
+      "expandAll": "Proširi sve",
+      "collapse": "Sažmi",
+      "yamlView": "YAML View",
+      "noYamlNodesFound": "Nisu pronađeni YAML čvorovi.",
+      "options": {
+        "root": "korijen",
+        "tree": "Stablo",
+        "pretty": "Formatirano",
+        "raw": "Sirovo"
+      },
+      "description": "Collapsible tree, search, copy, and export for YAML files"
+    },
+    "githubActionsViewer": {
+      "description": "Tijek rada triggers, jobs, and named steps at a glance"
+    }
+  },
+  "utility": {
+    "accessLogInspectorBase": {
+      "searchIpPathStatusReferrer": "Pretraži IP, path, status, referrer...",
+      "accessLogs": "Access logs",
+      "topStatusCodes": "Top status codes",
+      "noParsedRequestsMatchTheCurrentFilters": "No parsed requests match the current filters.",
+      "topPaths": "Top paths",
+      "topIps": "Top IPs",
+      "topUserAgents": "Top user agents",
+      "requestTable": "Request table",
+      "status": "Status",
+      "method": "Method",
+      "path": "Path",
+      "options": {
+        "allStatuses": "All statuses",
+        "2xx": "2xx",
+        "3xx": "3xx",
+        "4xx": "4xx",
+        "5xx": "5xx"
+      }
+    },
+    "base64Tool": {
+      "mode": "Način",
+      "input": "Ulaz",
+      "base64": "Base64",
+      "base64Url": "Base64Url",
+      "decoded": "Dekodirano",
+      "options": {
+        "encode": "Kodiraj",
+        "decode": "Dekodiraj"
+      }
+    },
+    "caseConverterTool": {
+      "sourceText": "Izvorni tekst"
+    },
+    "colorConverterTool": {
+      "hexColor": "HEX boja"
+    },
+    "composeStackGeneratorTool": {
+      "includeProxyService": "Uključi proxy servis",
+      "includePostgresService": "Uključi Postgres servis",
+      "includeRedisService": "Uključi Redis servis",
+      "portMappings": "Mapiranja portova",
+      "addPort": "dodaj port",
+      "environmentVariables": "Varijable okruženja",
+      "production": "produkcija",
+      "volumes": "Volumeni",
+      "addVolume": "dodaj volumen",
+      "networks": "Mreže",
+      "app": "aplikacija",
+      "addNetwork": "dodaj mrežu",
+      "dependsOnServices": "Ovisi o servisima",
+      "postgres": "postgres",
+      "addDependency": "dodaj ovisnost",
+      "command": "Naredba",
+      "entrypoint": "Ulazna točka",
+      "proxyPorts": "Proxy portovi",
+      "addProxyPort": "dodaj proxy port",
+      "postgresEnvironment": "Postgres okruženje",
+      "preset": "Predložak",
+      "serviceName": "Naziv servisa",
+      "image": "Slika",
+      "containerName": "Naziv kontejnera",
+      "restartPolicy": "Pravila ponovnog pokretanja",
+      "replicas": "Replike",
+      "workingDirectory": "Radni direktorij",
+      "proxyImage": "Proxy image",
+      "postgresImage": "Postgres image",
+      "redisImage": "Redis image",
+      "options": {
+        "blankService": "Prazan servis",
+        "nodeWebApp": "Node web aplikacija",
+        "pythonWebApp": "Python web aplikacija",
+        "javaApp": "Java aplikacija",
+        "staticNginxSite": "Statična NGINX stranica",
+        "proxyAppPostgres": "Proxy + aplikacija + Postgres"
+      }
+    },
+    "cronExplainerTool": {
+      "samples": "Primjeri",
+      "cronExpression": "Cron izraz",
+      "options": {
+        "custom": "Prilagođeno",
+        "everyHour": "Svaki sat",
+        "dailyAtMidnight": "Svaki dan u ponoć",
+        "weeklyOnMonday": "Tjedno ponedjeljkom",
+        "monthlyOnThe1st": "Mjesečno prvog dana",
+        "every15Minutes": "Svakih 15 minuta",
+        "weekdayMornings": "Radnim danima ujutro",
+        "yearlyOnJan1st": "Godišnje 1. siječnja"
+      }
+    },
+    "dataToClassDiagramTool": {
+      "inputFormat": "Ulazni format",
+      "rootClassName": "Naziv korijenske klase",
+      "showInferredFieldTypes": "Prikaži zaključene tipove polja",
+      "sourceData": "Izvorni podaci",
+      "options": {
+        "autoDetect": "Automatsko prepoznavanje",
+        "json": "JSON",
+        "yaml": "YAML",
+        "csv": "CSV"
+      }
+    },
+    "dataToMermaidErTool": {
+      "inputFormat": "Ulazni format",
+      "rootEntityName": "Naziv korijenskog entiteta",
+      "showInferredFieldTypes": "Prikaži zaključene tipove polja",
+      "schemaLikeData": "Podaci nalik shemi",
+      "options": {
+        "autoDetect": "Automatsko prepoznavanje",
+        "json": "JSON",
+        "yaml": "YAML",
+        "csv": "CSV"
+      }
+    },
+    "dataToMermaidTool": {
+      "chooseAChartPreset": "Odaberi predložak grafikona",
+      "loadPreset": "učitaj predložak",
+      "revenueByMonth": "Prihod po mjesecu",
+      "value": "Vrijednost",
+      "selectOneOrMoreFields": "Odaberi jedno ili više polja",
+      "optionalSeriesGrouping": "Neobavezno grupiranje serija",
+      "pickOneOrMoreNumericFields": "Odaberi jedno ili više numeričkih polja",
+      "everythingElse": "Sve ostalo",
+      "examplePreset": "Primjer predloška",
+      "inputFormat": "Ulazni format",
+      "chartType": "Vrsta grafikona",
+      "chartTitle": "Naslov grafikona",
+      "yAxisLabel": "Oznaka Y osi",
+      "decimals": "Decimale",
+      "yAxisRange": "Raspon Y osi",
+      "emptyLabel": "Prazna oznaka",
+      "fieldSeparator": "Razdjelnik polja",
+      "yAxisMin": "Y axis min",
+      "yAxisMax": "Y axis max",
+      "sourceData": "Izvorni podaci",
+      "categoryGroupFields": "Polja kategorije / grupe",
+      "splitIntoSeriesByFields": "Podijeli u serije prema poljima",
+      "numericFieldsToVisualize": "Numerička polja za vizualizaciju",
+      "aggregation": "Agregacija",
+      "sortGroups": "Sortiraj grupe",
+      "maxGroups": "Maks. grupa",
+      "groupHiddenEntriesIntoEverythingElse": "Group hidden entries into “everything else”",
+      "everythingElseLabel": "Everything else label",
+      "maxSeries": "Maks. serija",
+      "includeSeriesCommentsInMermaidCode": "Include series comments in Mermaid code",
+      "hideZeroOnlySeries": "Hide zero-only series",
+      "hideZeroOnlyGroups": "Hide zero-only groups",
+      "showValuesInThePieChart": "Show values in the pie chart",
+      "options": {
+        "groupedBars": "Grouped bars",
+        "multiLineTrends": "Multi-line trends",
+        "pieShare": "Pie share",
+        "comboChart": "Combo chart",
+        "yamlBarChart": "YAML bar chart",
+        "autoDetect": "Automatsko prepoznavanje",
+        "json": "JSON",
+        "yaml": "YAML",
+        "csv": "CSV",
+        "pieChart": "Tortni grafikon",
+        "barChart": "Stupčasti grafikon",
+        "lineChart": "Linijski grafikon",
+        "multiLine": "Multi-line",
+        "sum": "Zbroj",
+        "average": "Prosjek",
+        "min": "Min",
+        "max": "Maks",
+        "count": "Broj",
+        "keepInputOrder": "Zadrži redoslijed unosa",
+        "labelAZ": "Label A-Z",
+        "labelZA": "Label Z-A",
+        "valueHighLow": "Value high -> low",
+        "valueLowHigh": "Value low -> high",
+        "autoRange": "Automatski raspon",
+        "manualRange": "Ručni raspon"
+      },
+      "descriptions": {
+        "revenueByMonthAndRegion": "Revenue by month and region.",
+        "profitTrendPerRegionOverTime": "Profit trend per region over time.",
+        "orderShareByRegion": "Order share by region.",
+        "revenueBarsWithProfitLine": "Revenue bars with profit line.",
+        "revenueValuesFromYamlGroupedByMonthAndRegion": "Revenue values from YAML grouped by month and region."
+      }
+    },
+    "diffLabTool": {
+      "before": "Prije",
+      "after": "Poslije",
+      "options": {
+        "lineDiff": "Razlika po redcima",
+        "wordDiff": "Razlika po riječima",
+        "characterDiff": "Razlika po znakovima"
+      }
+    },
+    "dockerfileGeneratorTool": {
+      "useMultiStageBuild": "Koristi višefaznu izgradnju",
+      "addHealthcheck": "Dodaj provjeru zdravlja",
+      "runCommands": "RUN naredbe",
+      "npmCi": "npm ci",
+      "addCommand": "dodaj naredbu",
+      "healthcheckCommand": "Naredba provjere zdravlja",
+      "environmentVariables": "Varijable okruženja",
+      "production": "produkcija",
+      "imageLabels": "Oznake slike",
+      "volumes": "Volumeni",
+      "addVolume": "dodaj volumen",
+      "exposedPorts": "Izloženi portovi",
+      "addPort": "dodaj port",
+      "entrypointCommand": "Naredba ulazne točke",
+      "defaultCommand": "Zadana naredba",
+      "preset": "Predložak",
+      "baseImage": "Osnovna slika",
+      "runtimeImage": "Runtime slika",
+      "buildWorkdir": "Radni direktorij izgradnje",
+      "runtimeWorkdir": "Runtime radni direktorij",
+      "copySource": "Kopiraj izvor",
+      "copyTarget": "Odredište kopiranja",
+      "restartPolicyHint": "Savjet za pravila ponovnog pokretanja",
+      "networkHint": "Savjet za mrežu",
+      "options": {
+        "nodeJsApp": "Node.js app",
+        "bunApp": "Bun aplikacija",
+        "javaJar": "Java JAR",
+        "pythonApp": "Python app",
+        "staticSiteOnNginx": "Statična stranica na NGINX-u",
+        "goApp": "Go aplikacija",
+        "rustApp": "Rust aplikacija",
+        "phpApache": "PHP Apache",
+        "phpFpm": "PHP-FPM",
+        "dotNetApp": ".NET app",
+        "customImage": "Prilagođena slika"
+      }
+    },
+    "hashGeneratorTool": {
+      "inputText": "Input text"
+    },
+    "htmlEntityTool": {
+      "mode": "Način",
+      "input": "Ulaz",
+      "options": {
+        "encode": "Kodiraj",
+        "decode": "Dekodiraj"
+      }
+    },
+    "infraToMermaidTool": {
+      "direction": "Smjer",
+      "diagramTitle": "Naslov dijagrama",
+      "infraFile": "Infra datoteka",
+      "options": {
+        "autoDetect": "Automatsko prepoznavanje",
+        "dockerCompose": "Docker Compose",
+        "kubernetes": "Kubernetes",
+        "terraformHcl": "Terraform / HCL",
+        "gitHubActions": "GitHub Actions",
+        "leftToRight": "Slijeva nadesno",
+        "topToBottom": "Odozgo prema dolje"
+      }
+    },
+    "jarStartScriptGeneratorTool": {
+      "useNohupBackgroundLaunch": "Koristi nohup pokretanje u pozadini",
+      "scriptType": "Vrsta skripte",
+      "appName": "Naziv aplikacije",
+      "jarFile": "JAR datoteka",
+      "workingDirectory": "Radni direktorij",
+      "xms": "Xms",
+      "xmx": "Xmx",
+      "springProfile": "Spring profile",
+      "port": "Port",
+      "extraJvmArgs": "Dodatni JVM argumenti",
+      "extraAppArgs": "Dodatni argumenti aplikacije",
+      "logFile": "Datoteka dnevnika",
+      "options": {
+        "startSh": "start.sh",
+        "startBat": "start.bat"
+      }
+    },
+    "jsonStringTool": {
+      "mode": "Način",
+      "input": "Ulaz",
+      "options": {
+        "escape": "Escape",
+        "unescape": "Unescape"
+      }
+    },
+    "jwtInspectorTool": {
+      "header": "Zaglavlje",
+      "payload": "Payload"
+    },
+    "keyValueListField": {
+      "removeEntry": "Ukloni unos",
+      "noEntriesYet": "Još nema unosa."
+    },
+    "loremIpsumTool": {
+      "generateAgain": "generiraj ponovno",
+      "mode": "Način",
+      "count": "Broj",
+      "options": {
+        "paragraphs": "Odlomci",
+        "sentences": "Rečenice",
+        "words": "Riječi"
+      }
+    },
+    "markdownToMermaidTool": {
+      "mode": "Način",
+      "direction": "Smjer",
+      "maxDepth": "Max depth",
+      "markdown": "Markdown",
+      "options": {
+        "mindmap": "Mentalna mapa",
+        "flowchart": "Dijagram toka",
+        "topToBottom": "Odozgo prema dolje",
+        "leftToRight": "Slijeva nadesno"
+      }
+    },
+    "mermaidImageExportTool": {
+      "copyMermaid": "kopiraj Mermaid",
+      "scale": "Skala",
+      "padding": "Odmak",
+      "background": "Pozadina",
+      "watermark": "Vodeni žig",
+      "mermaidCode": "Mermaid code",
+      "options": {
+        "png": "PNG",
+        "svg": "SVG"
+      }
+    },
+    "mermaidThemeBuilderTool": {
+      "addMermaidCodeToPreviewTheThemedDiagram": "Add Mermaid code to preview the themed diagram.",
+      "curve": "Curve",
+      "fontFamily": "Obitelj fonta",
+      "primaryColor": "Primarna boja",
+      "primaryTextColor": "Primary text color",
+      "borderColor": "Boja obruba",
+      "lineColor": "Boja linije",
+      "tertiaryColor": "Tertiary color",
+      "background": "Pozadina",
+      "nodeSpacing": "Razmak čvorova",
+      "rankSpacing": "Razmak rangova",
+      "padding": "Odmak",
+      "mermaidSource": "Mermaid izvor",
+      "options": {
+        "base": "Osnova",
+        "default": "Zadano",
+        "dark": "Tamno",
+        "forest": "Forest",
+        "neutral": "Neutral",
+        "basis": "Basis",
+        "linear": "Linear",
+        "step": "Step",
+        "monotone": "Monotone"
+      }
+    },
+    "numberBaseTool": {
+      "inputBase": "Ulazna baza",
+      "value": "Vrijednost",
+      "options": {
+        "binary": "Binarno",
+        "octal": "Oktalno",
+        "decimal": "Decimalno",
+        "hex": "Hex"
+      }
+    },
+    "passwordGeneratorTool": {
+      "generateAgain": "generiraj ponovno",
+      "count": "Broj",
+      "length": "Duljina",
+      "uppercaseLetters": "Velika slova",
+      "lowercaseLetters": "Mala slova",
+      "numbers": "Brojevi",
+      "symbols": "Simboli",
+      "excludeAmbiguousCharacters": "Isključi nejasne znakove"
+    },
+    "queryStringTool": {
+      "queryString": "Query string",
+      "rebuilt": "Ponovno sastavljeno",
+      "parsed": "Parsano"
+    },
+    "regexEscapeTool": {
+      "mode": "Način",
+      "input": "Ulaz",
+      "options": {
+        "escape": "Escape",
+        "unescape": "Unescape"
+      }
+    },
+    "sqlToMermaidErTool": {
+      "showSqlFieldTypes": "Show SQL field types",
+      "sqlSchema": "SQL shema"
+    },
+    "secretGeneratorTool": {
+      "generateAgain": "generiraj ponovno",
+      "mode": "Način",
+      "count": "Broj",
+      "length": "Duljina",
+      "options": {
+        "uuid": "UUID",
+        "hexToken": "Hex token",
+        "base64UrlToken": "Base64Url token"
+      }
+    },
+    "slugGeneratorTool": {
+      "sourceText": "Izvorni tekst"
+    },
+    "stringListField": {
+      "removeEntry": "Ukloni unos",
+      "noEntriesYet": "Još nema unosa."
+    },
+    "systemdServiceGeneratorTool": {
+      "serviceName": "Naziv servisa",
+      "description": "Opis",
+      "user": "User",
+      "group": "Group",
+      "workingDirectory": "Radni direktorij",
+      "restartPolicy": "Pravila ponovnog pokretanja",
+      "execStartCommand": "ExecStart command",
+      "environmentVariables": "Varijable okruženja"
+    },
+    "textSorterTool": {
+      "lines": "Redci",
+      "removeDuplicates": "Ukloni duplikate",
+      "reverseOrder": "Obrnuti redoslijed",
+      "caseSensitiveSort": "Razlikuj velika i mala slova"
+    },
+    "timestampConverterTool": {
+      "useCurrentUnixTime": "koristi trenutno Unix vrijeme",
+      "timestampOrDate": "Timestamp ili datum"
+    },
+    "urlEncoderTool": {
+      "mode": "Način",
+      "input": "Ulaz",
+      "options": {
+        "encode": "Kodiraj",
+        "decode": "Dekodiraj"
+      }
+    },
+    "utilityResultActions": {
+      "copyResult": "kopiraj rezultat"
+    },
+    "webServerConfigGeneratorBase": {
+      "hostnamesSiteEntries": "Hostnameovi / unosi stranice",
+      "addHost": "dodaj host",
+      "enableTlsHttps": "Omogući TLS / HTTPS",
+      "redirectWwwToPrimaryDomain": "Preusmjeri www na primarnu domenu",
+      "enableCompression": "Omogući kompresiju",
+      "addBasicSecurityHeaders": "Dodaj osnovna sigurnosna zaglavlja",
+      "enableHsts": "Omogući HSTS",
+      "protectWithBasicAuth": "Zaštiti osnovnom autentifikacijom",
+      "cacheStaticAssets": "Keširaj statičke resurse",
+      "enableSpaFallback": "Omogući SPA fallback",
+      "forwardClientIpHeaders": "Proslijedi zaglavlja IP adrese klijenta",
+      "extraHeaders": "Dodatna zaglavlja",
+      "xRobotsTag": "X-Robots-Tag",
+      "noindex": "noindex",
+      "trustedProxyIpsCidrs": "Trusted proxy IPs / CIDRs",
+      "addProxy": "dodaj proxy",
+      "siteMode": "Način stranice",
+      "tlsMode": "TLS način",
+      "letsEncryptEmail": "Let's Encrypt email",
+      "certificatePath": "Putanja certifikata",
+      "keyPath": "Putanja ključa",
+      "accessLogPath": "Putanja access loga",
+      "errorLogPath": "Putanja error loga",
+      "rootPath": "Korijenska putanja",
+      "upstreamHost": "Upstream host",
+      "upstreamPort": "Upstream port",
+      "forwardedIpHeader": "Zaglavlje proslijeđenog IP-a",
+      "basicAuthUser": "Korisnik osnovne autentifikacije",
+      "passwordHashPlaceholder": "Password hash / placeholder",
+      "options": {
+        "reverseProxy": "Reverse proxy",
+        "staticSite": "Statična stranica",
+        "manualCertificatePaths": "Manual certificate paths"
+      }
+    },
+    "wordStatsTool": {
+      "textInput": "Unos teksta",
+      "mostCommonWords": "Najčešće riječi",
+      "addMoreTextToSeeCommonWords": "Add more text to see common words."
+    }
+  },
+  "views": {
+    "aboutView": {
+      "thisIsAnAboutPage": "This is an about page"
+    },
+    "conversionToolView": {
+      "pasteYourSourceContentHere": "Paste your source content here...",
+      "convertedResultWithPreviewAndQuickActions": "Pretvoried result with preview and quick actions."
+    },
+    "homeView": {
+      "apiDocs": "API dokumentacija",
+      "explore": "istraži",
+      "openTools": "otvori alate",
+      "pastefy": "Pastefy",
+      "explorePublicPastes": "Istraži javne pasteove",
+      "richFileViews": "Bogati prikazi datoteka",
+      "convert": "Pretvori",
+      "formatTransforms": "Transformacije formata",
+      "utilities": "Pomoćni alati",
+      "smallDevHelpers": "Mali dev pomoćnici",
+      "tools": "Alati",
+      "previewConvertAndInspect": "Pregled, konverzija i analiza",
+      "richFileViewsDescription": "JSON, YAML, Markdown, HTML, Logs, Konfiguracijas, Diagramme und mehr.",
+      "formatTransformsDescription": "Konvertiere zwischen JSON, YAML, CSV, HTTP, cURL, env-Dateien und mehr.",
+      "utilitiesDescription": "Erzeuge Hashes, analysiere JWTs, erkläre cron, zähle Wörter und mehr.",
+      "toolsDescription": "Nutze Pastefy-Alati, ohne zuerst einen Paste zu erstellen. Öffne Live-Vorschauen, Formatkonverter und Developer-Pomoćni alati und teile das Ergebnis erst, wenn es fertig ist."
+    },
+    "markdownArticleView": {
+      "unlockArticle": "Otključaj članak",
+      "openRegularPasteView": "Otvori standardni prikaz pastea",
+      "viewMultiPaste": "Prikaži Multi-Paste",
+      "viewPaste": "Prikaži paste",
+      "thisArticleIsEncrypted": "Ovaj je članak šifriran",
+      "articleView": "PRIKAZ ČLANKA",
+      "untitled": "Članak bez naslova",
+      "markdownOnly": "Prikaz članka dostupan je samo za Markdown pasteove."
+    },
+    "previewPresentationView": {
+      "unlockPreview": "Otključaj pregled",
+      "openRegularPasteView": "Otvori standardni prikaz pastea",
+      "rawFile": "Sirova datoteka",
+      "viewCode": "Prikaži kod",
+      "thisPreviewIsEncrypted": "Ovaj je pregled šifriran",
+      "presentationView": "Prikaz prezentacije"
+    },
+    "previewToolView": {
+      "startTypingToSeeThePreview": "Počni tipkati za prikaz pregleda..."
+    },
+    "publicUserView": {
+      "searchThisUser": "Pretraži ovog korisnika",
+      "seeAllPastesInAdmin": "Prikaži sve pasteove u adminu",
+      "publicPastes": "Javni pasteovi"
+    },
+    "readerShareModesView": {
+      "openPaste": "Otvori paste",
+      "thisShareSheetIsEncrypted": "This share sheet is encrypted",
+      "readerShareModes": "Načini čitanja i dijeljenja",
+      "options": {
+        "defaultPaste": "Zadani paste",
+        "rawFile": "Sirova datoteka",
+        "articleView": "Prikaz članka",
+        "presentationView": "Prikaz prezentacije"
+      },
+      "descriptions": {
+        "theFullPastefyPastePageWithCodeActionsMetadataAndSharingTools": "The full Pastefy paste page with code, actions, metadata, and sharing tools.",
+        "thePlainRawFileUrlForDirectDownloadsScriptsAndIntegrations": "The plain raw file URL for direct downloads, scripts, and integrations.",
+        "aReaderFriendlyLayoutForSharingMarkdownLikeaPolishedArticle": "A reader-friendly layout for sharing markdown like a polished article.",
+        "aFocusedPreviewPageForTablesDiagramsMapsSvgsDiffsJsonHtmlAndTerminalReplays": "A focused preview page for tables, diagrams, maps, SVGs, diffs, JSON, HTML, and terminal replays.",
+        "aDirectArticleLinkToThisMarkdownFileInsideTheMultiPaste": "A direct article link to this markdown file inside the multi-paste.",
+        "aDirectPresentationLinkToThisPreviewableFileInsideTheMultiPaste": "A direct presentation link to this previewable file inside the multi-paste."
+      }
+    },
+    "tagView": {
+      "publicPastes": "Javni pasteovi"
+    },
+    "toolCategoryView": {
+      "categorySummary": "Sažetak kategorije",
+      "previewTools": "Alati za pregled",
+      "conversionTools": "Alati za konverziju",
+      "utilityTools": "Pomoćni alati",
+      "helpersGeneratorsAndInspectorsInThisCategory": "Pomoćnici, generatori i inspektori u ovoj kategoriji.",
+      "relatedCategories": "Povezane kategorije",
+      "nearbyToolCategoriesThatFitSimilarWorkflows": "Srodne kategorije alata za slične tijekove rada.",
+      "categoryNotFound": "Kategorija nije pronađena",
+      "summaryDescription": "Izgrađeno za tijekove rada spremne za dijeljenje i čišće developer istraživanje.",
+      "notFoundDescription": "Ova kategorija alata ne postoji ili još nema javnu stranicu."
+    },
+    "toolIndexView": {
+      "openPreviewTool": "otvori alat za pregled",
+      "searchToolsFormatsAndConverters": "Pretraži alate, formate i konvertere...",
+      "pastefyTools": "Pastefy alati",
+      "whatYouCanDoHere": "Što možeš ovdje raditi",
+      "previewStructuredFormatsWithDedicatedViewers": "Pregledaj strukturirane formate u namjenskim preglednicima.",
+      "convertDataBetweenCommonDeveloperFormats": "Pretvaraj podatke između uobičajenih developerskih formata.",
+      "pinnedTools": "Prikvačeni alati",
+      "browseByCategory": "Pregledaj po kategoriji",
+      "previewTools": "Alati za pregled",
+      "conversions": "Konverzije",
+      "noConversionToolsMatchYourSearchYet": "Još nijedan alat za konverziju ne odgovara tvojoj pretrazi.",
+      "utilities": "Pomoćni alati",
+      "noUtilityToolsMatchYourSearchYet": "Još nijedan pomoćni alat ne odgovara tvojoj pretrazi.",
+      "descriptions": {
+        "usePastefyToolsToPreviewStructuredFilesConvertFormatsLikeJsonAndYamlAndCreateAPasteOnlyWhenYouAreReadyToShare": "Use Pastefy tools to preview structured files, convert formats like JSON and YAML, and create a paste only when you are ready to share."
+      },
+      "createWhenReady": "Stvori pravi paste tek kada je izlaz spreman za dijeljenje."
+    },
+    "adminPastes": {
+      "searchByTitleContentOrCreator": "Pretraži po naslovu, sadržaju ili autoru",
+      "clearUserFilter": "Očisti filter korisnika",
+      "moreFromUser": "Više od korisnika",
+      "noPastesMatchTheCurrentFilters": "Nijedan paste ne odgovara trenutnim filtrima.",
+      "by": "od",
+      "options": {
+        "allVisibilities": "All visibilities",
+        "public": "Public",
+        "unlisted": "Unlisted",
+        "private": "Private",
+        "newestFirst": "Newest first",
+        "oldestFirst": "Oldest first"
+      }
+    },
+    "adminUsers": {
+      "searchByUsernameEmailOrProvider": "Pretraži po korisničkom imenu, e-pošti ili provideru",
+      "grantAccess": "Dopusti pristup",
+      "makeAdmin": "Postavi kao admina",
+      "setUser": "Postavi kao korisnika",
+      "block": "Blokiraj",
+      "viewPastes": "Prikaži pasteove",
+      "noUsersMatchTheCurrentFilters": "Nijedan korisnik ne odgovara trenutnim filtrima.",
+      "provider": "Provider:",
+      "options": {
+        "allRoles": "All roles",
+        "admins": "Admins",
+        "users": "Korisnici",
+        "awaitingAccess": "Awaiting access",
+        "blocked": "Blokirano"
+      }
+    },
+    "loginViaApi": {
+      "loggingIn": "Prijava u tijeku..."
+    },
+    "apiKeysPage": {
+      "apiDocs": "api-docs",
+      "addApiKey": "dodaj API ključ",
+      "apiKeys": "API ključevi",
+      "apiDocsTab": "API dokumentacija",
+      "oAuth2Apps": "OAuth2 aplikacije"
+    },
+    "asciinemaConnectView": {
+      "visitApiKeysPage": "Posjeti stranicu API ključeva",
+      "connectingYourAccountWithAsciicema": "Povezivanje tvog računa s Asciicemom.",
+      "createApiKey": "Stvori API ključ",
+      "addApiKeyToAsciicemaConfig": "Dodaj API ključ u Asciicema konfiguraciju",
+      "bash": "bash"
+    },
+    "adminLayout": {
+      "admin": "Admin"
+    },
+    "searchPastes": {
+      "quickModal": "brzi modal",
+      "clearFilters": "očisti filtre",
+      "searchTitlesContentOrEnterUsername": "Pretraži titles, content, or enter @username",
+      "markdownJsonLangTs": "markdown,json,lang-ts",
+      "findTheRightPasteFaster": "Brže pronađi pravi paste",
+      "searchQuery": "Upit za pretraživanje",
+      "scope": "Opseg",
+      "resultsPerPage": "Results per page",
+      "pasteType": "Paste type",
+      "encryption": "Encryption",
+      "folderState": "Folder state",
+      "separateMultipleTagsWithCommas": "Separate multiple tags with commas.",
+      "userMatch": "User match",
+      "noPublicUserMatched": "No public user matched",
+      "options": {
+        "public": "Public",
+        "mine": "Mine",
+        "starred": "Starred",
+        "newestFirst": "Newest first",
+        "oldestFirst": "Oldest first",
+        "titleAZ": "Title A-Z",
+        "titleZA": "Title Z-A",
+        "12PerPage": "12 per page",
+        "24PerPage": "24 per page",
+        "48PerPage": "48 per page",
+        "allVisibilities": "All visibilities",
+        "unlisted": "Unlisted",
+        "private": "Private",
+        "allPasteTypes": "All paste types",
+        "singlePastes": "Single pastes",
+        "multiPastes": "Multi pastes",
+        "allEncryptionStates": "All encryption states",
+        "plainOnly": "Plain only",
+        "encryptedOnly": "Encrypted only",
+        "allFolderStates": "All folder states",
+        "rootLevelOnly": "Root level only",
+        "onlyInsideFolders": "Only inside folders"
+      },
+      "descriptions": {
+        "searchAllPublicPastes": "Pretraži all public pastes.",
+        "searchYourOwnPastes": "Pretraži your own pastes.",
+        "searchYourStarredCollection": "Pretraži your starred collection."
+      }
+    },
+    "userHome": {
+      "descriptions": {
+        "openTheEditorAndStartaNewPasteRightAway": "Open the editor and start a new paste right away.",
+        "findSnippetsTitlesAndContentAcrossYourSavedWork": "Find snippets, titles, and content across your saved work.",
+        "previewConvertAndInspectContentWithoutPublishingIt": "Pregled, convert, and inspect content without publishing it.",
+        "jumpIntoModerationUsersAndRecentPlatformActivity": "Jump into moderation, users, and recent platform activity.",
+        "browsePublicPastesAndDiscoverWhatOthersAreSharing": "Browse public pastes and discover what others are sharing."
+      }
+    }
+  },
+  "apiKeys": {
+    "deleteTitle": "Izbriši API ključ",
+    "deleteConfirm": "Jesi li siguran da želiš izbrisati ovaj API ključ?",
+    "loginRequiredSummary": "Prijava je potrebna",
+    "loginRequiredDetail": "Moraš biti prijavljen za prikaz svojih API ključeva."
+  },
+  "catalog": {
+    "preview": {
+      "markdown-editor": {
+        "title": "Markdown Uređivač & Article Pregled",
+        "shortTitle": "Markdown",
+        "description": "Write Markdown on the left and see the rendered article preview on the right before you decide to publish it."
+      },
+      "json-viewer": {
+        "title": "JSON Preglednik & Formatter",
+        "shortTitle": "JSON",
+        "description": "Pregledaj, format, and preview JSON structures with a live editor and the richer JSON tools side by side."
+      },
+      "html-preview": {
+        "title": "HTML Pregled Sandbox",
+        "shortTitle": "HTML",
+        "description": "Prototype HTML snippets in a lightweight split view and render them in the built-in sandbox before sharing."
+      },
+      "xml-viewer": {
+        "title": "XML Preglednik & Inspektor",
+        "shortTitle": "XML",
+        "description": "Load XML, inspect nested nodes, and validate the rendered structure in a tool page built for config and document files."
+      },
+      "yaml-viewer": {
+        "title": "YAML Preglednik & Tree Explorer",
+        "shortTitle": "YAML",
+        "description": "Explore YAML like a structured document with collapsible sections, a live editor, and an instant preview."
+      },
+      "csv-viewer": {
+        "title": "CSV Table Pregled",
+        "shortTitle": "CSV",
+        "description": "Pregled CSV data in a readable table layout and tweak the source without needing to create a paste first."
+      },
+      "mermaid-live-editor": {
+        "title": "Mermaid Diagram Live Pregled",
+        "shortTitle": "Mermaid",
+        "description": "Edit Mermaid dijagrame with a live visual render so architecture and flowchart snippets are share-ready faster."
+      },
+      "geojson-viewer": {
+        "title": "GeoJSON Map Pregled",
+        "shortTitle": "GeoJSON",
+        "description": "Pregled spatial data with a map-first experience while editing raw GeoJSON side by side."
+      },
+      "svg-viewer": {
+        "title": "SVG Preglednik",
+        "shortTitle": "SVG",
+        "description": "Test SVG snippets in a clean split layout and see the resulting vector preview immediately."
+      },
+      "diff-viewer": {
+        "title": "Diff Preglednik",
+        "shortTitle": "Diff",
+        "description": "Review patches and code changes in a dedicated diff preview page that behaves more like a quick review tool."
+      },
+      "env-viewer": {
+        "title": ".env / Konfiguracija Preglednik",
+        "shortTitle": "Konfiguracija",
+        "description": "Pregledaj environment-style config files in a dedicated preview tool that is useful for app settings and deployment data."
+      },
+      "terraform-viewer": {
+        "title": "Terraform / HCL Pregled",
+        "shortTitle": "Terraform",
+        "description": "Edit Terraform and HCL files with a dedicated infrastructure preview, then publish the snippet when it is ready."
+      },
+      "log-viewer": {
+        "title": "Log Preglednik",
+        "shortTitle": "Logs",
+        "description": "Paste application or server logs into a live viewer to filter and inspect them before creating a shareable paste."
+      },
+      "http-viewer": {
+        "title": "HTTP / cURL Pregled",
+        "shortTitle": "HTTP",
+        "description": "Compose HTTP zahtjeve or cURL calls and inspect them in a dedicated request preview before publishing or sharing."
+      },
+      "github-actions-viewer": {
+        "title": "GitHub Actions Tijek rada Pregled",
+        "shortTitle": "Actions",
+        "description": "Pregledaj workflow YAML with a specialized GitHub Actions preview that highlights jobs and steps while you edit."
+      },
+      "ansible-viewer": {
+        "title": "Ansible Playbook Pregled",
+        "shortTitle": "Ansible",
+        "description": "Work on Ansible playbooks in a split editor and preview tasks, roles, and hosts in a clearer operational view."
+      },
+      "prometheus-rules-viewer": {
+        "title": "Prometheus / Alert Rules Pregled",
+        "shortTitle": "Alerts",
+        "description": "Pregled monitoring rules and alert groups in a page tailored to observability configs and alert definitions."
+      },
+      "regex-lab": {
+        "title": "Regex Tester",
+        "shortTitle": "Regex",
+        "description": "Prototype, inspect, and share regular expressions with a dedicated regex-focused preview."
+      },
+      "terminal-cast-viewer": {
+        "title": "Terminal Cast Pregled",
+        "shortTitle": "Terminal Cast",
+        "description": "Pregled recorded terminalske sesije and shell demos before you publish them as pastes."
+      },
+      "calendar-viewer": {
+        "title": "ICS Calendar Pregled",
+        "shortTitle": "Calendar",
+        "description": "Pregledaj calendar invites and event schedules in a quick reader-friendly preview."
+      }
+    },
+    "conversion": {
+      "json-to-yaml": {
+        "title": "Pretvori JSON to YAML",
+        "shortTitle": "JSON -> YAML",
+        "description": "Turn API payloads or config objects into clean YAML for infra and docs workflows."
+      },
+      "yaml-to-json": {
+        "title": "Pretvori YAML to JSON",
+        "shortTitle": "YAML -> JSON",
+        "description": "Turn deployment and config-style YAML into machine-friendly JSON."
+      },
+      "json-to-env": {
+        "title": "Pretvori JSON to .env",
+        "shortTitle": "JSON -> .env",
+        "description": "Flatten JSON configuration into environment variables for apps and deployments."
+      },
+      "env-to-json": {
+        "title": "Pretvori .env to JSON",
+        "shortTitle": ".env -> JSON",
+        "description": "Turn environment variables into JSON for API payloads, docs, or quick inspection."
+      },
+      "csv-to-json": {
+        "title": "Pretvori CSV to JSON",
+        "shortTitle": "CSV -> JSON",
+        "description": "Turn tabular CSV data into JSON arrays you can feed into APIs or tooling."
+      },
+      "json-to-csv": {
+        "title": "Pretvori JSON to CSV",
+        "shortTitle": "JSON -> CSV",
+        "description": "Turn JSON arrays into flat CSV output for spreadsheets and exports."
+      },
+      "http-to-curl": {
+        "title": "Pretvori HTTP to cURL",
+        "shortTitle": "HTTP -> cURL",
+        "description": "Turn raw HTTP request files into cURL commands you can run in a shell."
+      },
+      "curl-to-http": {
+        "title": "Pretvori cURL to HTTP",
+        "shortTitle": "cURL -> HTTP",
+        "description": "Turn cURL commands into clean HTTP request files for docs and API tooling."
+      },
+      "yaml-to-env": {
+        "title": "Pretvori YAML to .env",
+        "shortTitle": "YAML -> .env",
+        "description": "Flatten simple YAML configuration into environment variables for deployment use."
+      },
+      "env-to-yaml": {
+        "title": "Pretvori .env to YAML",
+        "shortTitle": ".env -> YAML",
+        "description": "Turn environment variables into YAML for docs and human-readable config snapshots."
+      },
+      "csv-to-markdown": {
+        "title": "Pretvori CSV to Markdown Table",
+        "shortTitle": "CSV -> Markdown",
+        "description": "Turn CSV exports into Markdown tables for docs, READMEs, and issues."
+      },
+      "json-to-markdown": {
+        "title": "Pretvori JSON to Markdown Table",
+        "shortTitle": "JSON -> Markdown",
+        "description": "Turn arrays of JSON objects into clean Markdown tables."
+      },
+      "http-to-json": {
+        "title": "Pretvori HTTP to JSON",
+        "shortTitle": "HTTP -> JSON",
+        "description": "Turn raw HTTP request files into JSON objects for tooling and inspection."
+      },
+      "curl-to-json": {
+        "title": "Pretvori cURL to JSON",
+        "shortTitle": "cURL -> JSON",
+        "description": "Turn cURL commands into JSON request objects for downstream processing."
+      }
+    },
+    "utility": {
+      "data-to-mermaid": {
+        "title": "Podaci to Mermaid Charts",
+        "shortTitle": "Mermaid Charts",
+        "description": "Turn JSON, YAML, or CSV datasets into Mermaid pie, bar, line, grouped, and combo charts with field mapping and aggregation."
+      },
+      "mermaid-theme-builder": {
+        "title": "Mermaid Theme Builder",
+        "shortTitle": "Theme Builder",
+        "description": "Tune Mermaid colors, fonts, spacing, and diagram styling, then export the themed config plus diagram."
+      },
+      "data-to-mermaid-er": {
+        "title": "Podaci to Mermaid ER Diagram",
+        "shortTitle": "Podaci -> ER",
+        "description": "Infer Mermaid ER diagrams from JSON, YAML, or CSV schema-like data structures."
+      },
+      "sql-to-mermaid-er": {
+        "title": "SQL to Mermaid ER",
+        "shortTitle": "SQL -> ER",
+        "description": "Parse CREATE TABLE statements into Mermaid ER diagrams with tables and foreign keys."
+      },
+      "infra-to-mermaid": {
+        "title": "Infra to Mermaid",
