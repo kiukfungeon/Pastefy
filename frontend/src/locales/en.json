@@ -1,0 +1,803 @@
+{
+  "common": {
+    "confirm": "confirm",
+    "cancel": "cancel",
+    "previous": "Previous",
+    "next": "Next",
+    "options": "Options",
+    "preview": "Preview",
+    "editor": "Editor",
+    "export": "Export",
+    "content": "Content",
+    "colors": "Colors",
+    "format": "Format",
+    "delete": "Delete",
+    "open": "Open",
+    "profile": "Profile",
+    "users": "Users",
+    "tags": "Tags",
+    "page": "Page {{page}}",
+    "download": "Download",
+    "copyImage": "Copy image",
+    "copy": "Copy",
+    "edit": "Edit",
+    "share": "Share",
+    "fork": "Fork",
+    "raw": "RAW",
+    "filename": "Filename",
+    "visibility": "Visibility",
+    "source": "Source",
+    "output": "Output",
+    "code": "Code",
+    "filters": "Filters",
+    "sort": "Sort",
+    "results": "Results",
+    "search": "Search",
+    "unlock": "Unlock",
+    "hideEditor": "Hide editor",
+    "showEditor": "Show editor",
+    "unknownDate": "Unknown date",
+    "invalidJson": "Invalid JSON"
+  },
+  "settings": {
+    "title": "Settings",
+    "app": "App Settings",
+    "animations": "Animations",
+    "theme": "Theme",
+    "defaultVisibility": "Default Visibility",
+    "language": "Language",
+    "browserLanguage": "Browser language"
+  },
+  "nav": {
+    "home": "Home",
+    "explore": "Explore",
+    "search": "Search",
+    "stars": "Stars",
+    "apiKeys": "Api Keys"
+  },
+  "auth": {
+    "login": "login",
+    "logout": "Logout",
+    "signOut": "Sign out",
+    "accountSettings": "Account Settings",
+    "awaitingAccess": "Awaiting Access",
+    "blocked": "Blocked",
+    "awaitingMessage": "Hello {{name}}, please wait until an admin activates your account.",
+    "blockedMessage": "Hello {{name}}, you have been blocked.",
+    "logoutConfirm": "Are you sure you want to log out?",
+    "password": "Password"
+  },
+  "paste": {
+    "myPastes": "My Pastes",
+    "create": "Create Paste",
+    "folders": "Folders",
+    "pastes": "Pastes",
+    "new": "new",
+    "encryptedPaste": "Encrypted paste",
+    "noTitle": "no title",
+    "noPreview": "No preview available",
+    "trending": "Trending",
+    "allTimeTrending": "All time Trending",
+    "visibility": {
+      "public": "PUBLIC",
+      "private": "PRIVATE",
+      "unlisted": "UNLISTED"
+    },
+    "files": "FILES",
+    "filename": "filename",
+    "pasteHere": "Paste here",
+    "encrypted": "Encrypted",
+    "expires": "Expires",
+    "submit": "submit",
+    "edit": "edit",
+    "empty": "No pastes found for this selection.",
+    "loginRequired": "Login is required to create pastes",
+    "passwordOptional": "password (optional)",
+    "folderOptional": "folder (optional)",
+    "tagsOptional": "tags (optional, comma-separated)",
+    "addMetadataWithAi": "Add file extension and tags with AI",
+    "editing": "Editing {{id}}",
+    "forking": "Forking {{id}}",
+    "enterContentsFirst": "Enter contents first",
+    "loginReadRequired": "Login is required to view pastes",
+    "passwordProtected": "Paste is password protected",
+    "decrypt": "decrypt",
+    "deleteTitle": "Delete paste",
+    "deleteConfirm": "Are you sure you want to delete this paste?",
+    "showCode": "show code",
+    "showPreview": "show preview",
+    "viewOnPastefy": "view on Pastefy",
+    "openInEditor": "open in paste editor"
+  },
+  "comments": {
+    "title": "Comments",
+    "placeholder": "Write a comment...",
+    "submit": "Comment",
+    "reply": "Reply",
+    "empty": "No comments yet.",
+    "emptyForLine": "No comments for this line yet.",
+    "loginRequired": "Log in to write comments.",
+    "deletedUser": "Deleted user",
+    "line": "Line {{line}}",
+    "lines": "Lines {{from}}-{{to}}",
+    "fromLine": "From line {{line}}",
+    "optionalEndLine": "End line",
+    "commentLine": "Comment line {{line}}",
+    "showMore": "Show more",
+    "showLess": "Show less",
+    "showReplies": "Show replies ({{count}})",
+    "hideReplies": "Hide replies ({{count}})"
+  },
+  "layout": {
+    "toggleSidebar": "Toggle Sidebar"
+  },
+  "home": {
+    "shareCode": "Share Code",
+    "organize": "Organize",
+    "keepSecret": "Keep secret",
+    "integration": "Integration",
+    "explorePublicPastes": "Explore Public Pastes",
+    "shareCodeDescription": "Share your code snippets with the world. Paste your code and share it with others.",
+    "organizeDescription": "Create folders and organize your code snippets in a structured way.",
+    "keepSecretDescription": "Use client encryption to keep your code snippets secret. Even we can't read your encrypted pastes.",
+    "integrationDescription": "Use our API to integrate Pastefy with your applications or simply embed your paste into your own website easily."
+  },
+  "tools": {
+    "all": "all tools",
+    "allUtilities": "all utilities",
+    "resetExample": "reset example",
+    "focusMode": "Focus mode",
+    "exitFocusMode": "Exit focus mode",
+    "search": "Search tools...",
+    "allConversions": "all conversions",
+    "backToTools": "back to tools",
+    "backToConversions": "back to conversions",
+    "backToUtilities": "back to utilities",
+    "copySource": "copy source",
+    "copyOutput": "copy output",
+    "createPaste": "create paste",
+    "conversion": "Conversion",
+    "previewInspect": "preview & inspect",
+    "convert": "convert",
+    "utilities": "utilities",
+    "notFound": {
+      "previewTitle": "Tool not found",
+      "conversionTitle": "Conversion tool not found",
+      "utilityTitle": "Utility tool not found"
+    },
+    "title": "Pastefy Tools",
+    "categories": "categories"
+  },
+  "share": {
+    "share": "share",
+    "screenshot": "screenshot",
+    "embed": "embed",
+    "qrCode": "qr code",
+    "articleView": "article view",
+    "presentationView": "presentation view"
+  },
+  "errors": {
+    "pageNotFound": "Page not found"
+  },
+  "explore": {
+    "title": "Explore Pastefy"
+  },
+  "folder": {
+    "createTitle": "Create folder",
+    "name": "name",
+    "create": "create",
+    "deleteTitle": "Delete folder",
+    "deleteConfirm": "Are you sure you want to delete this folder?"
+  },
+  "search": {
+    "title": "Find the right paste faster",
+    "query": "Search query",
+    "scope": "Scope",
+    "clearFilters": "clear filters",
+    "quickModal": "quick modal",
+    "descriptions": {
+      "mine": "Search across your own pastes with deeper filters.",
+      "starred": "Search the pastes you have starred and want to revisit.",
+      "public": "Search public pastes with richer filters than the quick modal."
+    }
+  },
+  "admin": {
+    "quickActions": "Quick Actions",
+    "manageUsers": "Manage Users",
+    "latestPastes": "Latest Pastes",
+    "users": {
+      "changeTypeTitle": "Change user type",
+      "changeTypeConfirm": "Are you sure you want to change this user's type?",
+      "deleteTitle": "Delete user",
+      "deleteConfirm": "Are you sure you want to delete this user?"
+    },
+    "title": "Admin"
+  },
+  "components": {
+    "globalSearch": {
+      "mine": "mine",
+      "public": "public",
+      "page": "page"
+    },
+    "paste": {
+      "openInCodebox": "Open in Codebox"
+    },
+    "createPaste": {
+      "detectedUrlYouMayWannaUse": "Detected Url. You may wanna use",
+      "punyshort": "punyshort"
+    },
+    "sidebar": {
+      "sourceCode": "Source Code"
+    },
+    "pasteCard": {
+      "codebox": "Codebox",
+      "multiPaste": "Multi-Paste"
+    },
+    "pasteStarButton": {
+      "star": "Star"
+    },
+    "pasteSharingPopover": {
+      "createScreenshot": "Create Screenshot",
+      "embed": "Embed",
+      "shareCodeWithPastefy": "Share code with Pastefy."
+    },
+    "userMenu": {
+      "admin": "Admin"
+    }
+  },
+  "modals": {
+    "embedPasteModal": {
+      "embed": "Embed",
+      "hideTitle": "Hide Title",
+      "hideActions": "Hide Actions",
+      "addPadding": "Add Padding",
+      "embedViaScript": "Embed via script",
+      "embedViaIframeTag": "Embed via iframe tag"
+    },
+    "qrModal": {
+      "qrCode": "QR Code",
+      "applyPreset": "Apply preset",
+      "removeLogo": "Remove Logo",
+      "sizePx": "Size (px)",
+      "quietZone": "Quiet zone",
+      "currentPalette": "Current palette",
+      "foregroundColor": "Foreground color",
+      "foregroundPreview": "Foreground preview",
+      "qrModulesAndScanPattern": "QR modules and scan pattern",
+      "backgroundColor": "Background color",
+      "backgroundPreview": "Background preview",
+      "showBackground": "Show background",
+      "includeQuietZone": "Include quiet zone",
+      "logo": "Logo",
+      "logoSize": "Logo size",
+      "logoPadding": "Logo padding",
+      "logoBackgroundPlate": "Logo background plate"
+    },
+    "screenshotPaste": {
+      "screenshot": "Screenshot",
+      "style": "Style",
+      "background": "Background",
+      "canvasWidthPx": "Canvas width (px)",
+      "outerPaddingPx": "Outer padding (px)",
+      "to": "to",
+      "lineRange": "Line range",
+      "showTitleBar": "Show title bar",
+      "showLineNumbers": "Show line numbers",
+      "sharpness": "Sharpness",
+      "options": {
+        "dark": "Dark",
+        "light": "Light",
+        "png": "PNG",
+        "jpeg": "JPEG",
+        "1x": "1x",
+        "2x": "2x",
+        "3x": "3x"
+      }
+    }
+  },
+  "previews": {
+    "ansibleViewer": {
+      "ansibleView": "Ansible View",
+      "hostsRolesAndNamedTasksForOperationalPlaybooks": "Hosts, roles, and named tasks for operational playbooks",
+      "roles": "Roles",
+      "namedTasks": "Named Tasks",
+      "noNamedTasksDetected": "No named tasks detected."
+    },
+    "configViewer": {
+      "searchSectionsKeysAndValues": "Search sections, keys, and values",
+      "configExplorerWithSearchAndExport": "Config explorer with search and export",
+      "noMatchingLines": "No matching lines."
+    },
+    "gitHubActionsViewer": {
+      "gitHubActions": "GitHub Actions",
+      "jobs": "Jobs",
+      "namedSteps": "Named Steps",
+      "noNamedStepsDetected": "No named steps detected."
+    },
+    "hclViewer": {
+      "terraformHcl": "Terraform / HCL",
+      "description": "Resources, modules, providers, and variables at a glance"
+    },
+    "htmlViewer": {
+      "htmlPreview": "HTML Preview"
+    },
+    "httpViewer": {
+      "httpCurlView": "HTTP / cURL View",
+      "request": "Request",
+      "headers": "Headers",
+      "noHeadersDetected": "No headers detected.",
+      "body": "Body",
+      "noBodyDetected": "No body detected.",
+      "description": "Inspect request method, endpoint, headers, and body quickly"
+    },
+    "icsViewer": {
+      "addToCalendar": "Add to Calendar"
+    },
+    "jsonViewer": {
+      "searchKeysPathsAndValues": "Search keys, paths, and values",
+      "expandAll": "Expand all",
+      "collapse": "Collapse",
+      "copyPretty": "Copy pretty",
+      "jsonView": "JSON View",
+      "options": {
+        "tree": "Tree",
+        "pretty": "Pretty",
+        "raw": "Raw"
+      }
+    },
+    "logViewer": {
+      "searchLogLines": "Search log lines",
+      "logView": "Log View",
+      "filterLevelsSearchIncidentsAndScanOutputFaster": "Filter levels, search incidents, and scan output faster",
+      "noMatchingLogLines": "No matching log lines."
+    },
+    "monitoringRulesViewer": {
+      "monitoringRules": "Monitoring Rules",
+      "prometheusGrafanaAndAlertRuleOverviews": "Prometheus, Grafana, and alert rule overviews"
+    },
+    "regexViewer": {
+      "flags": "g, i, m",
+      "insertYourTestStringHere": "insert your test string here",
+      "testInput": "Test Input"
+    },
+    "xmlViewer": {
+      "searchTagsAttributesTextAndPaths": "Search tags, attributes, text, and paths",
+      "expandAll": "Expand all",
+      "collapse": "Collapse",
+      "copyPretty": "Copy pretty",
+      "xmlView": "XML View",
+      "options": {
+        "tree": "Tree",
+        "pretty": "Pretty",
+        "raw": "Raw"
+      }
+    },
+    "yamlViewer": {
+      "searchKeysValuesAndPaths": "Search keys, values, and paths",
+      "expandAll": "Expand all",
+      "collapse": "Collapse",
+      "yamlView": "YAML View",
+      "noYamlNodesFound": "No YAML nodes found.",
+      "options": {
+        "root": "root",
+        "tree": "Tree",
+        "pretty": "Pretty",
+        "raw": "Raw"
+      },
+      "description": "Collapsible tree, search, copy, and export for YAML files"
+    },
+    "githubActionsViewer": {
+      "description": "Workflow triggers, jobs, and named steps at a glance"
+    }
+  },
+  "utility": {
+    "accessLogInspectorBase": {
+      "searchIpPathStatusReferrer": "Search IP, path, status, referrer...",
+      "accessLogs": "Access logs",
+      "topStatusCodes": "Top status codes",
+      "noParsedRequestsMatchTheCurrentFilters": "No parsed requests match the current filters.",
+      "topPaths": "Top paths",
+      "topIps": "Top IPs",
+      "topUserAgents": "Top user agents",
+      "requestTable": "Request table",
+      "status": "Status",
+      "method": "Method",
+      "path": "Path",
+      "options": {
+        "allStatuses": "All statuses",
+        "2xx": "2xx",
+        "3xx": "3xx",
+        "4xx": "4xx",
+        "5xx": "5xx"
+      }
+    },
+    "base64Tool": {
+      "mode": "Mode",
+      "input": "Input",
+      "base64": "Base64",
+      "base64Url": "Base64Url",
+      "decoded": "Decoded",
+      "options": {
+        "encode": "Encode",
+        "decode": "Decode"
+      }
+    },
+    "caseConverterTool": {
+      "sourceText": "Source text"
+    },
+    "colorConverterTool": {
+      "hexColor": "Hex color"
+    },
+    "composeStackGeneratorTool": {
+      "includeProxyService": "Include proxy service",
+      "includePostgresService": "Include Postgres service",
+      "includeRedisService": "Include Redis service",
+      "portMappings": "Port mappings",
+      "addPort": "add port",
+      "environmentVariables": "Environment variables",
+      "production": "production",
+      "volumes": "Volumes",
+      "addVolume": "add volume",
+      "networks": "Networks",
+      "app": "app",
+      "addNetwork": "add network",
+      "dependsOnServices": "Depends on services",
+      "postgres": "postgres",
+      "addDependency": "add dependency",
+      "command": "Command",
+      "entrypoint": "Entrypoint",
+      "proxyPorts": "Proxy ports",
+      "addProxyPort": "add proxy port",
+      "postgresEnvironment": "Postgres environment",
+      "preset": "Preset",
+      "serviceName": "Service name",
+      "image": "Image",
+      "containerName": "Container name",
+      "restartPolicy": "Restart policy",
+      "replicas": "Replicas",
+      "workingDirectory": "Working directory",
+      "proxyImage": "Proxy image",
+      "postgresImage": "Postgres image",
+      "redisImage": "Redis image",
+      "options": {
+        "blankService": "Blank service",
+        "nodeWebApp": "Node web app",
+        "pythonWebApp": "Python web app",
+        "javaApp": "Java app",
+        "staticNginxSite": "Static NGINX site",
+        "proxyAppPostgres": "Proxy + app + Postgres"
+      }
+    },
+    "cronExplainerTool": {
+      "samples": "Samples",
+      "cronExpression": "Cron expression",
+      "options": {
+        "custom": "Custom",
+        "everyHour": "Every hour",
+        "dailyAtMidnight": "Daily at midnight",
+        "weeklyOnMonday": "Weekly on Monday",
+        "monthlyOnThe1st": "Monthly on the 1st",
+        "every15Minutes": "Every 15 minutes",
+        "weekdayMornings": "Weekday mornings",
+        "yearlyOnJan1st": "Yearly on Jan 1st"
+      }
+    },
+    "dataToClassDiagramTool": {
+      "inputFormat": "Input format",
+      "rootClassName": "Root class name",
+      "showInferredFieldTypes": "Show inferred field types",
+      "sourceData": "Source data",
+      "options": {
+        "autoDetect": "Auto detect",
+        "json": "JSON",
+        "yaml": "YAML",
+        "csv": "CSV"
+      }
+    },
+    "dataToMermaidErTool": {
+      "inputFormat": "Input format",
+      "rootEntityName": "Root entity name",
+      "showInferredFieldTypes": "Show inferred field types",
+      "schemaLikeData": "Schema-like data",
+      "options": {
+        "autoDetect": "Auto detect",
+        "json": "JSON",
+        "yaml": "YAML",
+        "csv": "CSV"
+      }
+    },
+    "dataToMermaidTool": {
+      "chooseAChartPreset": "Choose a chart preset",
+      "loadPreset": "load preset",
+      "revenueByMonth": "Revenue by Month",
+      "value": "Value",
+      "selectOneOrMoreFields": "Select one or more fields",
+      "optionalSeriesGrouping": "Optional series grouping",
+      "pickOneOrMoreNumericFields": "Pick one or more numeric fields",
+      "everythingElse": "Everything else",
+      "examplePreset": "Example preset",
+      "inputFormat": "Input format",
+      "chartType": "Chart type",
+      "chartTitle": "Chart title",
+      "yAxisLabel": "Y axis label",
+      "decimals": "Decimals",
+      "yAxisRange": "Y axis range",
+      "emptyLabel": "Empty label",
+      "fieldSeparator": "Field separator",
+      "yAxisMin": "Y axis min",
+      "yAxisMax": "Y axis max",
+      "sourceData": "Source data",
+      "categoryGroupFields": "Category / group fields",
+      "splitIntoSeriesByFields": "Split into series by fields",
+      "numericFieldsToVisualize": "Numeric fields to visualize",
+      "aggregation": "Aggregation",
+      "sortGroups": "Sort groups",
+      "maxGroups": "Max groups",
+      "groupHiddenEntriesIntoEverythingElse": "Group hidden entries into “everything else”",
+      "everythingElseLabel": "Everything else label",
+      "maxSeries": "Max series",
+      "includeSeriesCommentsInMermaidCode": "Include series comments in Mermaid code",
+      "hideZeroOnlySeries": "Hide zero-only series",
+      "hideZeroOnlyGroups": "Hide zero-only groups",
+      "showValuesInThePieChart": "Show values in the pie chart",
+      "options": {
+        "groupedBars": "Grouped bars",
+        "multiLineTrends": "Multi-line trends",
+        "pieShare": "Pie share",
+        "comboChart": "Combo chart",
+        "yamlBarChart": "YAML bar chart",
+        "autoDetect": "Auto detect",
+        "json": "JSON",
+        "yaml": "YAML",
+        "csv": "CSV",
+        "pieChart": "Pie chart",
+        "barChart": "Bar chart",
+        "lineChart": "Line chart",
+        "multiLine": "Multi-line",
+        "sum": "Sum",
+        "average": "Average",
+        "min": "Min",
+        "max": "Max",
+        "count": "Count",
+        "keepInputOrder": "Keep input order",
+        "labelAZ": "Label A-Z",
+        "labelZA": "Label Z-A",
+        "valueHighLow": "Value high -> low",
+        "valueLowHigh": "Value low -> high",
+        "autoRange": "Auto range",
+        "manualRange": "Manual range"
+      },
+      "descriptions": {
+        "revenueByMonthAndRegion": "Revenue by month and region.",
+        "profitTrendPerRegionOverTime": "Profit trend per region over time.",
+        "orderShareByRegion": "Order share by region.",
+        "revenueBarsWithProfitLine": "Revenue bars with profit line.",
+        "revenueValuesFromYamlGroupedByMonthAndRegion": "Revenue values from YAML grouped by month and region."
+      }
+    },
+    "diffLabTool": {
+      "before": "Before",
+      "after": "After",
+      "options": {
+        "lineDiff": "Line diff",
+        "wordDiff": "Word diff",
+        "characterDiff": "Character diff"
+      }
+    },
+    "dockerfileGeneratorTool": {
+      "useMultiStageBuild": "Use multi-stage build",
+      "addHealthcheck": "Add healthcheck",
+      "runCommands": "RUN commands",
+      "npmCi": "npm ci",
+      "addCommand": "add command",
+      "healthcheckCommand": "Healthcheck command",
+      "environmentVariables": "Environment variables",
+      "production": "production",
+      "imageLabels": "Image labels",
+      "volumes": "Volumes",
+      "addVolume": "add volume",
+      "exposedPorts": "Exposed ports",
+      "addPort": "add port",
+      "entrypointCommand": "Entrypoint command",
+      "defaultCommand": "Default command",
+      "preset": "Preset",
+      "baseImage": "Base image",
+      "runtimeImage": "Runtime image",
+      "buildWorkdir": "Build workdir",
+      "runtimeWorkdir": "Runtime workdir",
+      "copySource": "Copy source",
+      "copyTarget": "Copy target",
+      "restartPolicyHint": "Restart policy hint",
+      "networkHint": "Network hint",
+      "options": {
+        "nodeJsApp": "Node.js app",
+        "bunApp": "Bun app",
+        "javaJar": "Java JAR",
+        "pythonApp": "Python app",
+        "staticSiteOnNginx": "Static site on NGINX",
+        "goApp": "Go app",
+        "rustApp": "Rust app",
+        "phpApache": "PHP Apache",
+        "phpFpm": "PHP-FPM",
+        "dotNetApp": ".NET app",
+        "customImage": "Custom image"
+      }
+    },
+    "hashGeneratorTool": {
+      "inputText": "Input text"
+    },
+    "htmlEntityTool": {
+      "mode": "Mode",
+      "input": "Input",
+      "options": {
+        "encode": "Encode",
+        "decode": "Decode"
+      }
+    },
+    "infraToMermaidTool": {
+      "direction": "Direction",
+      "diagramTitle": "Diagram title",
+      "infraFile": "Infra file",
+      "options": {
+        "autoDetect": "Auto detect",
+        "dockerCompose": "Docker Compose",
+        "kubernetes": "Kubernetes",
+        "terraformHcl": "Terraform / HCL",
+        "gitHubActions": "GitHub Actions",
+        "leftToRight": "Left to right",
+        "topToBottom": "Top to bottom"
+      }
+    },
+    "jarStartScriptGeneratorTool": {
+      "useNohupBackgroundLaunch": "Use nohup background launch",
+      "scriptType": "Script type",
+      "appName": "App name",
+      "jarFile": "JAR file",
+      "workingDirectory": "Working directory",
+      "xms": "Xms",
+      "xmx": "Xmx",
+      "springProfile": "Spring profile",
+      "port": "Port",
+      "extraJvmArgs": "Extra JVM args",
+      "extraAppArgs": "Extra app args",
+      "logFile": "Log file",
+      "options": {
+        "startSh": "start.sh",
+        "startBat": "start.bat"
+      }
+    },
+    "jsonStringTool": {
+      "mode": "Mode",
+      "input": "Input",
+      "options": {
+        "escape": "Escape",
+        "unescape": "Unescape"
+      }
+    },
+    "jwtInspectorTool": {
+      "header": "Header",
+      "payload": "Payload"
+    },
+    "keyValueListField": {
+      "removeEntry": "Remove entry",
+      "noEntriesYet": "No entries yet."
+    },
+    "loremIpsumTool": {
+      "generateAgain": "generate again",
+      "mode": "Mode",
+      "count": "Count",
+      "options": {
+        "paragraphs": "Paragraphs",
+        "sentences": "Sentences",
+        "words": "Words"
+      }
+    },
+    "markdownToMermaidTool": {
+      "mode": "Mode",
+      "direction": "Direction",
+      "maxDepth": "Max depth",
+      "markdown": "Markdown",
+      "options": {
+        "mindmap": "Mindmap",
+        "flowchart": "Flowchart",
+        "topToBottom": "Top to bottom",
+        "leftToRight": "Left to right"
+      }
+    },
+    "mermaidImageExportTool": {
+      "copyMermaid": "copy mermaid",
+      "scale": "Scale",
+      "padding": "Padding",
+      "background": "Background",
+      "watermark": "Watermark",
+      "mermaidCode": "Mermaid code",
+      "options": {
+        "png": "PNG",
+        "svg": "SVG"
+      }
+    },
+    "mermaidThemeBuilderTool": {
+      "addMermaidCodeToPreviewTheThemedDiagram": "Add Mermaid code to preview the themed diagram.",
+      "curve": "Curve",
+      "fontFamily": "Font family",
+      "primaryColor": "Primary color",
+      "primaryTextColor": "Primary text color",
+      "borderColor": "Border color",
+      "lineColor": "Line color",
+      "tertiaryColor": "Tertiary color",
+      "background": "Background",
+      "nodeSpacing": "Node spacing",
+      "rankSpacing": "Rank spacing",
+      "padding": "Padding",
+      "mermaidSource": "Mermaid source",
+      "options": {
+        "base": "Base",
+        "default": "Default",
+        "dark": "Dark",
+        "forest": "Forest",
+        "neutral": "Neutral",
+        "basis": "Basis",
+        "linear": "Linear",
+        "step": "Step",
+        "monotone": "Monotone"
+      }
+    },
+    "numberBaseTool": {
+      "inputBase": "Input base",
+      "value": "Value",
+      "options": {
+        "binary": "Binary",
+        "octal": "Octal",
+        "decimal": "Decimal",
+        "hex": "Hex"
+      }
+    },
+    "passwordGeneratorTool": {
+      "generateAgain": "generate again",
+      "count": "Count",
+      "length": "Length",
+      "uppercaseLetters": "Uppercase letters",
+      "lowercaseLetters": "Lowercase letters",
+      "numbers": "Numbers",
+      "symbols": "Symbols",
+      "excludeAmbiguousCharacters": "Exclude ambiguous characters"
+    },
+    "queryStringTool": {
+      "queryString": "Query string",
+      "rebuilt": "Rebuilt",
+      "parsed": "Parsed"
+    },
+    "regexEscapeTool": {
+      "mode": "Mode",
+      "input": "Input",
+      "options": {
+        "escape": "Escape",
+        "unescape": "Unescape"
+      }
+    },
+    "sqlToMermaidErTool": {
+      "showSqlFieldTypes": "Show SQL field types",
+      "sqlSchema": "SQL schema"
+    },
+    "secretGeneratorTool": {
+      "generateAgain": "generate again",
+      "mode": "Mode",
+      "count": "Count",
+      "length": "Length",
+      "options": {
+        "uuid": "UUID",
+        "hexToken": "Hex token",
+        "base64UrlToken": "Base64Url token"
+      }
+    },
+    "slugGeneratorTool": {
+      "sourceText": "Source text"
+    },
+    "stringListField": {
+      "removeEntry": "Remove entry",
+      "noEntriesYet": "No entries yet."
+    },
+    "systemdServiceGeneratorTool": {
+      "serviceName": "Service name",
+      "description": "Description",
+      "user": "User",
