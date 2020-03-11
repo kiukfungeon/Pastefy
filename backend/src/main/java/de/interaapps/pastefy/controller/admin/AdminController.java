@@ -21,3 +21,27 @@ import java.util.List;
 
 @PathPrefix("/api/v2/admin")
 @With("admin")
+public class AdminController extends HttpController {
+    @Get("/users")
+    public List<User> getUsers(Exchange exchange, @Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
+        authKey.checkPermission("admin.users:read");
+        Query<User> query = Repo.get(User.class).query();
+
+        RequestHelper.pagination(query, exchange);
+        query.search(exchange.query("search"));
+        RequestHelper.queryFilter(query, exchange.getQueryParameters());
+
+        return query.order("created_at", true).all();
+    }
+
+    @Get("/users/{id}")
+    public User getUser(@Path("id") String id, @Attrib("authkey") AuthKey authKey) {
+        authKey.checkPermission("admin.users:read");
+        return Repo.get(User.class).get(id);
+    }
+
+    @Delete("/users/{id}")
+    public ActionResponse removeUser(@Path("id") String id, @Attrib("authkey") AuthKey authKey) {
+        authKey.checkPermission("admin.users:delete");
+
+        Repo.get(User.class).get(id).delete();
