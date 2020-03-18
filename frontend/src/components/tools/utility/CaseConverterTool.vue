@@ -49,3 +49,20 @@ const result = computed(() => JSON.stringify(state.value, null, 2))
 
 <template>
   <UtilityShell>
+    <template #controls>
+      <label class="text-sm font-medium">{{ $t('utility.caseConverterTool.sourceText') }}</label>
+      <Textarea v-model="input" auto-resize rows="10" fluid />
+    </template>
+
+    <template #result>
+      <div class="grid gap-3">
+        <div
+          v-for="entry of [
+            ['lowercase', state.lower],
+            ['UPPERCASE', state.upper],
+            ['Sentence case', state.sentence],
+            ['Title Case', state.title],
+            ['camelCase', state.camel],
+            ['PascalCase', state.pascal],
+            ['snake_case', state.snake],
+            ['kebab-case', state.kebab],
