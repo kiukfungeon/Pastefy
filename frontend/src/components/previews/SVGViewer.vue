@@ -18,3 +18,10 @@ const render = async () => {
   src.value = url
 }
 onMounted(() => {
+  render()
+})
+watch(
+  () => props.svg,
+  useDebounceFn(() => {
+    render()
+  }, 500),
