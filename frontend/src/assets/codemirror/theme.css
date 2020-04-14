@@ -1,0 +1,56 @@
+.hljs {
+  @apply block overflow-x-auto p-2 bg-transparent;
+}
+
+.hljs, .hljs-tag, .hljs-subst, .cm-s-pastefy span.cm-tag {
+  @apply text-gray-400;
+}
+
+.hljs-strong, .hljs-emphasis, .cm-s-pastefy span.cm-strong, .cm-s-pastefy span.cm-emphasis {
+  @apply text-gray-500;
+}
+
+.hljs-bullet, .hljs-quote, .hljs-number, .hljs-regexp, .hljs-literal, .hljs-link, .cm-s-pastefy span.cm-number, .cm-s-pastefy span.cm-literal {
+  @apply text-yellow-500 font-medium;
+}
+
+.hljs-code, .hljs-title, .hljs-section, .hljs-selector-class, .cm-s-pastefy span.cm-title, .cm-s-pastefy span.cm-section, .cm-s-pastefy span.cm-selector-class {
+  @apply text-green-700;
+}
+.dark {
+  .hljs-code, .hljs-title, .hljs-section, .hljs-selector-class, .cm-s-pastefy span.cm-title, .cm-s-pastefy span.cm-section, .cm-s-pastefy span.cm-selector-class {
+  @apply text-green-600;
+  }
+}
+
+.hljs-strong, .cm-s-pastefy span.cm-strong {
+  @apply font-normal;
+}
+
+.hljs-emphasis, .cm-s-pastefy span.cm-emphasis {
+  @apply italic;
+}
+
+.hljs-keyword, .hljs-selector-tag, .hljs-name, .cm-s-pastefy span.cm-keyword, .cm-s-pastefy span.cm-selector-tag {
+  @apply text-pink-600 font-medium;
+}
+
+.hljs-symbol, .hljs-attribute, .hljs-attr, .cm-s-pastefy span.cm-attribute, .cm-s-pastefy span.cm-symbol {
+  @apply text-teal-600;
+}
+
+.hljs-type, .hljs-built_in, .hljs-builtin-name, .hljs-selector-id, .hljs-selector-attr, .hljs-selector-pseudo, .hljs-addition, .hljs-variable, .hljs-template-variable, .hljs-deletion, .cm-s-pastefy span.cm-type, .cm-s-pastefy span.cm-builtin, .cm-s-pastefy span.cm-variable, .cm-s-pastefy span.cm-deletion {
+  @apply text-red-600 font-normal;
+}
+
+.hljs-meta, .cm-s-pastefy span.cm-meta {
+  @apply text-red-500/90;
+}
+
+.hljs-comment, .cm-s-pastefy span.cm-comment {
+  @apply opacity-50;
+}
+
+.hljs-string, .cm-s-pastefy span.cm-string {
+  @apply text-green-700;
+}

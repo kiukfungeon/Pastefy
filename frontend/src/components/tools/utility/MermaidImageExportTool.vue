@@ -104,39 +104,3 @@ const copyMermaid = async () => {
         <div>
           <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('common.format') }}</label>
           <Select
-            v-model="format"
-            :options="formatOptions"
-            option-label="label"
-            option-value="value"
-            fluid
-          />
-        </div>
-        <div>
-          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.mermaidImageExportTool.scale') }}</label>
-          <InputNumber v-model="scale" :min="1" :max="4" fluid />
-        </div>
-        <div>
-          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.mermaidImageExportTool.padding') }}</label>
-          <InputNumber v-model="padding" :min="0" :max="120" fluid />
-        </div>
-        <div>
-          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400"
-            >{{ $t('utility.mermaidImageExportTool.background') }}</label
-          >
-          <InputText v-model="background" fluid />
-        </div>
-        <div>
-          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.mermaidImageExportTool.watermark') }}</label>
-          <InputText v-model="watermark" fluid />
-        </div>
-      </div>
-      <div>
-        <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400"
-          >{{ $t('utility.mermaidImageExportTool.mermaidCode') }}</label
-        >
-        <Textarea v-model="source" auto-resize rows="18" fluid />
-      </div>
-    </template>
-    <template #result>
-      <div
-        ref="exportAreaRef"
