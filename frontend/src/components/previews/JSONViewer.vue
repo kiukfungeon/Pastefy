@@ -94,3 +94,99 @@ const expandAll = () => {
 
   const walk = (value: unknown, path: string) => {
     if (value !== null && typeof value === 'object') {
+      next.add(path)
+      if (Array.isArray(value)) {
+        value.forEach((child, index) => walk(child, `${path}.${index}`))
+        return
+      }
+      Object.entries(value as Record<string, unknown>).forEach(([key, child]) =>
+        walk(child, `${path}.${key}`),
+      )
+    }
+  }
+
+  walk(parsed.value, 'root')
+  expandedPaths.value = next
+}
+
+const collapseAll = () => {
+  expandedPaths.value = new Set(['root'])
+}
+
+const exportJson = (mode: 'pretty' | 'minified') => {
+  const contents = mode === 'pretty' ? prettyJson.value : minifiedJson.value
+  const blob = new Blob([contents], { type: 'application/json' })
+  const objectUrl = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = objectUrl
+  link.download = `pastefy-export.${mode === 'pretty' ? 'pretty' : 'min'}.json`
+  link.click()
+  setTimeout(() => URL.revokeObjectURL(objectUrl), 1000)
+}
+
+watch(search, (value) => {
+  if (value.trim()) {
+    expandAll()
+  }
+})
+</script>
+
+<template>
+  <div class="@container overflow-hidden text-sm">
+    <div
+      class="flex flex-col gap-4 border-b border-neutral-200 bg-neutral-50 px-4 py-4 dark:border-neutral-700 dark:bg-neutral-900/70"
+    >
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <div class="text-xs font-semibold tracking-[0.2em] uppercase opacity-60">{{ $t('previews.jsonViewer.jsonView') }}</div>
+          <div class="mt-1 text-xs opacity-60">{{ rootSummary }}</div>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <Tag :value="`${stats.keys} keys`" severity="contrast" />
+          <Tag :value="`${stats.objects} objects`" severity="contrast" />
+          <Tag :value="`${stats.arrays} arrays`" severity="contrast" />
+          <Tag :value="`${stats.primitives} values`" severity="contrast" />
+        </div>
+      </div>
+
+      <div
+        class="grid gap-3 @[42rem]:grid-cols-[minmax(0,1fr)_12rem] @[68rem]:grid-cols-[minmax(0,1fr)_12rem_auto]"
+      >
+        <InputText
+          v-model="search"
+          :placeholder="$t('previews.jsonViewer.searchKeysPathsAndValues')"
+          fluid
+          class="min-w-0"
+        />
+        <Select
+          v-model="viewMode"
+          :options="viewOptions"
+          option-label="label"
+          option-value="value"
+          fluid
+        />
+        <div class="flex flex-wrap gap-2 @[42rem]:col-span-2 @[68rem]:col-span-1 @[68rem]:justify-end">
+          <Button
+            v-if="viewMode === 'tree'"
+            icon="ti ti-fold-down"
+            :label="$t('previews.jsonViewer.expandAll')"
+            size="small"
+            severity="contrast"
+            outlined
+            @click="expandAll"
+          />
+          <Button
+            v-if="viewMode === 'tree'"
+            icon="ti ti-fold-up"
+            :label="$t('previews.jsonViewer.collapse')"
+            size="small"
+            severity="contrast"
+            outlined
+            @click="collapseAll"
+          />
+          <Button
+            icon="ti ti-copy"
+            :label="$t('previews.jsonViewer.copyPretty')"
+            size="small"
+            severity="contrast"
+            outlined

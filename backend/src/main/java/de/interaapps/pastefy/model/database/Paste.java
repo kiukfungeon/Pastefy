@@ -257,3 +257,90 @@ public class Paste extends Model {
         return key;
     }
 
+    public boolean isEncrypted() {
+        return encrypted;
+    }
+
+    public void setEncrypted(boolean encrypted) {
+        this.encrypted = encrypted;
+    }
+
+    public Folder getFolder() {
+        return Repo.get(Folder.class).where("key", folder).first();
+    }
+
+    public void setFolder(String folder) {
+        this.folder = folder;
+    }
+
+    public void setFolder(Folder folder) {
+        this.folder = folder.getKey();
+    }
+
+    public String getFolderId() {
+        return folder;
+    }
+
+    public void setExpireAt(String timeString) {
+        this.expireAt = Timestamp.valueOf(timeString);
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public List<String> getTags() {
+        return Repo.get(PasteTag.class).where("paste", key).get().stream().map(t -> t.tag).collect(Collectors.toList());
+    }
+
+    public int getStarCounts() {
+        return Repo.get(PasteStar.class)
+                .where("paste", key)
+                .count();
+    }
+
+    public List<PasteStar> getStarUsers() {
+        return Repo.get(PasteStar.class)
+                .where("paste", key)
+                .all();
+    }
+
+    public int getEngagementScore() {
+        PublicPasteEngagement pasteEngagement = Repo.get(PublicPasteEngagement.class)
+                .where("pasteId", id).first();
+        if (pasteEngagement == null) return 0;
+        return pasteEngagement.score;
+    }
+
+    public AbstractArray getMultiPasteParts() {
+        return AbstractElement.fromJson(getContent()).array();
+    }
+
+    public Boolean isIndexedInElastic() {
+        return indexedInElastic != null && indexedInElastic;
+    }
+
+    public void setIndexedInElastic(Boolean indexedInElastic) {
+        this.indexedInElastic = indexedInElastic;
+    }
+
+    @Override
+    public void save() {
+        if (version == null) version = 1;
+        version++;
+
+        indexedInElastic = false;
+
+        if (createdAt == null) {
+            createdAt = Timestamp.from(Instant.now());
+        } else {
+            PasteContentCache.deleteCachedContent(this);
+        }
+
+        updatedAt = Timestamp.from(Instant.now());
+
+        super.save();
