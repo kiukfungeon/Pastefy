@@ -56,32 +56,3 @@ public class PasteMetaController extends HttpController {
             }
 
             return page;
-        });
-    }
-
-    private String getTitle(Paste paste) {
-        String title = paste.getTitle();
-        if (title == null || title.trim().isEmpty()) return DEFAULT_TITLE;
-        return seo.truncate(title.trim().replaceAll("\\s+", " "), 120);
-    }
-
-    private String getDescription(String title, SeoAuthor author) {
-        if (DEFAULT_TITLE.equals(title)) {
-            return author == null ? "View this paste on Pastefy." : "View this paste by @" + author.username + " on Pastefy.";
-        }
-        if (author != null) {
-            return seo.truncate("View \"" + title + "\" by @" + author.username + " on Pastefy.", DESCRIPTION_MAX_LENGTH);
-        }
-        return seo.truncate("View \"" + title + "\" on Pastefy.", DESCRIPTION_MAX_LENGTH);
-    }
-
-    private SeoAuthor getAuthor(Paste paste) {
-        if (paste.getUserId() == null) return null;
-
-        User user = paste.getUser();
-        if (user == null || user.getUniqueName() == null || user.getUniqueName().trim().isEmpty()) return null;
-
-        String username = user.getUniqueName().trim();
-        String displayName = user.getName() == null || user.getName().trim().isEmpty()
-                ? username
-                : user.getName().trim();
