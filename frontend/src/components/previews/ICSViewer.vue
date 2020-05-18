@@ -17,3 +17,22 @@ const events = ref<
     end?: Date
   }[]
 >([])
+
+const addToCalendar = () => {
+  const blob = new Blob([props.ics], { type: 'text/calendar' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = 'calendar.ics'
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
+try {
+  const jcalData = ICAL.parse(props.ics)
+  const comp = new ICAL.Component(jcalData)
+
+  events.value = comp.getAllSubcomponents('vevent').map((e) => {
+    const event = new ICAL.Event(e)
+
+    return {

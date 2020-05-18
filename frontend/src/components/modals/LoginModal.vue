@@ -17,3 +17,12 @@ const visible = defineModel<boolean>('visible')
         <svg
           v-if="authType === 'interaapps'"
           width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M1.10297 24L9.38217 0H15.052L23.3312 24H18.5634L12.2171 4.8595L5.83854 24H1.10297Z"
+            fill="#4542F4"
+          />
