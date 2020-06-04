@@ -18,3 +18,23 @@ const tab = ref('app-settings')
       <div class="relative h-full md:grid md:grid-cols-[14rem_1fr]" @click.stop>
         <Button
           text
+          rounded
+          icon="ti ti-x text-xl"
+          class="absolute top-3 right-3 z-10"
+          severity="contrast"
+          @click="closeCallback"
+        />
+        <div
+          class="flex flex-col gap-1 border-r border-neutral-200 bg-neutral-100 md:h-full dark:border-neutral-700 dark:bg-neutral-800"
+        >
+          <span class="block p-3 pb-1 text-sm">{{ $t('settings.title') }}</span>
+          <div class="flex flex-col p-1">
+            <Button
+              :text="tab !== 'app-settings'"
+              icon="ti ti-settings text-lg"
+              severity="contrast"
+              fluid
+              :label="$t('settings.app')"
+              class="justify-start"
+              size="small"
+              @click="tab = 'app-settings'"

@@ -84,3 +84,90 @@ const getNestedArray = (value: unknown, path: string[]): unknown[] => {
 
 const getMetadataLabels = (resource: KubernetesResource) => {
   if (resource.kind === 'Pod') {
+    return getNestedRecord(resource.document, ['metadata', 'labels']) ?? {}
+  }
+
+  if (resource.kind === 'CronJob') {
+    return getNestedRecord(resource.document, ['spec', 'jobTemplate', 'spec', 'template', 'metadata', 'labels']) ?? {}
+  }
+
+  return getNestedRecord(resource.document, ['spec', 'template', 'metadata', 'labels']) ?? {}
+}
+
+const getContainerSpecs = (resource: KubernetesResource) => {
+  if (resource.kind === 'Pod') {
+    return toRecordArray(getNestedArray(resource.document, ['spec', 'containers']))
+  }
+
+  if (resource.kind === 'CronJob') {
+    return toRecordArray(getNestedArray(resource.document, ['spec', 'jobTemplate', 'spec', 'template', 'spec', 'containers']))
+  }
+
+  return toRecordArray(getNestedArray(resource.document, ['spec', 'template', 'spec', 'containers']))
+}
+
+const detectedFormat = computed<Exclude<InfraFormat, 'auto'>>(() => {
+  if (format.value !== 'auto') return format.value
+  const trimmed = source.value.trim()
+  if (/^\s*resource\s+"/m.test(trimmed) || /^\s*module\s+"/m.test(trimmed)) return 'terraform'
+  if (/^\s*name:\s+/m.test(trimmed) && /^\s*jobs:\s+/m.test(trimmed)) return 'github-actions'
+  if (/^\s*apiVersion:\s+/m.test(trimmed) && /^\s*kind:\s+/m.test(trimmed)) return 'kubernetes'
+  return 'compose'
+})
+
+const diagram = computed(() => {
+  try {
+    const lines = ['flowchart ' + direction.value, `  %% ${graphTitle.value}`]
+    const definedNodes = new Map<string, MermaidNode>()
+    const definedEdges = new Set<string>()
+
+    const ensureNode = (id: string, label: string) => {
+      if (definedNodes.has(id)) return
+      definedNodes.set(id, { id, label })
+      lines.push(`  ${id}[${JSON.stringify(label)}]`)
+    }
+
+    const ensureEdge = (from: string, to: string) => {
+      const edgeKey = `${from}-->${to}`
+      if (definedEdges.has(edgeKey)) return
+      definedEdges.add(edgeKey)
+      lines.push(`  ${from} --> ${to}`)
+    }
+
+    if (detectedFormat.value === 'terraform') {
+      const resources = Array.from(source.value.matchAll(/resource\s+"([^"]+)"\s+"([^"]+)"/g)).map(
+        (match) => `${match[1]}.${match[2]}`,
+      )
+      const modules = Array.from(source.value.matchAll(/module\s+"([^"]+)"/g)).map((match) => `module.${match[1]}`)
+      const providers = Array.from(source.value.matchAll(/provider\s+"([^"]+)"/g)).map((match) => `provider.${match[1]}`)
+
+      ;[...providers, ...modules, ...resources].forEach((entry) => {
+        const id = sanitizeNodeId(entry)
+        ensureNode(id, entry)
+      })
+
+      modules.forEach((moduleName) => {
+        const moduleId = sanitizeNodeId(moduleName)
+        resources.forEach((resource) => {
+          ensureEdge(moduleId, sanitizeNodeId(resource))
+        })
+      })
+      return lines.join('\n')
+    }
+
+    if (detectedFormat.value === 'compose') {
+      const doc = parseYamlDocument(source.value)
+      if (!isRecord(doc) || !isRecord(doc.services)) return lines.join('\n')
+
+      Object.entries(doc.services).forEach(([name, config]) => {
+        const serviceId = sanitizeNodeId(name)
+        ensureNode(serviceId, name)
+
+        const depends = isRecord(config)
+          ? Array.isArray(config.depends_on)
+            ? config.depends_on
+            : isRecord(config.depends_on)
+              ? Object.keys(config.depends_on)
+              : []
+          : []
+
