@@ -130,3 +130,267 @@ const encryptionOptions = [
   { get label() { return t('views.searchPastes.options.plainOnly') }, value: 'plain' as EncryptionFilter },
   { get label() { return t('views.searchPastes.options.encryptedOnly') }, value: 'encrypted' as EncryptionFilter },
 ]
+
+const folderOptions = [
+  { get label() { return t('views.searchPastes.options.allFolderStates') }, value: 'all' as FolderFilter },
+  { get label() { return t('views.searchPastes.options.rootLevelOnly') }, value: 'root' as FolderFilter },
+  { get label() { return t('views.searchPastes.options.onlyInsideFolders') }, value: 'foldered' as FolderFilter },
+]
+
+const endpoint = computed(() => {
+  if (scope.value === 'mine') return '/api/v2/user/pastes'
+  if (scope.value === 'starred') return '/api/v2/user/starred-pastes'
+  return '/api/v2/public-pastes/latest'
+})
+
+const normalizedTags = computed(() =>
+  tags.value
+    .split(',')
+    .map((entry) => entry.trim())
+    .filter(Boolean)
+    .join(','),
+)
+
+const userLookupName = computed(() => {
+  const match = search.value.trim().match(/^@([a-zA-Z0-9-]+)$/)
+  return match?.[1]
+})
+
+const effectiveSearchQuery = computed(() => {
+  const value = search.value.trim()
+  return userLookupName.value || value
+})
+
+const loadMatchedUser = useDebounceFn(async (name?: string) => {
+  if (!name) {
+    matchedUser.value = undefined
+    return
+  }
+
+  try {
+    matchedUser.value = (await client.get(`/api/v2/public/user/${name}`)).data as PublicUser
+  } catch {
+    matchedUser.value = null
+  }
+}, 250)
+
+watch(
+  userLookupName,
+  (value) => {
+    loadMatchedUser(value)
+  },
+  { immediate: true },
+)
+
+const filters = computed(() => {
+  const andFilters: Record<string, unknown>[] = []
+
+  if (matchedUser.value?.id) {
+    andFilters.push({ userId: matchedUser.value.id })
+  }
+
+  if (visibility.value !== 'all' && scope.value !== 'public') {
+    andFilters.push({ visibility: visibility.value })
+  }
+
+  if (pasteType.value !== 'all') {
+    andFilters.push({ type: pasteType.value })
+  }
+
+  if (encryption.value !== 'all') {
+    andFilters.push({ encrypted: encryption.value === 'encrypted' ? 'true' : 'false' })
+  }
+
+  if (folder.value === 'root') {
+    andFilters.push({ folder: { $null: true } })
+  } else if (folder.value === 'foldered') {
+    andFilters.push({ folder: { $notNull: true } })
+  }
+
+  if (!andFilters.length) return undefined
+  if (andFilters.length === 1) return JSON.stringify(andFilters[0])
+  return JSON.stringify({ $and: andFilters })
+})
+
+const requestParams = computed(() => ({
+  ...(effectiveSearchQuery.value && !matchedUser.value?.id
+    ? { search: effectiveSearchQuery.value }
+    : {}),
+  ...(sort.value ? { sort: sort.value } : {}),
+  ...(normalizedTags.value ? { filter_tags: normalizedTags.value } : {}),
+  ...(filters.value ? { filters: filters.value } : {}),
+}))
+
+const requestSignature = computed(() =>
+  JSON.stringify({
+    endpoint: endpoint.value,
+    params: requestParams.value,
+    pageLimit: pageLimit.value,
+  }),
+)
+
+watch(requestSignature, () => {
+  page.value = 1
+})
+
+const activeFilters = computed(() => {
+  const entries: string[] = []
+  if (scope.value !== 'public') {
+    const selectedScope = scopeOptions.value.find((entry) => entry.value === scope.value)
+    if (selectedScope) entries.push(`Scope: ${selectedScope.label}`)
+  }
+  if (visibility.value !== 'all' && scope.value !== 'public') {
+    entries.push(`Visibility: ${visibility.value.toLowerCase()}`)
+  }
+  if (pasteType.value !== 'all') {
+    entries.push(`Type: ${pasteType.value === 'MULTI_PASTE' ? 'multi' : 'single'}`)
+  }
+  if (encryption.value !== 'all') {
+    entries.push(`Encryption: ${encryption.value}`)
+  }
+  if (folder.value !== 'all') {
+    entries.push(`Folder: ${folder.value}`)
+  }
+  if (normalizedTags.value) {
+    entries.push(
+      ...normalizedTags.value
+        .split(',')
+        .filter(Boolean)
+        .map((tag) => `Tag: ${tag}`),
+    )
+  }
+  if (userLookupName.value) {
+    entries.push(
+      matchedUser.value?.id
+        ? `User: @${userLookupName.value}`
+        : `User lookup: @${userLookupName.value}`,
+    )
+  }
+  return entries
+})
+
+const clearFilters = () => {
+  visibility.value = 'all'
+  pasteType.value = 'all'
+  encryption.value = 'all'
+  folder.value = 'all'
+  tags.value = ''
+  sort.value = 'createdAt'
+  pageLimit.value = 12
+}
+
+const openModalSearch = () => {
+  appStore.searchShownEndpoints.myPastes = scope.value !== 'public'
+  appStore.searchShownEndpoints.publicPastes = scope.value === 'public'
+  appStore.searchShown = true
+}
+
+const resultDescription = computed(() => {
+  if (scope.value === 'mine') return t('search.descriptions.mine')
+  if (scope.value === 'starred') return t('search.descriptions.starred')
+  return t('search.descriptions.public')
+})
+</script>
+
+<template>
+  <section class="mx-auto flex w-full max-w-[1440px] flex-col gap-6 p-4 md:p-8">
+    <div
+      class="overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-100 p-5 md:p-6 dark:border-neutral-700 dark:bg-neutral-800"
+    >
+      <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div class="max-w-[52rem]">
+          <div class="text-sm font-medium text-neutral-500 dark:text-neutral-400">{{ $t('nav.search') }}</div>
+          <h1 class="mt-1 text-3xl font-bold tracking-tight md:text-4xl">
+            {{ $t('views.searchPastes.findTheRightPasteFaster') }}
+          </h1>
+          <p class="mt-2 text-neutral-600 dark:text-neutral-300">
+            {{ resultDescription }}
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <Button
+            @click="openModalSearch"
+            icon="ti ti-search"
+            :label="$t('views.searchPastes.quickModal')"
+            severity="contrast"
+            outlined
+          />
+          <Button
+            @click="clearFilters"
+            icon="ti ti-filter-off"
+            :label="$t('views.searchPastes.clearFilters')"
+            severity="contrast"
+            outlined
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="grid gap-6 xl:grid-cols-[21rem_minmax(0,1fr)]">
+      <aside class="flex flex-col gap-4 xl:sticky xl:top-6 xl:self-start">
+        <div
+          class="rounded-2xl border border-neutral-200 bg-neutral-100 p-4 dark:border-neutral-700 dark:bg-neutral-800"
+        >
+          <label class="mb-2 block text-sm font-medium">{{ $t('views.searchPastes.searchQuery') }}</label>
+          <InputText
+            v-model="searchInput"
+            fluid
+            :placeholder="$t('views.searchPastes.searchTitlesContentOrEnterUsername')"
+            @update:model-value="commitSearch(String($event || ''))"
+            autofocus
+          />
+          <p class="mt-3 text-xs text-neutral-500 dark:text-neutral-400">
+            The backend searches title, content, username, and unique name. Enter `@username` for an
+            exact public user lookup.
+          </p>
+        </div>
+
+        <div
+          class="rounded-2xl border border-neutral-200 bg-neutral-100 p-4 dark:border-neutral-700 dark:bg-neutral-800"
+        >
+          <div class="mb-3 text-sm font-medium">{{ $t('views.searchPastes.scope') }}</div>
+          <div class="grid gap-2">
+            <button
+              v-for="entry of scopeOptions"
+              :key="entry.value"
+              type="button"
+              @click="scope = entry.value"
+              class="cursor-pointer rounded-xl border p-3 text-left transition-colors"
+              :class="
+                scope === entry.value
+                  ? 'border-neutral-900 bg-white dark:border-neutral-200 dark:bg-neutral-900'
+                  : 'border-neutral-200 bg-white/70 hover:bg-white dark:border-neutral-700 dark:bg-neutral-900/60 dark:hover:bg-neutral-900'
+              "
+            >
+              <div class="flex items-center gap-2 font-medium">
+                <i :class="`ti ti-${entry.icon}`" />
+                {{ entry.label }}
+              </div>
+              <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+                {{ entry.description }}
+              </p>
+            </button>
+          </div>
+        </div>
+
+        <div
+          class="rounded-2xl border border-neutral-200 bg-neutral-100 p-4 dark:border-neutral-700 dark:bg-neutral-800"
+        >
+          <div class="mb-3 text-sm font-medium">{{ $t('common.filters') }}</div>
+          <div class="grid gap-3">
+            <div>
+              <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('common.sort') }}</label>
+              <Select
+                v-model="sort"
+                :options="sortOptions"
+                option-label="label"
+                option-value="value"
+                fluid
+              />
+            </div>
+
+            <div>
+              <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400"
+                >{{ $t('views.searchPastes.resultsPerPage') }}</label
+              >
