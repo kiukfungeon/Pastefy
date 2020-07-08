@@ -27,13 +27,3 @@ public class InteraAppsExternalAccessController extends HttpController {
 
             Config config = Pastefy.getInstance().getConfig();
 
-            if (config.get("oauth2.interaapps.id").equals(request.appId) && config.get("oauth2.interaapps.secret").equals(request.appSecret)) {
-                User user = Repo.get(User.class).where("authId", request.userId).where("authProvider", User.AuthenticationProvider.INTERAAPPS).first();
-
-                if (user != null) {
-                    AuthKey authKey = new AuthKey();
-                    authKey.userId = user.id;
-                    authKey.type = AuthKey.Type.ACCESS_TOKEN;
-                    request.appScopeList.forEach(authKey::addScope);
-
-                    authKey.save();
