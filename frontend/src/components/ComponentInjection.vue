@@ -2,7 +2,3 @@
 import { useComponentInjectionStore } from '@/stores/component-injections.ts'
 
 defineProps<{
-  type: string
-  value?: unknown
-}>()
-
