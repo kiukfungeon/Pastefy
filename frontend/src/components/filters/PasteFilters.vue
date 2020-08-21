@@ -4,10 +4,3 @@ import Select from 'primevue/select'
 
 const filters = defineModel<{
   visibility: string
-}>('filters', { required: true })
-</script>
-<template>
-  <div>
-    <Select
-      :options="['UNLISTED', 'PUBLIC', 'PRIVATE']"
-      v-model="filters.visibility"

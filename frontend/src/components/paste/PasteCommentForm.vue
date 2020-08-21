@@ -28,3 +28,33 @@ const submit = () => {
   emit(
     'submit',
     trimmedContent,
+    props.lineFrom && lineTo.value && lineTo.value > props.lineFrom ? lineTo.value : undefined,
+  )
+}
+</script>
+
+<template>
+  <div class="flex w-full gap-3">
+    <div v-if="currentUser?.user" class="py-2">
+      <img
+        class="h-[24px] w-[24px] rounded-full border-1 border-neutral-200 object-cover dark:border-neutral-700"
+        :src="currentUser.user.profile_picture"
+        alt="Profile Picture"
+      />
+    </div>
+    <form class="flex flex-1 flex-col gap-2" @submit.prevent="submit">
+      <Textarea
+        v-model="content"
+        :rows="1"
+        maxlength="2000"
+        class="rounded-none border-0 border-b-1 bg-transparent px-0"
+        auto-resize
+        fluid
+        :placeholder="$t('comments.placeholder')"
+      />
+      <div class="flex items-center justify-between gap-2">
+        <div v-if="lineFrom" class="flex items-center gap-2 text-sm">
+          <InputNumber :model-value="lineFrom" disabled size="small" input-class="w-20" />
+          <span> - </span>
+          <InputNumber
+            v-model="lineTo"
