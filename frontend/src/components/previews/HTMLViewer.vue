@@ -4,3 +4,15 @@ import { computed } from 'vue'
 
 const props = defineProps<{
   html: string
+}>()
+
+const sanitizedHtml = computed(() =>
+  DOMPurify.sanitize(props.html, {
+    USE_PROFILES: { html: true },
+  }),
+)
+</script>
+
+<template>
+  <div class="overflow-hidden text-sm">
+    <div
