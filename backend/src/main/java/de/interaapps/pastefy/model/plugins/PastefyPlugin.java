@@ -12,8 +12,3 @@ public class PastefyPlugin {
     public String path;
 
     public PastefyPlugin(String folder) throws IOException {
-        this.path = folder;
-
-        File configFile = new File(path + "/plugin.json");
-        config = new Gson().fromJson(FileUtils.readFileToString(configFile), PastefyPluginConfig.class);
-    }
