@@ -1,0 +1,529 @@
+{
+  "common": {
+    "confirm": "אישור",
+    "cancel": "ביטול",
+    "previous": "הקודם",
+    "next": "הבא",
+    "options": "אפשרויות",
+    "preview": "תצוגה מקדימה",
+    "editor": "עורך",
+    "export": "ייצוא",
+    "content": "תוכן",
+    "colors": "צבעים",
+    "format": "פורמט",
+    "delete": "מחיקה",
+    "open": "פתיחה",
+    "profile": "פרופיל",
+    "users": "משתמשים",
+    "tags": "תגיות",
+    "page": "עמוד {{page}}",
+    "download": "הורדה",
+    "copyImage": "העתקת תמונה",
+    "copy": "העתקה",
+    "edit": "עריכה",
+    "share": "שיתוף",
+    "fork": "Fork",
+    "raw": "RAW",
+    "filename": "שם קובץ",
+    "visibility": "נראות",
+    "source": "מקור",
+    "output": "פלט",
+    "code": "קוד",
+    "filters": "מסננים",
+    "sort": "מיון",
+    "results": "תוצאות",
+    "search": "חיפוש",
+    "unlock": "ביטול נעילה",
+    "hideEditor": "הסתרת העורך",
+    "showEditor": "הצגת העורך",
+    "unknownDate": "תאריך לא ידוע",
+    "invalidJson": "Invalid JSON"
+  },
+  "settings": {
+    "title": "הגדרות",
+    "app": "הגדרות היישום",
+    "animations": "הנפשות",
+    "theme": "ערכת נושא",
+    "defaultVisibility": "נראות ברירת מחדל",
+    "language": "שפה",
+    "browserLanguage": "שפת הדפדפן"
+  },
+  "nav": {
+    "home": "בית",
+    "explore": "גילוי",
+    "search": "חיפוש",
+    "stars": "מועדפים",
+    "apiKeys": "מפתחות API"
+  },
+  "auth": {
+    "login": "התחברות",
+    "logout": "התנתקות",
+    "signOut": "התנתקות",
+    "accountSettings": "הגדרות חשבון",
+    "awaitingAccess": "ממתין לגישה",
+    "blocked": "חסום",
+    "awaitingMessage": "שלום {{name}}, יש להמתין עד שמנהל יפעיל את החשבון שלך.",
+    "blockedMessage": "שלום {{name}}, החשבון שלך נחסם.",
+    "logoutConfirm": "האם להתנתק?",
+    "password": "סיסמה"
+  },
+  "paste": {
+    "myPastes": "ההדבקות שלי",
+    "create": "יצירת הדבקה",
+    "folders": "תיקיות",
+    "pastes": "הדבקות",
+    "new": "חדש",
+    "encryptedPaste": "הדבקה מוצפנת",
+    "noTitle": "ללא כותרת",
+    "noPreview": "אין תצוגה מקדימה",
+    "trending": "פופולרי",
+    "allTimeTrending": "פופולרי בכל הזמנים",
+    "visibility": {
+      "public": "ציבורי",
+      "private": "פרטי",
+      "unlisted": "לא רשום"
+    },
+    "files": "קבצים",
+    "filename": "שם הקובץ",
+    "pasteHere": "הדבקה כאן",
+    "encrypted": "מוצפן",
+    "expires": "תפוגה",
+    "submit": "שליחה",
+    "edit": "שמירה",
+    "empty": "לא נמצאו הדבקות עבור הבחירה הזו.",
+    "loginRequired": "יש להתחבר כדי ליצור הדבקות.",
+    "passwordOptional": "סיסמה (אופציונלי)",
+    "folderOptional": "תיקייה (אופציונלי)",
+    "tagsOptional": "תגיות (אופציונלי, מופרדות בפסיקים)",
+    "addMetadataWithAi": "הוספת סיומת ותגיות באמצעות AI",
+    "editing": "עריכת {{id}}",
+    "forking": "יצירת Fork של {{id}}",
+    "enterContentsFirst": "יש להזין תוכן תחילה",
+    "loginReadRequired": "נדרשת התחברות כדי לצפות ב-paste",
+    "passwordProtected": "ה-paste מוגן בסיסמה",
+    "decrypt": "פענוח",
+    "deleteTitle": "מחיקת paste",
+    "deleteConfirm": "למחוק את ה-paste הזה?",
+    "showCode": "הצגת קוד",
+    "showPreview": "הצגת תצוגה מקדימה",
+    "viewOnPastefy": "הצגה ב-Pastefy",
+    "openInEditor": "פתיחה בעורך paste"
+  },
+  "layout": {
+    "toggleSidebar": "הצגה או הסתרה של סרגל הצד"
+  },
+  "home": {
+    "shareCode": "שיתוף קוד",
+    "organize": "ארגון",
+    "keepSecret": "שמירה בסוד",
+    "integration": "שילוב",
+    "explorePublicPastes": "גילוי הדבקות ציבוריות",
+    "shareCodeDescription": "שתפו קטעי קוד עם כולם. הדביקו את הקוד ושתפו אותו עם אחרים.",
+    "organizeDescription": "צרו תיקיות וארגנו את קטעי הקוד בצורה מסודרת.",
+    "keepSecretDescription": "השתמשו בהצפנה בצד הלקוח כדי להגן על קטעי הקוד. גם אנחנו לא יכולים לקרוא הדבקות מוצפנות.",
+    "integrationDescription": "השתמשו ב-API כדי לשלב את Pastefy ביישומים או להטמיע הדבקה באתר בקלות."
+  },
+  "tools": {
+    "all": "כל הכלים",
+    "allUtilities": "כל כלי העזר",
+    "resetExample": "איפוס דוגמה",
+    "focusMode": "מצב מיקוד",
+    "exitFocusMode": "יציאה ממצב מיקוד",
+    "search": "חיפוש כלים...",
+    "allConversions": "כל ההמרות",
+    "backToTools": "חזרה לכלים",
+    "backToConversions": "חזרה להמרות",
+    "backToUtilities": "חזרה לכלי העזר",
+    "copySource": "העתקת מקור",
+    "copyOutput": "העתקת פלט",
+    "createPaste": "יצירת paste",
+    "conversion": "המרה",
+    "previewInspect": "תצוגה מקדימה ובדיקה",
+    "convert": "המרה",
+    "utilities": "כלי עזר",
+    "notFound": {
+      "previewTitle": "הכלי לא נמצא",
+      "conversionTitle": "כלי ההמרה לא נמצא",
+      "utilityTitle": "כלי העזר לא נמצא"
+    },
+    "title": "Pastefy Tools",
+    "categories": "קטגוריות"
+  },
+  "share": {
+    "share": "שיתוף",
+    "screenshot": "צילום מסך",
+    "embed": "הטמעה",
+    "qrCode": "קוד QR",
+    "articleView": "תצוגת מאמר",
+    "presentationView": "תצוגת מצגת"
+  },
+  "errors": {
+    "pageNotFound": "הדף לא נמצא"
+  },
+  "explore": {
+    "title": "גילוי Pastefy"
+  },
+  "folder": {
+    "createTitle": "יצירת תיקייה",
+    "name": "שם",
+    "create": "יצירה",
+    "deleteTitle": "מחיקת תיקייה",
+    "deleteConfirm": "למחוק את התיקייה הזו?"
+  },
+  "search": {
+    "title": "מציאת ה-paste הנכון מהר יותר",
+    "query": "שאילתת חיפוש",
+    "scope": "טווח",
+    "clearFilters": "ניקוי מסננים",
+    "quickModal": "חיפוש מהיר",
+    "descriptions": {
+      "mine": "חיפוש ב-pastes שלך עם מסננים מתקדמים.",
+      "starred": "חיפוש ב-pastes שסימנת בכוכב.",
+      "public": "חיפוש ב-pastes ציבוריים עם מסננים מתקדמים."
+    }
+  },
+  "admin": {
+    "quickActions": "פעולות מהירות",
+    "manageUsers": "ניהול משתמשים",
+    "latestPastes": "Pastes אחרונים",
+    "users": {
+      "changeTypeTitle": "שינוי סוג משתמש",
+      "changeTypeConfirm": "לשנות את סוג המשתמש הזה?",
+      "deleteTitle": "מחיקת משתמש",
+      "deleteConfirm": "למחוק את המשתמש הזה?"
+    },
+    "title": "ניהול"
+  },
+  "components": {
+    "globalSearch": {
+      "mine": "mine",
+      "public": "public",
+      "page": "page"
+    },
+    "paste": {
+      "openInCodebox": "Open in Codebox"
+    },
+    "createPaste": {
+      "detectedUrlYouMayWannaUse": "Detected Url. You may wanna use",
+      "punyshort": "punyshort"
+    },
+    "sidebar": {
+      "sourceCode": "Source Code"
+    },
+    "pasteCard": {
+      "codebox": "Codebox",
+      "multiPaste": "Multi-Paste"
+    },
+    "pasteStarButton": {
+      "star": "Star"
+    },
+    "pasteSharingPopover": {
+      "createScreenshot": "Create Screenshot",
+      "embed": "Embed",
+      "shareCodeWithPastefy": "Share code with Pastefy."
+    },
+    "userMenu": {
+      "admin": "Admin"
+    }
+  },
+  "modals": {
+    "embedPasteModal": {
+      "embed": "Embed",
+      "hideTitle": "Hide Title",
+      "hideActions": "Hide Actions",
+      "addPadding": "Add Padding",
+      "embedViaScript": "Embed via script",
+      "embedViaIframeTag": "Embed via iframe tag"
+    },
+    "qrModal": {
+      "qrCode": "QR Code",
+      "applyPreset": "Apply preset",
+      "removeLogo": "Remove Logo",
+      "sizePx": "Size (px)",
+      "quietZone": "Quiet zone",
+      "currentPalette": "Current palette",
+      "foregroundColor": "Foreground color",
+      "foregroundPreview": "Foreground preview",
+      "qrModulesAndScanPattern": "QR modules and scan pattern",
+      "backgroundColor": "Background color",
+      "backgroundPreview": "Background preview",
+      "showBackground": "Show background",
+      "includeQuietZone": "Include quiet zone",
+      "logo": "Logo",
+      "logoSize": "Logo size",
+      "logoPadding": "Logo padding",
+      "logoBackgroundPlate": "Logo background plate"
+    },
+    "screenshotPaste": {
+      "screenshot": "Screenshot",
+      "style": "Style",
+      "background": "Background",
+      "canvasWidthPx": "Canvas width (px)",
+      "outerPaddingPx": "Outer padding (px)",
+      "to": "to",
+      "lineRange": "Line range",
+      "showTitleBar": "Show title bar",
+      "showLineNumbers": "Show line numbers",
+      "sharpness": "Sharpness",
+      "options": {
+        "dark": "Dark",
+        "light": "Light",
+        "png": "PNG",
+        "jpeg": "JPEG",
+        "1x": "1x",
+        "2x": "2x",
+        "3x": "3x"
+      }
+    }
+  },
+  "previews": {
+    "ansibleViewer": {
+      "ansibleView": "Ansible View",
+      "hostsRolesAndNamedTasksForOperationalPlaybooks": "Hosts, roles, and named tasks for operational playbooks",
+      "roles": "Roles",
+      "namedTasks": "Named Tasks",
+      "noNamedTasksDetected": "No named tasks detected."
+    },
+    "configViewer": {
+      "searchSectionsKeysAndValues": "Search sections, keys, and values",
+      "configExplorerWithSearchAndExport": "Config explorer with search and export",
+      "noMatchingLines": "No matching lines."
+    },
+    "gitHubActionsViewer": {
+      "gitHubActions": "GitHub Actions",
+      "jobs": "Jobs",
+      "namedSteps": "Named Steps",
+      "noNamedStepsDetected": "No named steps detected."
+    },
+    "hclViewer": {
+      "terraformHcl": "Terraform / HCL",
+      "description": "Resources, modules, providers, and variables at a glance"
+    },
+    "htmlViewer": {
+      "htmlPreview": "HTML Preview"
+    },
+    "httpViewer": {
+      "httpCurlView": "HTTP / cURL View",
+      "request": "Request",
+      "headers": "Headers",
+      "noHeadersDetected": "No headers detected.",
+      "body": "Body",
+      "noBodyDetected": "No body detected.",
+      "description": "Inspect request method, endpoint, headers, and body quickly"
+    },
+    "icsViewer": {
+      "addToCalendar": "Add to Calendar"
+    },
+    "jsonViewer": {
+      "searchKeysPathsAndValues": "Search keys, paths, and values",
+      "expandAll": "Expand all",
+      "collapse": "Collapse",
+      "copyPretty": "Copy pretty",
+      "jsonView": "JSON View",
+      "options": {
+        "tree": "Tree",
+        "pretty": "Pretty",
+        "raw": "Raw"
+      }
+    },
+    "logViewer": {
+      "searchLogLines": "Search log lines",
+      "logView": "Log View",
+      "filterLevelsSearchIncidentsAndScanOutputFaster": "Filter levels, search incidents, and scan output faster",
+      "noMatchingLogLines": "No matching log lines."
+    },
+    "monitoringRulesViewer": {
+      "monitoringRules": "Monitoring Rules",
+      "prometheusGrafanaAndAlertRuleOverviews": "Prometheus, Grafana, and alert rule overviews"
+    },
+    "regexViewer": {
+      "flags": "g, i, m",
+      "insertYourTestStringHere": "insert your test string here",
+      "testInput": "Test Input"
+    },
+    "xmlViewer": {
+      "searchTagsAttributesTextAndPaths": "Search tags, attributes, text, and paths",
+      "expandAll": "Expand all",
+      "collapse": "Collapse",
+      "copyPretty": "Copy pretty",
+      "xmlView": "XML View",
+      "options": {
+        "tree": "Tree",
+        "pretty": "Pretty",
+        "raw": "Raw"
+      }
+    },
+    "yamlViewer": {
+      "searchKeysValuesAndPaths": "Search keys, values, and paths",
+      "expandAll": "Expand all",
+      "collapse": "Collapse",
+      "yamlView": "YAML View",
+      "noYamlNodesFound": "No YAML nodes found.",
+      "options": {
+        "root": "root",
+        "tree": "Tree",
+        "pretty": "Pretty",
+        "raw": "Raw"
+      },
+      "description": "Collapsible tree, search, copy, and export for YAML files"
+    },
+    "githubActionsViewer": {
+      "description": "Workflow triggers, jobs, and named steps at a glance"
+    }
+  },
+  "utility": {
+    "accessLogInspectorBase": {
+      "searchIpPathStatusReferrer": "Search IP, path, status, referrer...",
+      "accessLogs": "Access logs",
+      "topStatusCodes": "Top status codes",
+      "noParsedRequestsMatchTheCurrentFilters": "No parsed requests match the current filters.",
+      "topPaths": "Top paths",
+      "topIps": "Top IPs",
+      "topUserAgents": "Top user agents",
+      "requestTable": "Request table",
+      "status": "Status",
+      "method": "Method",
+      "path": "Path",
+      "options": {
+        "allStatuses": "All statuses",
+        "2xx": "2xx",
+        "3xx": "3xx",
+        "4xx": "4xx",
+        "5xx": "5xx"
+      }
+    },
+    "base64Tool": {
+      "mode": "Mode",
+      "input": "Input",
+      "base64": "Base64",
+      "base64Url": "Base64Url",
+      "decoded": "Decoded",
+      "options": {
+        "encode": "Encode",
+        "decode": "Decode"
+      }
+    },
+    "caseConverterTool": {
+      "sourceText": "Source text"
+    },
+    "colorConverterTool": {
+      "hexColor": "Hex color"
+    },
+    "composeStackGeneratorTool": {
+      "includeProxyService": "Include proxy service",
+      "includePostgresService": "Include Postgres service",
+      "includeRedisService": "Include Redis service",
+      "portMappings": "Port mappings",
+      "addPort": "add port",
+      "environmentVariables": "Environment variables",
+      "production": "production",
+      "volumes": "Volumes",
+      "addVolume": "add volume",
+      "networks": "Networks",
+      "app": "app",
+      "addNetwork": "add network",
+      "dependsOnServices": "Depends on services",
+      "postgres": "postgres",
+      "addDependency": "add dependency",
+      "command": "Command",
+      "entrypoint": "Entrypoint",
+      "proxyPorts": "Proxy ports",
+      "addProxyPort": "add proxy port",
+      "postgresEnvironment": "Postgres environment",
+      "preset": "Preset",
+      "serviceName": "Service name",
+      "image": "Image",
+      "containerName": "Container name",
+      "restartPolicy": "Restart policy",
+      "replicas": "Replicas",
+      "workingDirectory": "Working directory",
+      "proxyImage": "Proxy image",
+      "postgresImage": "Postgres image",
+      "redisImage": "Redis image",
+      "options": {
+        "blankService": "Blank service",
+        "nodeWebApp": "Node web app",
+        "pythonWebApp": "Python web app",
+        "javaApp": "Java app",
+        "staticNginxSite": "Static NGINX site",
+        "proxyAppPostgres": "Proxy + app + Postgres"
+      }
+    },
+    "cronExplainerTool": {
+      "samples": "Samples",
+      "cronExpression": "Cron expression",
+      "options": {
+        "custom": "Custom",
+        "everyHour": "Every hour",
+        "dailyAtMidnight": "Daily at midnight",
+        "weeklyOnMonday": "Weekly on Monday",
+        "monthlyOnThe1st": "Monthly on the 1st",
+        "every15Minutes": "Every 15 minutes",
+        "weekdayMornings": "Weekday mornings",
+        "yearlyOnJan1st": "Yearly on Jan 1st"
+      }
+    },
+    "dataToClassDiagramTool": {
+      "inputFormat": "Input format",
+      "rootClassName": "Root class name",
+      "showInferredFieldTypes": "Show inferred field types",
+      "sourceData": "Source data",
+      "options": {
+        "autoDetect": "Auto detect",
+        "json": "JSON",
+        "yaml": "YAML",
+        "csv": "CSV"
+      }
+    },
+    "dataToMermaidErTool": {
+      "inputFormat": "Input format",
+      "rootEntityName": "Root entity name",
+      "showInferredFieldTypes": "Show inferred field types",
+      "schemaLikeData": "Schema-like data",
+      "options": {
+        "autoDetect": "Auto detect",
+        "json": "JSON",
+        "yaml": "YAML",
+        "csv": "CSV"
+      }
+    },
+    "dataToMermaidTool": {
+      "chooseAChartPreset": "Choose a chart preset",
+      "loadPreset": "load preset",
+      "revenueByMonth": "Revenue by Month",
+      "value": "Value",
+      "selectOneOrMoreFields": "Select one or more fields",
+      "optionalSeriesGrouping": "Optional series grouping",
+      "pickOneOrMoreNumericFields": "Pick one or more numeric fields",
+      "everythingElse": "Everything else",
+      "examplePreset": "Example preset",
+      "inputFormat": "Input format",
+      "chartType": "Chart type",
+      "chartTitle": "Chart title",
+      "yAxisLabel": "Y axis label",
+      "decimals": "Decimals",
+      "yAxisRange": "Y axis range",
+      "emptyLabel": "Empty label",
+      "fieldSeparator": "Field separator",
+      "yAxisMin": "Y axis min",
+      "yAxisMax": "Y axis max",
+      "sourceData": "Source data",
+      "categoryGroupFields": "Category / group fields",
+      "splitIntoSeriesByFields": "Split into series by fields",
+      "numericFieldsToVisualize": "Numeric fields to visualize",
+      "aggregation": "Aggregation",
+      "sortGroups": "Sort groups",
+      "maxGroups": "Max groups",
+      "groupHiddenEntriesIntoEverythingElse": "Group hidden entries into “everything else”",
+      "everythingElseLabel": "Everything else label",
+      "maxSeries": "Max series",
+      "includeSeriesCommentsInMermaidCode": "Include series comments in Mermaid code",
+      "hideZeroOnlySeries": "Hide zero-only series",
+      "hideZeroOnlyGroups": "Hide zero-only groups",
+      "showValuesInThePieChart": "Show values in the pie chart",
+      "options": {
+        "groupedBars": "Grouped bars",
+        "multiLineTrends": "Multi-line trends",
+        "pieShare": "Pie share",
+        "comboChart": "Combo chart",
+        "yamlBarChart": "YAML bar chart",

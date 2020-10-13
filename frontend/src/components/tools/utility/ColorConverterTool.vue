@@ -33,38 +33,3 @@ const hsl = computed(() => {
   let h = 0
   let s = 0
 
-  if (d !== 0) {
-    s = d / (1 - Math.abs(2 * l - 1))
-    switch (max) {
-      case r:
-        h = 60 * (((g - b) / d) % 6)
-        break
-      case g:
-        h = 60 * ((b - r) / d + 2)
-        break
-      default:
-        h = 60 * ((r - g) / d + 4)
-    }
-  }
-
-  return {
-    h: Math.round((h + 360) % 360),
-    s: Math.round(s * 100),
-    l: Math.round(l * 100),
-  }
-})
-
-const result = computed(() =>
-  JSON.stringify(
-    {
-      hex: `#${normalizedHex.value}`,
-      rgb: `rgb(${rgb.value.r}, ${rgb.value.g}, ${rgb.value.b})`,
-      hsl: `hsl(${hsl.value.h}, ${hsl.value.s}%, ${hsl.value.l}%)`,
-    },
-    null,
-    2,
-  ),
-)
-</script>
-
-<template>
