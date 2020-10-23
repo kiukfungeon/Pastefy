@@ -89,3 +89,94 @@ public class PasteController extends HttpController {
             for (String tag : request.tags) {
                 paste.addTag(tag);
             }
+        }
+
+        response.success = true;
+        response.paste = PasteResponse.create(paste, exchange, user);
+
+
+        if (request.ai && !request.encrypted && Pastefy.getInstance().aiEnabled()) {
+            Pastefy.getInstance().executeAsync(() -> {
+                try {
+                    AtomicInteger count = new AtomicInteger();
+                    AbstractObject aiResponse = Pastefy.getInstance().getPasteAI().generateTags(paste);
+                    aiResponse.array("tags")
+                            .stream()
+                            .map(AbstractElement::string)
+                            .filter(t -> request.tags == null || !request.tags.contains(t))
+                            .filter(t -> count.incrementAndGet() < 6)
+                            .forEach(paste::addTag);
+
+                    if (paste.getType() != Paste.Type.PASTE) return;
+
+                    if ("".equals(paste.getTitle()) && !aiResponse.string("file_name", "").isEmpty()) {
+                        paste.setTitle(aiResponse.string("file_name"));
+                        paste.save();
+                    }
+                    if (!paste.getTitle().contains(".") && !aiResponse.string("file_extension", "").isEmpty()) {
+                        paste.setTitle(paste.getTitle() + "." + aiResponse.string("file_extension"));
+                        paste.save();
+                    }
+                } catch (Exception ignored) {}
+            });
+        }
+
+        return response;
+    }
+
+    @Get
+    public List<PasteResponse> getPastes(Exchange exchange, @Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
+        if (authKey != null)
+            authKey.checkPermission("pastes:read");
+
+        return PasteService.getAllPastes(exchange, PasteQueryParameters.from(exchange));
+    }
+
+    @Put("/{id}")
+    @With({"auth", "awaiting-access-check", "blocked-check"})
+    public ActionResponse putPaste(@Body EditPasteRequest request, @Path("id") String id, @Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
+        if (authKey != null)
+            authKey.checkPermission("pastes:edit", "pastes:write");
+
+        ActionResponse response = new ActionResponse();
+        Paste paste = Repo.get(Paste.class).where("key", id).first();
+
+        if (paste == null) {
+            throw new NotFoundException();
+        }
+
+        if ((paste.getUserId() != null && paste.getUserId().equals(user.getId())) || user.type == User.Type.ADMIN) {
+            if (request.title != null)
+                paste.setTitle(request.title);
+            if (request.content != null)
+                paste.setContent(request.content);
+            if (request.folder != null)
+                paste.setFolder(request.folder);
+            if (request.type != null)
+                paste.setType(request.type);
+            if (request.encrypted != null)
+                paste.setEncrypted(request.encrypted);
+            if (request.visibility != null)
+                paste.setVisibility(request.visibility);
+
+            if (request.expireAt != null && request.expireAt.length() >= 16) {
+                paste.setExpireAt(request.expireAt);
+            }
+
+            if (request.tags != null) {
+                List<String> tags = paste.getTags();
+                request.tags.stream().filter(t -> !tags.contains(t)).forEach(tag -> {
+                    PasteTag pTag = new PasteTag();
+                    pTag.paste = paste.getKey();
+                    pTag.tag = tag;
+                    pTag.save();
+                    TagListing.updateCount(pTag.tag);
+                });
+                tags.stream().filter(t -> !request.tags.contains(t)).forEach(t -> {
+                    Repo.get(PasteTag.class).where("paste", paste.getKey()).where("tag", t).delete();
+                });
+            }
+
+            paste.save();
+            response.success = true;
+        } else {
