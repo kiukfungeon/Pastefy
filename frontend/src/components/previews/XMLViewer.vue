@@ -58,3 +58,64 @@ const parserResult = computed(() => {
       error: undefined,
       pretty: serializer.serializeToString(documentNode),
     }
+  } catch (error) {
+    return {
+      root: undefined,
+      error: error instanceof Error ? error.message : 'Invalid XML',
+      pretty: props.xml,
+    }
+  }
+})
+
+const rootNode = computed(() => parserResult.value.root)
+const prettyXml = computed(() => parserResult.value.pretty)
+
+const viewOptions = [
+  { get label() { return t('previews.xmlViewer.options.tree') }, value: 'tree' },
+  { get label() { return t('previews.xmlViewer.options.pretty') }, value: 'pretty' },
+  { get label() { return t('previews.xmlViewer.options.raw') }, value: 'raw' },
+]
+
+const summary = computed(() => {
+  if (!rootNode.value) return parserResult.value.error || 'Invalid XML'
+  return rootNode.value.name
+})
+
+const stats = computed(() => {
+  let elements = 0
+  let attributes = 0
+  let textNodes = 0
+
+  const walk = (node?: XMLNodeEntry) => {
+    if (!node) return
+    elements++
+    attributes += node.attributes.length
+    if (node.text) textNodes++
+    node.children.forEach(walk)
+  }
+
+  walk(rootNode.value)
+
+  return { elements, attributes, textNodes }
+})
+
+const setExpanded = (path: string, expanded: boolean) => {
+  const next = new Set(expandedPaths.value)
+  if (expanded) next.add(path)
+  else next.delete(path)
+  expandedPaths.value = next
+}
+
+const isExpanded = (path: string) => expandedPaths.value.has(path)
+
+const expandAll = () => {
+  const next = new Set<string>(['root'])
+
+  const walk = (node?: XMLNodeEntry) => {
+    if (!node) return
+    next.add(node.path)
+    node.children.forEach(walk)
+  }
+
+  walk(rootNode.value)
+  expandedPaths.value = next
