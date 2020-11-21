@@ -10,3 +10,15 @@ import org.javawebstack.http.router.router.annotation.params.Path;
 import org.javawebstack.http.router.router.annotation.verbs.Get;
 import org.javawebstack.orm.Repo;
 import org.javawebstack.orm.query.Query;
+
+import java.util.List;
+
+@With("public-pastes-endpoint")
+@PathPrefix("/api/v2/public/tags")
+public class TagsController extends HttpController {
+    @Get
+    public List<TagListing> getTags(Exchange exchange) {
+        Query<TagListing> query = Repo.get(TagListing.class).query();
+
+        query.order("pasteCount", true);
+
