@@ -13,10 +13,3 @@ defineProps<{
   }>
 }>()
 </script>
-
-<template>
-  <section class="grid gap-4 md:grid-cols-3">
-    <router-link
-      v-for="item of items"
-      :key="item.slug"
-      :to="item.to"
