@@ -20,3 +20,26 @@ public class SyncToElasticCommand implements Callable<Integer> {
     @CommandLine.Option(names = {"-s", "--size"}, description = "Batch size")
     private int batchSize = 100;
 
+    @CommandLine.Option(names = {"-i", "--iterations"}, description = "Iterations")
+    private int iterations = 2000;
+
+    @CommandLine.Option(names = {"-t", "--threads"}, description = "Number of threads")
+    private int threadCount = 16;
+
+
+
+    @Override
+    public Integer call() throws Exception {
+        System.out.println("syncing");
+        final int size = this.batchSize;
+        final int iterations = this.iterations;
+        final int threadCount = 16;
+
+        ExecutorService executor = Executors.newFixedThreadPool(threadCount);
+
+        AtomicInteger syncedCount = new AtomicInteger(0);
+
+        for (int i = 0; i < iterations; i++) {
+            int finalI = i;
+            executor.submit(() -> {
+                System.out.println("iteration " + (finalI + 1) + "/" + iterations);

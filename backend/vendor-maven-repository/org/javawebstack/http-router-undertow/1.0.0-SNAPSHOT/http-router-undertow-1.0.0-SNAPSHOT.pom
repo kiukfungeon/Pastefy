@@ -24,3 +24,29 @@
             <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
+
+    <developers>
+        <developer>
+            <name>Jan Bebendorf</name>
+            <email>jan@bebendorf.eu</email>
+            <organization>JavaWebStack</organization>
+            <organizationUrl>https://javawebstack.org</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/JavaWebStack/http-router-undertow.git</connection>
+        <developerConnection>scm:git:ssh://github.com:JavaWebStack/http-router-undertow.git</developerConnection>
+        <url>https://github.com/JavaWebStack/http-router-undertow/tree/master</url>
+    </scm>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.javawebstack</groupId>
+            <artifactId>http-router</artifactId>
+            <version>1.0.3-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.undertow</groupId>
+            <artifactId>undertow-core</artifactId>

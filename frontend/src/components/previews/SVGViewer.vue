@@ -11,17 +11,3 @@ const src = ref('')
 
 const render = async () => {
   const pure = DOMPurify.sanitize(props.svg, {
-    USE_PROFILES: { svg: true },
-  })
-  const blob = new Blob([pure], { type: 'image/svg+xml' })
-  const url = URL.createObjectURL(blob)
-  src.value = url
-}
-onMounted(() => {
-  render()
-})
-watch(
-  () => props.svg,
-  useDebounceFn(() => {
-    render()
-  }, 500),
