@@ -127,3 +127,68 @@ const topIps = computed(() =>
     filteredRows.value.reduce<Record<string, number>>((acc, row) => {
       acc[row.ip] = (acc[row.ip] || 0) + 1
       return acc
+    }, {}),
+  )
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6),
+)
+
+const topUserAgents = computed(() =>
+  Object.entries(
+    filteredRows.value.reduce<Record<string, number>>((acc, row) => {
+      acc[row.userAgent] = (acc[row.userAgent] || 0) + 1
+      return acc
+    }, {}),
+  )
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6),
+)
+
+const statusBreakdown = computed(() =>
+  Object.entries(
+    filteredRows.value.reduce<Record<string, number>>((acc, row) => {
+      acc[String(row.status)] = (acc[String(row.status)] || 0) + 1
+      return acc
+    }, {}),
+  )
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 8),
+)
+
+const statusDotClass = (status: number) => {
+  if (status >= 500) return 'bg-red-500'
+  if (status >= 400) return 'bg-amber-500'
+  if (status >= 300) return 'bg-sky-500'
+  return 'bg-emerald-500'
+}
+
+const exportResult = computed(() => JSON.stringify(filteredRows.value, null, 2))
+</script>
+
+<template>
+  <UtilityShell
+    :control-title="props.server === 'nginx' ? 'NGINX Access Logs' : 'Apache Access Logs'"
+    control-description="Paste access logs, filter requests, and inspect parsed traffic details."
+    result-title="Parsed Requests"
+    result-description="Inspect status groups, top paths, and structured request rows."
+    fill-height
+  >
+    <template #controls>
+      <div class="grid gap-3 md:grid-cols-2">
+        <InputText v-model="search" :placeholder="$t('utility.accessLogInspectorBase.searchIpPathStatusReferrer')" fluid />
+        <Select v-model="statusFilter" :options="statusOptions" option-label="label" option-value="value" fluid />
+      </div>
+
+      <div>
+        <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.accessLogInspectorBase.accessLogs') }}</label>
+        <Textarea v-model="source" auto-resize rows="20" fluid />
+      </div>
+    </template>
+
+    <template #result>
+      <div class="space-y-4">
+        <div class="grid gap-3 md:grid-cols-4">
+          <div
+            v-for="entry of [
+              ['Requests', stats.requests],
+              ['Unique IPs', stats.uniqueIps],
