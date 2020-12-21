@@ -4,3 +4,6 @@ import AnalyticsDashboard from '@/components/analytics/AnalyticsDashboard.vue'
 
 useTitle('My analytics | pastefy')
 </script>
+
+<template>
+  <div class="mx-auto max-w-[1200px]">
