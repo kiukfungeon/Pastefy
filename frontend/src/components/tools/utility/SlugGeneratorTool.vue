@@ -22,3 +22,27 @@ const state = computed(() => {
 
   return {
     kebab: words.join('-'),
+    snake: words.join('_'),
+    constant: words.join('_').toUpperCase(),
+    camel: words
+      .map((word, index) =>
+        index === 0 ? word : `${word.charAt(0).toUpperCase()}${word.slice(1)}`,
+      )
+      .join(''),
+    pascal: words.map((word) => `${word.charAt(0).toUpperCase()}${word.slice(1)}`).join(''),
+  }
+})
+
+const result = computed(() => JSON.stringify(state.value, null, 2))
+</script>
+
+<template>
+  <UtilityShell>
+    <template #controls>
+      <label class="text-sm font-medium">{{ $t('utility.slugGeneratorTool.sourceText') }}</label>
+      <Textarea v-model="input" auto-resize rows="8" fluid />
+    </template>
+
+    <template #result>
+      <div class="grid gap-3">
+        <div
