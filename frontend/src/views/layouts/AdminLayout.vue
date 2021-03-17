@@ -11,3 +11,29 @@ const appInfo = useAppInfoStore()
       <div class="flex gap-1">
         <Button
           as="router-link"
+          :to="{ name: 'admin-home' }"
+          :label="$t('nav.home')"
+          size="small"
+          outlined
+          severity="contrast"
+        />
+        <Button
+          as="router-link"
+          :to="{ name: 'admin-users' }"
+          :label="$t('common.users')"
+          size="small"
+          outlined
+          severity="contrast"
+        />
+        <Button
+          as="router-link"
+          :to="{ name: 'admin-pastes' }"
+          :label="$t('paste.pastes')"
+          size="small"
+          outlined
+          severity="contrast"
+        />
+        <Button
+          v-if="appInfo.appInfo?.analytics_enabled"
+          as="router-link"
+          :to="{ name: 'admin-analytics' }"

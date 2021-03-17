@@ -14,19 +14,3 @@ public class OAuth2Callback implements OAuth2Strategy.HttpCallbackHandler {
         OAuth2Profile profile = callback.getProfile();
 
         User user = Repo.get(User.class).where("authId", profile.getId()).where("authProvider", provider).first();
-
-        if (user == null) {
-            user = new de.interaapps.pastefy.model.database.User();
-            int i = 1;
-            final String uniqueName = profile.getName().replaceAll("[^a-zA-Z0-9]", "");
-            user.uniqueName = uniqueName;
-            while (Repo.get(de.interaapps.pastefy.model.database.User.class).where("uniqueName", user.uniqueName).first() != null) {
-                user.uniqueName = uniqueName + i++;
-            }
-            user.authId = profile.getId();
-            user.authProvider = provider;
-
-            if (Pastefy.getInstance().getConfig().get("pastefy.grantaccessrequired", "false").equalsIgnoreCase("true"))
-                user.type = User.Type.AWAITING_ACCESS;
-        }
-
