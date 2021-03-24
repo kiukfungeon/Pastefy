@@ -4,10 +4,3 @@ import MermaidViewer from '@/components/previews/MermaidViewer.vue'
 import UtilityResultActions from '@/components/tools/utility/UtilityResultActions.vue'
 
 withDefaults(
-  defineProps<{
-    code: string
-    fileName?: string
-    placeholder?: string
-  }>(),
-  {
-    fileName: 'diagram.mmd',
