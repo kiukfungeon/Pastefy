@@ -30,3 +30,35 @@ import { useCurrentUserStore } from '@/stores/current-user.ts'
 import { useConfig } from '@/composables/config.ts'
 import { registerEventHandlers } from '@/utils/theme-logic.ts'
 import type { Router } from 'vue-router'
+import { createPlugin, plugins } from '@/plugins.ts'
+import { useComponentInjectionStore } from '@/stores/component-injections.ts'
+import { useAppStore } from '@/stores/app.ts'
+import i18next from '@/i18n.ts'
+import I18NextVue from 'i18next-vue'
+
+declare global {
+  interface Window {
+    pastefy: {
+      app: VueApp
+      router: Router
+      appInfoStore: typeof appInfoStore
+      config: typeof config
+      eventBus: Emitter<Events>
+      createPlugin: typeof createPlugin
+      client: typeof client
+      componentInjections: typeof componentInjections
+      vueFunctions: typeof vueFunctions
+    }
+    registerPastefyPlugin: { config: unknown; entrypoint: string }[]
+  }
+}
+
+export const client = axios.create({
+  baseURL: (import.meta.env.VITE_APP_BASE_URL as string) || undefined,
+})
+export const app = createApp(App)
+
+app.use(createPinia())
+app.use(router)
+app.use(I18NextVue, { i18next })
+

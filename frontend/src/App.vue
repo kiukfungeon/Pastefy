@@ -30,3 +30,19 @@ const currentUserStore = useCurrentUserStore()
             @click="rejectCallback"
             class="w-32 max-w-full"
             severity="contrast"
+            size="small"
+          />
+        </div>
+      </div>
+    </template>
+  </ConfirmDialog>
+
+  <Dialog
+    v-if="currentUserStore.user?.type === 'AWAITING_ACCESS'"
+    :visible="currentUserStore.user?.type === 'AWAITING_ACCESS'"
+    :header="$t('auth.awaitingAccess')"
+    modal
+    :closable="false"
+    class="w-[20rem] max-w-full"
+  >
+    <div class="flex flex-col gap-4">
