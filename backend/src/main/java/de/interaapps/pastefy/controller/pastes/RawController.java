@@ -31,3 +31,19 @@ public class RawController extends HttpController {
             return "404 - Paste not found";
         }
 
+
+        if (paste.isPrivate() && (user == null || !Objects.equals(user.id, paste.getUserId()))) {
+            throw new PastePrivateException();
+        }
+
+        if (paste.isPublic()) {
+            Pastefy.getInstance().executeAsync(() -> PublicPasteEngagement.addInterestFromPaste(paste, 1));
+        }
+
+        if (Pastefy.getInstance().analyticsEnabled()) {
+            Pastefy.getInstance().getAnalyticsService().track(exchange, paste, user, de.interaapps.pastefy.analytics.AnalyticsService.VisitType.RAW);
+        }
+
+        if (exchange.query("part") != null && paste.getType() == Paste.Type.MULTI_PASTE) {
+            AbstractObject part = paste.getMultiPasteParts()
+                    .stream()
