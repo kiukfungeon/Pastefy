@@ -10,7 +10,3 @@ const injectionStore = useComponentInjectionStore()
 </script>
 <template>
   <template v-if="type in injectionStore.injections">
-    <component
-      v-for="(comp, ind) of injectionStore.injections[type]"
-      :is="comp"
-      :value="value"
