@@ -107,3 +107,40 @@ export const inferSchemaGraph = (value: unknown, rootName = 'Root'): SchemaGraph
   }
 
   return {
+    entities: Array.from(entities.entries()).map(([name, fields]) => ({
+      name,
+      fields: Array.from(fields.entries())
+        .map(([fieldName, type]) => ({ name: fieldName, type }))
+        .sort((a, b) => a.name.localeCompare(b.name)),
+    })),
+    relations: relations.filter(
+      (relation, index, arr) =>
+        arr.findIndex(
+          (entry) =>
+            entry.from === relation.from &&
+            entry.to === relation.to &&
+            entry.label === relation.label &&
+            entry.kind === relation.kind,
+        ) === index,
+    ),
+  }
+}
+
+export const toMermaidERDiagram = (
+  graph: SchemaGraph,
+  options: {
+    includeTypes?: boolean
+  } = {},
+) => {
+  const lines = ['erDiagram']
+
+  graph.entities.forEach((entity) => {
+    const entityName = toMermaidSafeIdentifier(entity.name, 'Entity')
+    lines.push(`  ${entityName} {`)
+    entity.fields.forEach((field) => {
+      lines.push(
+        `    ${options.includeTypes === false ? 'field' : toMermaidSafeIdentifier(field.type, 'field')} ${toMermaidSafeIdentifier(field.name, 'field')}`,
+      )
+    })
+    lines.push('  }')
+  })
