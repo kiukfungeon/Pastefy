@@ -1,2 +1,8 @@
 package de.interaapps.pastefy.model.requests.auth;
 
+import java.util.List;
+
+public class InteraAppsExternalAccessRequest {
+    public String provider;
+    public String appId;
+    public String appSecret;
