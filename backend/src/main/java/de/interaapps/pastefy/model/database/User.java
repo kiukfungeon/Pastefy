@@ -88,3 +88,48 @@ public class User extends Model {
 
     public List<FolderResponse> getFolderWithChildren() {
         return Repo.get(Folder.class).where("userId", id).whereNull("parent").all().stream().map(folder -> new FolderResponse(folder, true, true, false, true)).collect(Collectors.toList());
+    }
+
+    public void sendNotification(Notification notification) {
+        notification.userId = id;
+        notification.save();
+    }
+
+    public boolean roleCheck() {
+        return type != Type.AWAITING_ACCESS && type != Type.BLOCKED;
+    }
+
+    public static User get(String id) {
+        return Repo.get(User.class).get(id);
+    }
+
+    public static User getByName(String name) {
+        return Repo.get(User.class).where("uniqueName", name).first();
+    }
+
+    public void star(Paste paste) {
+        if (!hasStarred(paste)) {
+            PasteStar pasteStar = new PasteStar();
+            pasteStar.paste = paste.getKey();
+            pasteStar.userId = id;
+            pasteStar.save();
+
+            Pastefy.getInstance().executeAsync(() -> {
+                ElasticStars.addStarCount(paste, this);
+                PublicPasteEngagement.addInterestFromPaste(paste, 20);
+            });
+        }
+    }
+
+    public void unstar(Paste paste) {
+        Repo.get(PasteStar.class)
+                .where("paste", paste.getKey())
+                .where("userId", id)
+                .delete();
+
+        Pastefy.getInstance().executeAsync(() -> {
+            ElasticStars.removeStarCount(paste, this);
+            PublicPasteEngagement.addInterestFromPaste(paste, -20);
+        });
+    }
+
