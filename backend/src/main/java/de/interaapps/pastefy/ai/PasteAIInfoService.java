@@ -63,3 +63,69 @@ public class PasteAIInfoService {
     }
 
 
+    private void sweepSafely() {
+        try {
+            sweep();
+        } catch (RuntimeException exception) {
+            LOGGER.log(Level.WARNING, "Unable to enqueue eligible pastes for AI metadata generation", exception);
+        }
+    }
+
+    private void sweep() {
+        int threshold = getEngagementThreshold();
+        Repo.get(PublicPasteEngagement.class)
+                .where("score", ">=", threshold)
+                .all()
+                .forEach(engagement -> {
+                    Paste paste = Repo.get(Paste.class).where("id", engagement.pasteId).first();
+                    enqueueIfEligible(paste);
+                });
+    }
+
+    private void handle(BackgroundJob job) {
+        Paste paste = Repo.get(Paste.class).where("id", job.entityId).first();
+        //if (!isEligible(paste)) return;
+
+        int sourceVersion = paste.getVersion() == null ? 0 : paste.getVersion();
+        if (sourceVersion != job.sourceVersion) {
+            enqueueIfEligible(paste);
+            return;
+        }
+
+        PasteAIInfo current = Repo.get(PasteAIInfo.class).get(paste.getId());
+        if (isCurrent(current, sourceVersion)) return;
+
+        AbstractObject generated = pastefy.getPasteAI().generateInfo(paste);
+
+        Paste freshPaste = Repo.get(Paste.class).where("id", paste.getId()).first();
+        int freshVersion = freshPaste.getVersion() == null ? 0 : freshPaste.getVersion();
+        if (freshVersion != sourceVersion) {
+            enqueueIfEligible(freshPaste);
+            return;
+        }
+
+        saveInfo(freshPaste, generated);
+    }
+
+    private void saveInfo(Paste paste, AbstractObject generated) {
+        AbstractArray tags = sanitizeTags(generated.array("tags", new AbstractArray()));
+        AbstractArray warnings = sanitizeWarnings(generated.array("system_warnings", new AbstractArray()));
+
+        PasteAIInfo info = Repo.get(PasteAIInfo.class).get(paste.getId());
+        if (info == null) info = new PasteAIInfo();
+
+        info.pasteId = paste.getId();
+        info.sourcePasteVersion = paste.getVersion() == null ? 0 : paste.getVersion();
+        info.promptVersion = PROMPT_VERSION;
+        info.provider = pastefy.getPasteAI().getProviderName();
+        info.model = pastefy.getPasteAI().getModel();
+        info.description = truncate(generated.string("description", "").trim(), 500);
+        info.tagsJson = tags;
+        info.warningsJson = warnings;
+        info.dangerous = generated.bool("dangerous", false);
+        info.maxSeverity = warnings.stream()
+                .map(AbstractElement::object)
+                .mapToInt(warning -> warning.number("severity", 0).intValue())
+                .max()
+                .orElse(0);
+        info.suggestedFilename = optionalTruncated(generated.string("suggested_filename", ""), 255);

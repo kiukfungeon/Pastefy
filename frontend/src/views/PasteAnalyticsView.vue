@@ -6,3 +6,7 @@ import AnalyticsDashboard from '@/components/analytics/AnalyticsDashboard.vue'
 
 useTitle('Paste analytics | pastefy')
 const route = useRoute()
+const endpoint = computed(() => `/api/v2/analytics/pastes/${route.params.paste as string}`)
+</script>
+
+<template>
