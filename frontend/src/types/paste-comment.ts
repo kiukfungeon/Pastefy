@@ -13,8 +13,3 @@ export type PasteComment = {
 
 export type PasteCommentMarker = {
   line: number
-  profiles: PublicUser[]
-  additional_profiles: number
-}
-
-export type CreatePasteComment = {
