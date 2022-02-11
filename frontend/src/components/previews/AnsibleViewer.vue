@@ -28,18 +28,3 @@ const tasks = computed(() =>
           <div class="text-xs font-semibold tracking-[0.2em] uppercase opacity-60">{{ $t('previews.ansibleViewer.ansibleView') }}</div>
           <div class="mt-1 text-xs opacity-60">{{ $t('previews.ansibleViewer.hostsRolesAndNamedTasksForOperationalPlaybooks') }}</div>
         </div>
-        <div class="flex flex-wrap gap-2">
-          <Tag :value="`${hosts.length} hosts`" severity="contrast" />
-          <Tag :value="`${roles.length} roles`" severity="contrast" />
-          <Tag :value="`${tasks.length} tasks`" severity="contrast" />
-        </div>
-      </div>
-
-      <div v-if="hosts.length" class="flex flex-wrap gap-2">
-        <Tag v-for="host in hosts" :key="host" :value="host" severity="info" />
-      </div>
-    </div>
-
-    <div class="grid gap-0 border-b border-neutral-200 dark:border-neutral-700 md:grid-cols-2">
-      <div class="border-b border-neutral-200 p-4 md:border-r md:border-b-0 dark:border-neutral-700">
-        <div class="mb-3 text-xs font-semibold tracking-[0.2em] uppercase opacity-60">{{ $t('previews.ansibleViewer.roles') }}</div>
