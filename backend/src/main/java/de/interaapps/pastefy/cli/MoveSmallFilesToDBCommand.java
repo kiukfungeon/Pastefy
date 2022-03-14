@@ -44,26 +44,3 @@ public class MoveSmallFilesToDBCommand implements Callable<Integer> {
         final int threadCount = 32;
 
         ExecutorService executor = Executors.newFixedThreadPool(threadCount);
-
-        AtomicInteger syncedCount = new AtomicInteger(0);
-        AtomicInteger syncedOffCount = new AtomicInteger(0);
-
-        for (int i = 0; i < iterations; i++) {
-            int finalI = i;
-            executor.submit(() -> {
-                System.out.println("iteration " + (finalI + 1) + "/" + iterations);
-                List<Paste> all = Repo.get(Paste.class).query()
-                        .whereNull("userId")
-                        .where("storageType", Paste.StorageType.S3)
-                        .limit(size)
-                        .offset(finalI * size + offset)
-                        .all();
-                System.out.println("Size: "+all.size()+ "/"+size);
-                all.forEach(p -> {
-                    String content = p.getContent();
-                    System.out.println(p.getKey());
-                    if (content.length() < maxLength) {
-                        try {
-                            MinioPaste.delete(p);
-
-                            p.setContent(content);

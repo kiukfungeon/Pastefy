@@ -9,3 +9,15 @@ import { useConfig } from '@/composables/config.ts'
 const prefTheme = usePreferredColorScheme()
 const config = useConfig()
 
+const props = defineProps<{
+  diff: string
+  inEditor?: boolean
+}>()
+
+const renderedDiff = computed(() => {
+  if (config.value && prefTheme.value) {
+    // Do nothing with it, just to trigger re-computation
+  }
+
+  return html(props.diff, {
+    colorScheme: document.documentElement.classList.contains('dark')
