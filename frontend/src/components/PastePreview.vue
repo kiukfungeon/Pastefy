@@ -26,3 +26,59 @@ const GitHubActionsViewer = defineAsyncComponent(
 )
 const AnsibleViewer = defineAsyncComponent(() => import('@/components/previews/AnsibleViewer.vue'))
 const MonitoringRulesViewer = defineAsyncComponent(
+  () => import('@/components/previews/MonitoringRulesViewer.vue'),
+)
+const AsciinemaViewer = defineAsyncComponent(
+  () => import('@/components/previews/AsciinemaViewer.vue'),
+)
+
+const props = defineProps<{
+  fileName?: string
+  contents: string
+  type: string
+  inEditor?: boolean
+}>()
+
+const specialType = computed(() =>
+  resolveSpecialPreviewType(props.fileName, props.contents, props.type),
+)
+</script>
+<template>
+  <CSVViewer v-if="type === 'csv'" :csv="contents" :inEditor />
+  <MarkdownViewer v-else-if="type === 'markdown'" :markdown="contents" :inEditor />
+  <HCLViewer v-else-if="specialType === 'hcl'" :hcl="contents" :file-name="fileName" />
+  <LogViewer v-else-if="specialType === 'log'" :logs="contents" />
+  <HTTPViewer v-else-if="specialType === 'http'" :request="contents" />
+  <GitHubActionsViewer v-else-if="specialType === 'github-actions'" :workflow="contents" />
+  <AnsibleViewer v-else-if="specialType === 'ansible'" :playbook="contents" />
+  <MonitoringRulesViewer v-else-if="specialType === 'monitoring-rules'" :config="contents" />
+  <MermaidViewer
+    v-else-if="
+      type === 'mermaid' ||
+      type === 'mmd' ||
+      fileName?.endsWith('.mmd') ||
+      fileName?.endsWith('.mermaid')
+    "
+    :mermaid-code="contents"
+    :inEditor
+  />
+  <SVGViewer v-else-if="fileName?.endsWith('.svg')" :svg="contents" :inEditor />
+  <GeoJSONViewer v-else-if="fileName?.endsWith('.geojson')" :geo-json="contents" :inEditor />
+  <DiffViewer v-else-if="type === 'diff'" :diff="contents" :inEditor />
+  <ICSViewer v-else-if="type === 'ics'" :ics="contents" :inEditor />
+  <RegexViewer v-else-if="type === 'regex'" :regex="contents" :inEditor />
+  <JSONViewer v-else-if="type === 'json' || fileName?.endsWith('.json')" :json="contents" />
+  <HTMLViewer
+    v-else-if="type === 'html' || fileName?.endsWith('.html') || fileName?.endsWith('.htm')"
+    :html="contents"
+  />
+  <XMLViewer
+    v-else-if="
+      type === 'xml' ||
+      fileName?.endsWith('.xml') ||
+      fileName?.endsWith('.xhtml') ||
+      fileName?.endsWith('.iml')
+    "
+    :xml="contents"
+  />
+  <YAMLViewer

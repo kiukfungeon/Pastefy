@@ -10,3 +10,7 @@ const endpoint = computed(() => `/api/v2/analytics/pastes/${route.params.paste a
 </script>
 
 <template>
+  <div class="mx-auto max-w-[1200px]">
+    <AnalyticsDashboard
+      :endpoint="endpoint"
+      title="Paste analytics"
