@@ -315,3 +315,320 @@
       "addToCalendar": "Add to Calendar"
     },
     "jsonViewer": {
+      "searchKeysPathsAndValues": "Search keys, paths, and values",
+      "expandAll": "Expand all",
+      "collapse": "Collapse",
+      "copyPretty": "Copy pretty",
+      "jsonView": "JSON View",
+      "options": {
+        "tree": "Tree",
+        "pretty": "Pretty",
+        "raw": "Raw"
+      }
+    },
+    "logViewer": {
+      "searchLogLines": "Search log lines",
+      "logView": "Log View",
+      "filterLevelsSearchIncidentsAndScanOutputFaster": "Filter levels, search incidents, and scan output faster",
+      "noMatchingLogLines": "No matching log lines."
+    },
+    "monitoringRulesViewer": {
+      "monitoringRules": "Monitoring Rules",
+      "prometheusGrafanaAndAlertRuleOverviews": "Prometheus, Grafana, and alert rule overviews"
+    },
+    "regexViewer": {
+      "flags": "g, i, m",
+      "insertYourTestStringHere": "insert your test string here",
+      "testInput": "Test Input"
+    },
+    "xmlViewer": {
+      "searchTagsAttributesTextAndPaths": "Search tags, attributes, text, and paths",
+      "expandAll": "Expand all",
+      "collapse": "Collapse",
+      "copyPretty": "Copy pretty",
+      "xmlView": "XML View",
+      "options": {
+        "tree": "Tree",
+        "pretty": "Pretty",
+        "raw": "Raw"
+      }
+    },
+    "yamlViewer": {
+      "searchKeysValuesAndPaths": "Search keys, values, and paths",
+      "expandAll": "Expand all",
+      "collapse": "Collapse",
+      "yamlView": "YAML View",
+      "noYamlNodesFound": "No YAML nodes found.",
+      "options": {
+        "root": "root",
+        "tree": "Tree",
+        "pretty": "Pretty",
+        "raw": "Raw"
+      },
+      "description": "Collapsible tree, search, copy, and export for YAML files"
+    },
+    "githubActionsViewer": {
+      "description": "Workflow triggers, jobs, and named steps at a glance"
+    }
+  },
+  "utility": {
+    "accessLogInspectorBase": {
+      "searchIpPathStatusReferrer": "Search IP, path, status, referrer...",
+      "accessLogs": "Access logs",
+      "topStatusCodes": "Top status codes",
+      "noParsedRequestsMatchTheCurrentFilters": "No parsed requests match the current filters.",
+      "topPaths": "Top paths",
+      "topIps": "Top IPs",
+      "topUserAgents": "Top user agents",
+      "requestTable": "Request table",
+      "status": "Status",
+      "method": "Method",
+      "path": "Path",
+      "options": {
+        "allStatuses": "All statuses",
+        "2xx": "2xx",
+        "3xx": "3xx",
+        "4xx": "4xx",
+        "5xx": "5xx"
+      }
+    },
+    "base64Tool": {
+      "mode": "Mode",
+      "input": "Input",
+      "base64": "Base64",
+      "base64Url": "Base64Url",
+      "decoded": "Decoded",
+      "options": {
+        "encode": "Encode",
+        "decode": "Decode"
+      }
+    },
+    "caseConverterTool": {
+      "sourceText": "Source text"
+    },
+    "colorConverterTool": {
+      "hexColor": "Hex color"
+    },
+    "composeStackGeneratorTool": {
+      "includeProxyService": "Include proxy service",
+      "includePostgresService": "Include Postgres service",
+      "includeRedisService": "Include Redis service",
+      "portMappings": "Port mappings",
+      "addPort": "add port",
+      "environmentVariables": "Environment variables",
+      "production": "production",
+      "volumes": "Volumes",
+      "addVolume": "add volume",
+      "networks": "Networks",
+      "app": "app",
+      "addNetwork": "add network",
+      "dependsOnServices": "Depends on services",
+      "postgres": "postgres",
+      "addDependency": "add dependency",
+      "command": "Command",
+      "entrypoint": "Entrypoint",
+      "proxyPorts": "Proxy ports",
+      "addProxyPort": "add proxy port",
+      "postgresEnvironment": "Postgres environment",
+      "preset": "Preset",
+      "serviceName": "Service name",
+      "image": "Image",
+      "containerName": "Container name",
+      "restartPolicy": "Restart policy",
+      "replicas": "Replicas",
+      "workingDirectory": "Working directory",
+      "proxyImage": "Proxy image",
+      "postgresImage": "Postgres image",
+      "redisImage": "Redis image",
+      "options": {
+        "blankService": "Blank service",
+        "nodeWebApp": "Node web app",
+        "pythonWebApp": "Python web app",
+        "javaApp": "Java app",
+        "staticNginxSite": "Static NGINX site",
+        "proxyAppPostgres": "Proxy + app + Postgres"
+      }
+    },
+    "cronExplainerTool": {
+      "samples": "Samples",
+      "cronExpression": "Cron expression",
+      "options": {
+        "custom": "Custom",
+        "everyHour": "Every hour",
+        "dailyAtMidnight": "Daily at midnight",
+        "weeklyOnMonday": "Weekly on Monday",
+        "monthlyOnThe1st": "Monthly on the 1st",
+        "every15Minutes": "Every 15 minutes",
+        "weekdayMornings": "Weekday mornings",
+        "yearlyOnJan1st": "Yearly on Jan 1st"
+      }
+    },
+    "dataToClassDiagramTool": {
+      "inputFormat": "Input format",
+      "rootClassName": "Root class name",
+      "showInferredFieldTypes": "Show inferred field types",
+      "sourceData": "Source data",
+      "options": {
+        "autoDetect": "Auto detect",
+        "json": "JSON",
+        "yaml": "YAML",
+        "csv": "CSV"
+      }
+    },
+    "dataToMermaidErTool": {
+      "inputFormat": "Input format",
+      "rootEntityName": "Root entity name",
+      "showInferredFieldTypes": "Show inferred field types",
+      "schemaLikeData": "Schema-like data",
+      "options": {
+        "autoDetect": "Auto detect",
+        "json": "JSON",
+        "yaml": "YAML",
+        "csv": "CSV"
+      }
+    },
+    "dataToMermaidTool": {
+      "chooseAChartPreset": "Choose a chart preset",
+      "loadPreset": "load preset",
+      "revenueByMonth": "Revenue by Month",
+      "value": "Value",
+      "selectOneOrMoreFields": "Select one or more fields",
+      "optionalSeriesGrouping": "Optional series grouping",
+      "pickOneOrMoreNumericFields": "Pick one or more numeric fields",
+      "everythingElse": "Everything else",
+      "examplePreset": "Example preset",
+      "inputFormat": "Input format",
+      "chartType": "Chart type",
+      "chartTitle": "Chart title",
+      "yAxisLabel": "Y axis label",
+      "decimals": "Decimals",
+      "yAxisRange": "Y axis range",
+      "emptyLabel": "Empty label",
+      "fieldSeparator": "Field separator",
+      "yAxisMin": "Y axis min",
+      "yAxisMax": "Y axis max",
+      "sourceData": "Source data",
+      "categoryGroupFields": "Category / group fields",
+      "splitIntoSeriesByFields": "Split into series by fields",
+      "numericFieldsToVisualize": "Numeric fields to visualize",
+      "aggregation": "Aggregation",
+      "sortGroups": "Sort groups",
+      "maxGroups": "Max groups",
+      "groupHiddenEntriesIntoEverythingElse": "Group hidden entries into “everything else”",
+      "everythingElseLabel": "Everything else label",
+      "maxSeries": "Max series",
+      "includeSeriesCommentsInMermaidCode": "Include series comments in Mermaid code",
+      "hideZeroOnlySeries": "Hide zero-only series",
+      "hideZeroOnlyGroups": "Hide zero-only groups",
+      "showValuesInThePieChart": "Show values in the pie chart",
+      "options": {
+        "groupedBars": "Grouped bars",
+        "multiLineTrends": "Multi-line trends",
+        "pieShare": "Pie share",
+        "comboChart": "Combo chart",
+        "yamlBarChart": "YAML bar chart",
+        "autoDetect": "Auto detect",
+        "json": "JSON",
+        "yaml": "YAML",
+        "csv": "CSV",
+        "pieChart": "Pie chart",
+        "barChart": "Bar chart",
+        "lineChart": "Line chart",
+        "multiLine": "Multi-line",
+        "sum": "Sum",
+        "average": "Average",
+        "min": "Min",
+        "max": "Max",
+        "count": "Count",
+        "keepInputOrder": "Keep input order",
+        "labelAZ": "Label A-Z",
+        "labelZA": "Label Z-A",
+        "valueHighLow": "Value high -> low",
+        "valueLowHigh": "Value low -> high",
+        "autoRange": "Auto range",
+        "manualRange": "Manual range"
+      },
+      "descriptions": {
+        "revenueByMonthAndRegion": "Revenue by month and region.",
+        "profitTrendPerRegionOverTime": "Profit trend per region over time.",
+        "orderShareByRegion": "Order share by region.",
+        "revenueBarsWithProfitLine": "Revenue bars with profit line.",
+        "revenueValuesFromYamlGroupedByMonthAndRegion": "Revenue values from YAML grouped by month and region."
+      }
+    },
+    "diffLabTool": {
+      "before": "Before",
+      "after": "After",
+      "options": {
+        "lineDiff": "Line diff",
+        "wordDiff": "Word diff",
+        "characterDiff": "Character diff"
+      }
+    },
+    "dockerfileGeneratorTool": {
+      "useMultiStageBuild": "Use multi-stage build",
+      "addHealthcheck": "Add healthcheck",
+      "runCommands": "RUN commands",
+      "npmCi": "npm ci",
+      "addCommand": "add command",
+      "healthcheckCommand": "Healthcheck command",
+      "environmentVariables": "Environment variables",
+      "production": "production",
+      "imageLabels": "Image labels",
+      "volumes": "Volumes",
+      "addVolume": "add volume",
+      "exposedPorts": "Exposed ports",
+      "addPort": "add port",
+      "entrypointCommand": "Entrypoint command",
+      "defaultCommand": "Default command",
+      "preset": "Preset",
+      "baseImage": "Base image",
+      "runtimeImage": "Runtime image",
+      "buildWorkdir": "Build workdir",
+      "runtimeWorkdir": "Runtime workdir",
+      "copySource": "Copy source",
+      "copyTarget": "Copy target",
+      "restartPolicyHint": "Restart policy hint",
+      "networkHint": "Network hint",
+      "options": {
+        "nodeJsApp": "Node.js app",
+        "bunApp": "Bun app",
+        "javaJar": "Java JAR",
+        "pythonApp": "Python app",
+        "staticSiteOnNginx": "Static site on NGINX",
+        "goApp": "Go app",
+        "rustApp": "Rust app",
+        "phpApache": "PHP Apache",
+        "phpFpm": "PHP-FPM",
+        "dotNetApp": ".NET app",
+        "customImage": "Custom image"
+      }
+    },
+    "hashGeneratorTool": {
+      "inputText": "Input text"
+    },
+    "htmlEntityTool": {
+      "mode": "Mode",
+      "input": "Input",
+      "options": {
+        "encode": "Encode",
+        "decode": "Decode"
+      }
+    },
+    "infraToMermaidTool": {
+      "direction": "Direction",
+      "diagramTitle": "Diagram title",
+      "infraFile": "Infra file",
+      "options": {
+        "autoDetect": "Auto detect",
+        "dockerCompose": "Docker Compose",
+        "kubernetes": "Kubernetes",
+        "terraformHcl": "Terraform / HCL",
+        "gitHubActions": "GitHub Actions",
+        "leftToRight": "Left to right",
+        "topToBottom": "Top to bottom"
+      }
+    },
+    "jarStartScriptGeneratorTool": {
+      "useNohupBackgroundLaunch": "Use nohup background launch",
+      "scriptType": "Script type",
