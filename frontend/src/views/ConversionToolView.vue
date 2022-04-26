@@ -280,3 +280,97 @@ const relatedToolLinks = computed(() =>
               class="inline-flex items-center gap-2 rounded-md border border-neutral-200 bg-white px-3 py-1 text-sm text-neutral-700 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
             >
               <i :class="`ti ti-${tool.icon}`" />
+              {{ $t('tools.conversion') }}
+            </span>
+            <span class="text-sm text-neutral-500 dark:text-neutral-400">
+              {{ tool.sourceFileName }} -> {{ tool.targetFileName }}
+            </span>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <h1 class="text-3xl leading-tight font-bold md:text-4xl">{{ tool.title }}</h1>
+            <p class="max-w-[70ch] text-base text-neutral-600 dark:text-neutral-300">
+              {{ tool.description }}
+            </p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-end gap-2">
+          <Button
+            as="router-link"
+            :to="{ name: 'tool-home', hash: '#conversions' }"
+            :label="$t('tools.allConversions')"
+            icon="ti ti-layout-grid"
+            severity="contrast"
+            outlined
+          />
+          <Button
+            @click="resetExample"
+            :label="$t('tools.resetExample')"
+            icon="ti ti-restore"
+            severity="contrast"
+            outlined
+          />
+          <ToolPinButton kind="conversion" :slug="tool.slug" :label="false" />
+          <Button
+            @click="isExpanded = !isExpanded"
+            :icon="`ti ${isExpanded ? 'ti-minimize' : 'ti-maximize'}`"
+            severity="contrast"
+            outlined
+            :aria-label="$t(isExpanded ? 'tools.exitFocusMode' : 'tools.focusMode')"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="grid gap-5" :class="[showEditor ? 'xl:grid-cols-[1.02fr_0.98fr]' : 'grid-cols-1', isExpanded ? 'min-h-0 flex-1' : '']">
+      <div
+        v-if="showEditor"
+        class="flex flex-col overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-800"
+        :class="isExpanded ? 'min-h-0 h-full' : 'min-h-[42rem]'"
+      >
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-200 bg-white px-4 py-3 dark:border-neutral-700 dark:bg-neutral-900">
+          <div>
+            <h2 class="font-semibold">{{ $t('common.source') }}</h2>
+            <p class="text-sm text-neutral-500 dark:text-neutral-400">
+              Paste or edit the original content you want to transform.
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-sm text-neutral-500 dark:text-neutral-400">{{ tool.sourceFileName }}</span>
+            <Button
+              @click="showEditor = false"
+              icon="ti ti-layout-sidebar-left-collapse"
+              severity="contrast"
+              text
+              :aria-label="$t('common.hideEditor')"
+            />
+          </div>
+        </div>
+
+        <div class="min-h-0 flex-1 overflow-hidden">
+          <Codemirror
+            :key="$t('views.conversionToolView.pasteYourSourceContentHere')"
+            v-model:value="currentContents"
+            :options="sourceOptions"
+            height="100%"
+            width="100%"
+            :placeholder="$t('views.conversionToolView.pasteYourSourceContentHere')"
+          />
+        </div>
+      </div>
+
+      <div
+        class="flex flex-col overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-800"
+        :class="isExpanded ? 'min-h-0 h-full' : 'min-h-[42rem]'"
+      >
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-200 bg-white px-4 py-3 dark:border-neutral-700 dark:bg-neutral-900">
+          <div>
+            <h2 class="font-semibold">{{ $t('common.output') }}</h2>
+            <p class="text-sm text-neutral-500 dark:text-neutral-400">
+              {{ $t('views.conversionToolView.convertedResultWithPreviewAndQuickActions') }}
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <Button
+              v-if="!showEditor"
