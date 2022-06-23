@@ -40,3 +40,46 @@ const jwtState = computed(() => {
 })
 
 const formatTimestamp = (value: unknown) =>
+  typeof value === 'number' ? new Date(value * 1000).toLocaleString() : undefined
+
+const jwtTiming = computed(() => {
+  if (!('payload' in jwtState.value) || !jwtState.value.payload) return []
+
+  const payload = jwtState.value.payload as Record<string, unknown>
+  const current = now.value.getTime()
+
+  return ['iat', 'nbf', 'exp']
+    .map((key) => {
+      const raw = payload[key]
+      if (typeof raw !== 'number') return undefined
+      let status = 'neutral'
+      if (key === 'exp') status = raw * 1000 > current ? 'valid' : 'expired'
+      else if (key === 'nbf') status = raw * 1000 > current ? 'pending' : 'active'
+      return {
+        key,
+        label: formatTimestamp(raw),
+        status,
+      }
+    })
+    .filter(Boolean)
+})
+
+const result = computed(() => {
+  if (!('payload' in jwtState.value) || !jwtState.value.payload) return ''
+  return JSON.stringify(
+    {
+      header: jwtState.value.header,
+      payload: jwtState.value.payload,
+      signature: jwtState.value.signature,
+    },
+    null,
+    2,
+  )
+})
+</script>
+
+<template>
+  <UtilityShell>
+    <template #controls>
+      <label class="text-sm font-medium">JWT</label>
+      <Textarea v-model="jwtInput" auto-resize rows="8" fluid />
