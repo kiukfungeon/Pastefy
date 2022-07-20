@@ -27,17 +27,3 @@ const state = computed(() => {
   }
 
   const el = document.createElement('textarea')
-  el.innerHTML = input.value
-  return { value: el.value }
-})
-</script>
-
-<template>
-  <UtilityShell>
-    <template #controls>
-      <label class="text-sm font-medium">{{ $t('utility.htmlEntityTool.mode') }}</label>
-      <Select v-model="mode" :options="modes" option-label="label" option-value="value" />
-      <label class="text-sm font-medium">{{ $t('utility.htmlEntityTool.input') }}</label>
-      <Textarea v-model="input" auto-resize rows="10" fluid />
-    </template>
-

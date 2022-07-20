@@ -30,3 +30,35 @@ Visit the docs for everything around Pastefy here: https://docs.pastefy.app
   - See your created pastes
   - delete created pastes
 - Create paste with `curl -F f=@file.txt pastefy.app`
+- Extensions:
+  - VS-Code
+  - Raycast
+- Previews for (file extension)
+  - **[See examples here](https://pastefy.app/EByZpNoS)**
+  - Markdown (.md)
+  - Mermaid (.mermaid or .mmd)
+  - SVG (.svg)
+  - CSV (.csv)
+  - GeoJSON (.geojson)
+  - Diff (.diff)
+  - calendar (.ics)
+  - regex (.regex)
+  - [Asciinema recordings](https://docs.pastefy.app/features/integrations/asciinema.html) (.cast) [(Example)](https://pastefy.app/ar9ehz8w)
+
+# Overview
+- [Screenshots](#Screenshots)
+- Deploy
+  - [Docker](https://docs.pastefy.app/self-hosting/installation/docker.html)
+  - [Docker-Compose](https://docs.pastefy.app/self-hosting/installation/docker-compose.html)
+  - [Container-Less](#Container-Less)
+- [Configuration](https://docs.pastefy.app/self-hosting/configuration.html)
+- [Develop](#Develop)
+- [API](https://docs.pastefy.app/api/)
+
+# Screenshots
+<img src="./.github/screenshots/home.png" width="46%" >
+<img src="./.github/screenshots/paste.png" width="46%" >
+<img src="./.github/screenshots/new.png" width="46%" >
+<img src="./.github/screenshots/fullscreen.png" width="46%" >
+
+## Deploy
