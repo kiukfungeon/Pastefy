@@ -17,13 +17,3 @@ import org.javawebstack.webutils.config.Config;
 
 import java.util.Map;
 
-@PathPrefix("/api/v2/auth")
-public class InteraAppsExternalAccessController extends HttpController {
-    @Post("/iaea")
-    public String iaea(@Body InteraAppsExternalAccessRequest request, Exchange exchange) {
-        Map<String, OAuth2Provider> providers = Pastefy.getInstance().getOAuth2Strategy().getProviders();
-
-        if (providers.containsKey("interaapps")) {
-
-            Config config = Pastefy.getInstance().getConfig();
-
