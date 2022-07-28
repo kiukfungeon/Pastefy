@@ -399,3 +399,806 @@
       "topPaths": "Top paths",
       "topIps": "Top IPs",
       "topUserAgents": "Top user agents",
+      "requestTable": "Request table",
+      "status": "Status",
+      "method": "Method",
+      "path": "Path",
+      "options": {
+        "allStatuses": "All statuses",
+        "2xx": "2xx",
+        "3xx": "3xx",
+        "4xx": "4xx",
+        "5xx": "5xx"
+      }
+    },
+    "base64Tool": {
+      "mode": "Mode",
+      "input": "Input",
+      "base64": "Base64",
+      "base64Url": "Base64Url",
+      "decoded": "Decoded",
+      "options": {
+        "encode": "Encode",
+        "decode": "Decode"
+      }
+    },
+    "caseConverterTool": {
+      "sourceText": "Source text"
+    },
+    "colorConverterTool": {
+      "hexColor": "Hex color"
+    },
+    "composeStackGeneratorTool": {
+      "includeProxyService": "Include proxy service",
+      "includePostgresService": "Include Postgres service",
+      "includeRedisService": "Include Redis service",
+      "portMappings": "Port mappings",
+      "addPort": "add port",
+      "environmentVariables": "Environment variables",
+      "production": "production",
+      "volumes": "Volumes",
+      "addVolume": "add volume",
+      "networks": "Networks",
+      "app": "app",
+      "addNetwork": "add network",
+      "dependsOnServices": "Depends on services",
+      "postgres": "postgres",
+      "addDependency": "add dependency",
+      "command": "Command",
+      "entrypoint": "Entrypoint",
+      "proxyPorts": "Proxy ports",
+      "addProxyPort": "add proxy port",
+      "postgresEnvironment": "Postgres environment",
+      "preset": "Preset",
+      "serviceName": "Service name",
+      "image": "Image",
+      "containerName": "Container name",
+      "restartPolicy": "Restart policy",
+      "replicas": "Replicas",
+      "workingDirectory": "Working directory",
+      "proxyImage": "Proxy image",
+      "postgresImage": "Postgres image",
+      "redisImage": "Redis image",
+      "options": {
+        "blankService": "Blank service",
+        "nodeWebApp": "Node web app",
+        "pythonWebApp": "Python web app",
+        "javaApp": "Java app",
+        "staticNginxSite": "Static NGINX site",
+        "proxyAppPostgres": "Proxy + app + Postgres"
+      }
+    },
+    "cronExplainerTool": {
+      "samples": "Samples",
+      "cronExpression": "Cron expression",
+      "options": {
+        "custom": "Custom",
+        "everyHour": "Every hour",
+        "dailyAtMidnight": "Daily at midnight",
+        "weeklyOnMonday": "Weekly on Monday",
+        "monthlyOnThe1st": "Monthly on the 1st",
+        "every15Minutes": "Every 15 minutes",
+        "weekdayMornings": "Weekday mornings",
+        "yearlyOnJan1st": "Yearly on Jan 1st"
+      }
+    },
+    "dataToClassDiagramTool": {
+      "inputFormat": "Input format",
+      "rootClassName": "Root class name",
+      "showInferredFieldTypes": "Show inferred field types",
+      "sourceData": "Source data",
+      "options": {
+        "autoDetect": "Auto detect",
+        "json": "JSON",
+        "yaml": "YAML",
+        "csv": "CSV"
+      }
+    },
+    "dataToMermaidErTool": {
+      "inputFormat": "Input format",
+      "rootEntityName": "Root entity name",
+      "showInferredFieldTypes": "Show inferred field types",
+      "schemaLikeData": "Schema-like data",
+      "options": {
+        "autoDetect": "Auto detect",
+        "json": "JSON",
+        "yaml": "YAML",
+        "csv": "CSV"
+      }
+    },
+    "dataToMermaidTool": {
+      "chooseAChartPreset": "Choose a chart preset",
+      "loadPreset": "load preset",
+      "revenueByMonth": "Revenue by Month",
+      "value": "Value",
+      "selectOneOrMoreFields": "Select one or more fields",
+      "optionalSeriesGrouping": "Optional series grouping",
+      "pickOneOrMoreNumericFields": "Pick one or more numeric fields",
+      "everythingElse": "Everything else",
+      "examplePreset": "Example preset",
+      "inputFormat": "Input format",
+      "chartType": "Chart type",
+      "chartTitle": "Chart title",
+      "yAxisLabel": "Y axis label",
+      "decimals": "Decimals",
+      "yAxisRange": "Y axis range",
+      "emptyLabel": "Empty label",
+      "fieldSeparator": "Field separator",
+      "yAxisMin": "Y axis min",
+      "yAxisMax": "Y axis max",
+      "sourceData": "Source data",
+      "categoryGroupFields": "Category / group fields",
+      "splitIntoSeriesByFields": "Split into series by fields",
+      "numericFieldsToVisualize": "Numeric fields to visualize",
+      "aggregation": "Aggregation",
+      "sortGroups": "Sort groups",
+      "maxGroups": "Max groups",
+      "groupHiddenEntriesIntoEverythingElse": "Group hidden entries into “everything else”",
+      "everythingElseLabel": "Everything else label",
+      "maxSeries": "Max series",
+      "includeSeriesCommentsInMermaidCode": "Include series comments in Mermaid code",
+      "hideZeroOnlySeries": "Hide zero-only series",
+      "hideZeroOnlyGroups": "Hide zero-only groups",
+      "showValuesInThePieChart": "Show values in the pie chart",
+      "options": {
+        "groupedBars": "Grouped bars",
+        "multiLineTrends": "Multi-line trends",
+        "pieShare": "Pie share",
+        "comboChart": "Combo chart",
+        "yamlBarChart": "YAML bar chart",
+        "autoDetect": "Auto detect",
+        "json": "JSON",
+        "yaml": "YAML",
+        "csv": "CSV",
+        "pieChart": "Pie chart",
+        "barChart": "Bar chart",
+        "lineChart": "Line chart",
+        "multiLine": "Multi-line",
+        "sum": "Sum",
+        "average": "Average",
+        "min": "Min",
+        "max": "Max",
+        "count": "Count",
+        "keepInputOrder": "Keep input order",
+        "labelAZ": "Label A-Z",
+        "labelZA": "Label Z-A",
+        "valueHighLow": "Value high -> low",
+        "valueLowHigh": "Value low -> high",
+        "autoRange": "Auto range",
+        "manualRange": "Manual range"
+      },
+      "descriptions": {
+        "revenueByMonthAndRegion": "Revenue by month and region.",
+        "profitTrendPerRegionOverTime": "Profit trend per region over time.",
+        "orderShareByRegion": "Order share by region.",
+        "revenueBarsWithProfitLine": "Revenue bars with profit line.",
+        "revenueValuesFromYamlGroupedByMonthAndRegion": "Revenue values from YAML grouped by month and region."
+      }
+    },
+    "diffLabTool": {
+      "before": "Before",
+      "after": "After",
+      "options": {
+        "lineDiff": "Line diff",
+        "wordDiff": "Word diff",
+        "characterDiff": "Character diff"
+      }
+    },
+    "dockerfileGeneratorTool": {
+      "useMultiStageBuild": "Use multi-stage build",
+      "addHealthcheck": "Add healthcheck",
+      "runCommands": "RUN commands",
+      "npmCi": "npm ci",
+      "addCommand": "add command",
+      "healthcheckCommand": "Healthcheck command",
+      "environmentVariables": "Environment variables",
+      "production": "production",
+      "imageLabels": "Image labels",
+      "volumes": "Volumes",
+      "addVolume": "add volume",
+      "exposedPorts": "Exposed ports",
+      "addPort": "add port",
+      "entrypointCommand": "Entrypoint command",
+      "defaultCommand": "Default command",
+      "preset": "Preset",
+      "baseImage": "Base image",
+      "runtimeImage": "Runtime image",
+      "buildWorkdir": "Build workdir",
+      "runtimeWorkdir": "Runtime workdir",
+      "copySource": "Copy source",
+      "copyTarget": "Copy target",
+      "restartPolicyHint": "Restart policy hint",
+      "networkHint": "Network hint",
+      "options": {
+        "nodeJsApp": "Node.js app",
+        "bunApp": "Bun app",
+        "javaJar": "Java JAR",
+        "pythonApp": "Python app",
+        "staticSiteOnNginx": "Static site on NGINX",
+        "goApp": "Go app",
+        "rustApp": "Rust app",
+        "phpApache": "PHP Apache",
+        "phpFpm": "PHP-FPM",
+        "dotNetApp": ".NET app",
+        "customImage": "Custom image"
+      }
+    },
+    "hashGeneratorTool": {
+      "inputText": "Input text"
+    },
+    "htmlEntityTool": {
+      "mode": "Mode",
+      "input": "Input",
+      "options": {
+        "encode": "Encode",
+        "decode": "Decode"
+      }
+    },
+    "infraToMermaidTool": {
+      "direction": "Direction",
+      "diagramTitle": "Diagram title",
+      "infraFile": "Infra file",
+      "options": {
+        "autoDetect": "Auto detect",
+        "dockerCompose": "Docker Compose",
+        "kubernetes": "Kubernetes",
+        "terraformHcl": "Terraform / HCL",
+        "gitHubActions": "GitHub Actions",
+        "leftToRight": "Left to right",
+        "topToBottom": "Top to bottom"
+      }
+    },
+    "jarStartScriptGeneratorTool": {
+      "useNohupBackgroundLaunch": "Use nohup background launch",
+      "scriptType": "Script type",
+      "appName": "App name",
+      "jarFile": "JAR file",
+      "workingDirectory": "Working directory",
+      "xms": "Xms",
+      "xmx": "Xmx",
+      "springProfile": "Spring profile",
+      "port": "Port",
+      "extraJvmArgs": "Extra JVM args",
+      "extraAppArgs": "Extra app args",
+      "logFile": "Log file",
+      "options": {
+        "startSh": "start.sh",
+        "startBat": "start.bat"
+      }
+    },
+    "jsonStringTool": {
+      "mode": "Mode",
+      "input": "Input",
+      "options": {
+        "escape": "Escape",
+        "unescape": "Unescape"
+      }
+    },
+    "jwtInspectorTool": {
+      "header": "Header",
+      "payload": "Payload"
+    },
+    "keyValueListField": {
+      "removeEntry": "Remove entry",
+      "noEntriesYet": "No entries yet."
+    },
+    "loremIpsumTool": {
+      "generateAgain": "generate again",
+      "mode": "Mode",
+      "count": "Count",
+      "options": {
+        "paragraphs": "Paragraphs",
+        "sentences": "Sentences",
+        "words": "Words"
+      }
+    },
+    "markdownToMermaidTool": {
+      "mode": "Mode",
+      "direction": "Direction",
+      "maxDepth": "Max depth",
+      "markdown": "Markdown",
+      "options": {
+        "mindmap": "Mindmap",
+        "flowchart": "Flowchart",
+        "topToBottom": "Top to bottom",
+        "leftToRight": "Left to right"
+      }
+    },
+    "mermaidImageExportTool": {
+      "copyMermaid": "copy mermaid",
+      "scale": "Scale",
+      "padding": "Padding",
+      "background": "Background",
+      "watermark": "Watermark",
+      "mermaidCode": "Mermaid code",
+      "options": {
+        "png": "PNG",
+        "svg": "SVG"
+      }
+    },
+    "mermaidThemeBuilderTool": {
+      "addMermaidCodeToPreviewTheThemedDiagram": "Add Mermaid code to preview the themed diagram.",
+      "curve": "Curve",
+      "fontFamily": "Font family",
+      "primaryColor": "Primary color",
+      "primaryTextColor": "Primary text color",
+      "borderColor": "Border color",
+      "lineColor": "Line color",
+      "tertiaryColor": "Tertiary color",
+      "background": "Background",
+      "nodeSpacing": "Node spacing",
+      "rankSpacing": "Rank spacing",
+      "padding": "Padding",
+      "mermaidSource": "Mermaid source",
+      "options": {
+        "base": "Base",
+        "default": "Default",
+        "dark": "Dark",
+        "forest": "Forest",
+        "neutral": "Neutral",
+        "basis": "Basis",
+        "linear": "Linear",
+        "step": "Step",
+        "monotone": "Monotone"
+      }
+    },
+    "numberBaseTool": {
+      "inputBase": "Input base",
+      "value": "Value",
+      "options": {
+        "binary": "Binary",
+        "octal": "Octal",
+        "decimal": "Decimal",
+        "hex": "Hex"
+      }
+    },
+    "passwordGeneratorTool": {
+      "generateAgain": "generate again",
+      "count": "Count",
+      "length": "Length",
+      "uppercaseLetters": "Uppercase letters",
+      "lowercaseLetters": "Lowercase letters",
+      "numbers": "Numbers",
+      "symbols": "Symbols",
+      "excludeAmbiguousCharacters": "Exclude ambiguous characters"
+    },
+    "queryStringTool": {
+      "queryString": "Query string",
+      "rebuilt": "Rebuilt",
+      "parsed": "Parsed"
+    },
+    "regexEscapeTool": {
+      "mode": "Mode",
+      "input": "Input",
+      "options": {
+        "escape": "Escape",
+        "unescape": "Unescape"
+      }
+    },
+    "sqlToMermaidErTool": {
+      "showSqlFieldTypes": "Show SQL field types",
+      "sqlSchema": "SQL schema"
+    },
+    "secretGeneratorTool": {
+      "generateAgain": "generate again",
+      "mode": "Mode",
+      "count": "Count",
+      "length": "Length",
+      "options": {
+        "uuid": "UUID",
+        "hexToken": "Hex token",
+        "base64UrlToken": "Base64Url token"
+      }
+    },
+    "slugGeneratorTool": {
+      "sourceText": "Source text"
+    },
+    "stringListField": {
+      "removeEntry": "Remove entry",
+      "noEntriesYet": "No entries yet."
+    },
+    "systemdServiceGeneratorTool": {
+      "serviceName": "Service name",
+      "description": "Description",
+      "user": "User",
+      "group": "Group",
+      "workingDirectory": "Working directory",
+      "restartPolicy": "Restart policy",
+      "execStartCommand": "ExecStart command",
+      "environmentVariables": "Environment variables"
+    },
+    "textSorterTool": {
+      "lines": "Lines",
+      "removeDuplicates": "Remove duplicates",
+      "reverseOrder": "Reverse order",
+      "caseSensitiveSort": "Case-sensitive sort"
+    },
+    "timestampConverterTool": {
+      "useCurrentUnixTime": "use current unix time",
+      "timestampOrDate": "Timestamp or date"
+    },
+    "urlEncoderTool": {
+      "mode": "Mode",
+      "input": "Input",
+      "options": {
+        "encode": "Encode",
+        "decode": "Decode"
+      }
+    },
+    "utilityResultActions": {
+      "copyResult": "copy result"
+    },
+    "webServerConfigGeneratorBase": {
+      "hostnamesSiteEntries": "Hostnames / site entries",
+      "addHost": "add host",
+      "enableTlsHttps": "Enable TLS / HTTPS",
+      "redirectWwwToPrimaryDomain": "Redirect www to primary domain",
+      "enableCompression": "Enable compression",
+      "addBasicSecurityHeaders": "Add basic security headers",
+      "enableHsts": "Enable HSTS",
+      "protectWithBasicAuth": "Protect with basic auth",
+      "cacheStaticAssets": "Cache static assets",
+      "enableSpaFallback": "Enable SPA fallback",
+      "forwardClientIpHeaders": "Forward client IP headers",
+      "extraHeaders": "Extra headers",
+      "xRobotsTag": "X-Robots-Tag",
+      "noindex": "noindex",
+      "trustedProxyIpsCidrs": "Trusted proxy IPs / CIDRs",
+      "addProxy": "add proxy",
+      "siteMode": "Site mode",
+      "tlsMode": "TLS mode",
+      "letsEncryptEmail": "Let's Encrypt email",
+      "certificatePath": "Certificate path",
+      "keyPath": "Key path",
+      "accessLogPath": "Access log path",
+      "errorLogPath": "Error log path",
+      "rootPath": "Root path",
+      "upstreamHost": "Upstream host",
+      "upstreamPort": "Upstream port",
+      "forwardedIpHeader": "Forwarded IP header",
+      "basicAuthUser": "Basic auth user",
+      "passwordHashPlaceholder": "Password hash / placeholder",
+      "options": {
+        "reverseProxy": "Reverse proxy",
+        "staticSite": "Static site",
+        "manualCertificatePaths": "Manual certificate paths"
+      }
+    },
+    "wordStatsTool": {
+      "textInput": "Text input",
+      "mostCommonWords": "Most common words",
+      "addMoreTextToSeeCommonWords": "Add more text to see common words."
+    }
+  },
+  "views": {
+    "aboutView": {
+      "thisIsAnAboutPage": "This is an about page"
+    },
+    "conversionToolView": {
+      "pasteYourSourceContentHere": "Paste your source content here...",
+      "convertedResultWithPreviewAndQuickActions": "Converted result with preview and quick actions."
+    },
+    "homeView": {
+      "apiDocs": "API docs",
+      "explore": "explore",
+      "openTools": "open tools",
+      "pastefy": "Pastefy",
+      "explorePublicPastes": "Explore Public Pastes",
+      "richFileViews": "Rich file views",
+      "convert": "Convert",
+      "formatTransforms": "Format transforms",
+      "utilities": "Utilities",
+      "smallDevHelpers": "Small dev helpers",
+      "tools": "Tools",
+      "previewConvertAndInspect": "Preview, Convert, and Inspect",
+      "richFileViewsDescription": "JSON, YAML, Markdown, HTML, logs, configs, diagrams, and more.",
+      "formatTransformsDescription": "Move between JSON, YAML, CSV, HTTP, cURL, env files, and more.",
+      "utilitiesDescription": "Generate hashes, inspect JWTs, explain cron, count words, and more.",
+      "toolsDescription": "Use Pastefy tools without creating a paste first. Open live preview labs, format converters, and developer utilities, then share only when you are ready."
+    },
+    "markdownArticleView": {
+      "unlockArticle": "Unlock Article",
+      "openRegularPasteView": "Open Regular Paste View",
+      "viewMultiPaste": "View Multi-Paste",
+      "viewPaste": "View Paste",
+      "thisArticleIsEncrypted": "This article is encrypted",
+      "articleView": "ARTICLE VIEW",
+      "untitled": "Untitled Article",
+      "markdownOnly": "This article view is only available for markdown pastes."
+    },
+    "previewPresentationView": {
+      "unlockPreview": "Unlock Preview",
+      "openRegularPasteView": "Open Regular Paste View",
+      "rawFile": "Raw File",
+      "viewCode": "View Code",
+      "thisPreviewIsEncrypted": "This preview is encrypted",
+      "presentationView": "Presentation View"
+    },
+    "previewToolView": {
+      "startTypingToSeeThePreview": "Start typing to see the preview..."
+    },
+    "publicUserView": {
+      "searchThisUser": "Search This User",
+      "seeAllPastesInAdmin": "See All Pastes In Admin",
+      "publicPastes": "Public Pastes"
+    },
+    "readerShareModesView": {
+      "openPaste": "Open Paste",
+      "thisShareSheetIsEncrypted": "This share sheet is encrypted",
+      "readerShareModes": "Reader & Share Modes",
+      "options": {
+        "defaultPaste": "Default Paste",
+        "rawFile": "Raw File",
+        "articleView": "Article View",
+        "presentationView": "Presentation View"
+      },
+      "descriptions": {
+        "theFullPastefyPastePageWithCodeActionsMetadataAndSharingTools": "The full Pastefy paste page with code, actions, metadata, and sharing tools.",
+        "thePlainRawFileUrlForDirectDownloadsScriptsAndIntegrations": "The plain raw file URL for direct downloads, scripts, and integrations.",
+        "aReaderFriendlyLayoutForSharingMarkdownLikeaPolishedArticle": "A reader-friendly layout for sharing markdown like a polished article.",
+        "aFocusedPreviewPageForTablesDiagramsMapsSvgsDiffsJsonHtmlAndTerminalReplays": "A focused preview page for tables, diagrams, maps, SVGs, diffs, JSON, HTML, and terminal replays.",
+        "aDirectArticleLinkToThisMarkdownFileInsideTheMultiPaste": "A direct article link to this markdown file inside the multi-paste.",
+        "aDirectPresentationLinkToThisPreviewableFileInsideTheMultiPaste": "A direct presentation link to this previewable file inside the multi-paste."
+      }
+    },
+    "tagView": {
+      "publicPastes": "Public Pastes"
+    },
+    "toolCategoryView": {
+      "categorySummary": "Category summary",
+      "previewTools": "Preview Tools",
+      "conversionTools": "Conversion Tools",
+      "utilityTools": "Utility Tools",
+      "helpersGeneratorsAndInspectorsInThisCategory": "Helpers, generators, and inspectors in this category.",
+      "relatedCategories": "Related Categories",
+      "nearbyToolCategoriesThatFitSimilarWorkflows": "Nearby tool categories that fit similar workflows.",
+      "categoryNotFound": "Category not found",
+      "summaryDescription": "Built for share-ready workflows and cleaner developer exploration.",
+      "notFoundDescription": "This tool category does not exist or does not have a public page yet."
+    },
+    "toolIndexView": {
+      "openPreviewTool": "open a preview tool",
+      "searchToolsFormatsAndConverters": "Search tools, formats, and converters...",
+      "pastefyTools": "Pastefy Tools",
+      "whatYouCanDoHere": "What you can do here",
+      "previewStructuredFormatsWithDedicatedViewers": "Preview structured formats with dedicated viewers.",
+      "convertDataBetweenCommonDeveloperFormats": "Convert data between common developer formats.",
+      "pinnedTools": "Pinned Tools",
+      "browseByCategory": "Browse by Category",
+      "previewTools": "Preview Tools",
+      "conversions": "Conversions",
+      "noConversionToolsMatchYourSearchYet": "No conversion tools match your search yet.",
+      "utilities": "Utilities",
+      "noUtilityToolsMatchYourSearchYet": "No utility tools match your search yet.",
+      "descriptions": {
+        "usePastefyToolsToPreviewStructuredFilesConvertFormatsLikeJsonAndYamlAndCreateAPasteOnlyWhenYouAreReadyToShare": "Use Pastefy tools to preview structured files, convert formats like JSON and YAML, and create a paste only when you are ready to share."
+      },
+      "createWhenReady": "Create a real paste only when the output is ready to share."
+    },
+    "adminPastes": {
+      "searchByTitleContentOrCreator": "Search by title, content, or creator",
+      "clearUserFilter": "Clear User Filter",
+      "moreFromUser": "More From User",
+      "noPastesMatchTheCurrentFilters": "No pastes match the current filters.",
+      "by": "by",
+      "options": {
+        "allVisibilities": "All visibilities",
+        "public": "Public",
+        "unlisted": "Unlisted",
+        "private": "Private",
+        "newestFirst": "Newest first",
+        "oldestFirst": "Oldest first"
+      }
+    },
+    "adminUsers": {
+      "searchByUsernameEmailOrProvider": "Search by username, email, or provider",
+      "grantAccess": "Grant Access",
+      "makeAdmin": "Make Admin",
+      "setUser": "Set User",
+      "block": "Block",
+      "viewPastes": "View Pastes",
+      "noUsersMatchTheCurrentFilters": "No users match the current filters.",
+      "provider": "Provider:",
+      "options": {
+        "allRoles": "All roles",
+        "admins": "Admins",
+        "users": "Users",
+        "awaitingAccess": "Awaiting access",
+        "blocked": "Blocked"
+      }
+    },
+    "loginViaApi": {
+      "loggingIn": "Logging in..."
+    },
+    "apiKeysPage": {
+      "apiDocs": "api-docs",
+      "addApiKey": "add api-key",
+      "apiKeys": "Api Keys",
+      "apiDocsTab": "API Docs",
+      "oAuth2Apps": "OAuth2 Apps"
+    },
+    "asciinemaConnectView": {
+      "visitApiKeysPage": "Visit API-Keys page",
+      "connectingYourAccountWithAsciicema": "Connecting your account with Asciicema.",
+      "createApiKey": "Create Api Key",
+      "addApiKeyToAsciicemaConfig": "Add Api-Key to Asciicema Config",
+      "bash": "bash"
+    },
+    "adminLayout": {
+      "admin": "Admin"
+    },
+    "searchPastes": {
+      "quickModal": "quick modal",
+      "clearFilters": "clear filters",
+      "searchTitlesContentOrEnterUsername": "Search titles, content, or enter @username",
+      "markdownJsonLangTs": "markdown,json,lang-ts",
+      "findTheRightPasteFaster": "Find the right paste faster",
+      "searchQuery": "Search query",
+      "scope": "Scope",
+      "resultsPerPage": "Results per page",
+      "pasteType": "Paste type",
+      "encryption": "Encryption",
+      "folderState": "Folder state",
+      "separateMultipleTagsWithCommas": "Separate multiple tags with commas.",
+      "userMatch": "User match",
+      "noPublicUserMatched": "No public user matched",
+      "options": {
+        "public": "Public",
+        "mine": "Mine",
+        "starred": "Starred",
+        "newestFirst": "Newest first",
+        "oldestFirst": "Oldest first",
+        "titleAZ": "Title A-Z",
+        "titleZA": "Title Z-A",
+        "12PerPage": "12 per page",
+        "24PerPage": "24 per page",
+        "48PerPage": "48 per page",
+        "allVisibilities": "All visibilities",
+        "unlisted": "Unlisted",
+        "private": "Private",
+        "allPasteTypes": "All paste types",
+        "singlePastes": "Single pastes",
+        "multiPastes": "Multi pastes",
+        "allEncryptionStates": "All encryption states",
+        "plainOnly": "Plain only",
+        "encryptedOnly": "Encrypted only",
+        "allFolderStates": "All folder states",
+        "rootLevelOnly": "Root level only",
+        "onlyInsideFolders": "Only inside folders"
+      },
+      "descriptions": {
+        "searchAllPublicPastes": "Search all public pastes.",
+        "searchYourOwnPastes": "Search your own pastes.",
+        "searchYourStarredCollection": "Search your starred collection."
+      }
+    },
+    "userHome": {
+      "descriptions": {
+        "openTheEditorAndStartaNewPasteRightAway": "Open the editor and start a new paste right away.",
+        "findSnippetsTitlesAndContentAcrossYourSavedWork": "Find snippets, titles, and content across your saved work.",
+        "previewConvertAndInspectContentWithoutPublishingIt": "Preview, convert, and inspect content without publishing it.",
+        "jumpIntoModerationUsersAndRecentPlatformActivity": "Jump into moderation, users, and recent platform activity.",
+        "browsePublicPastesAndDiscoverWhatOthersAreSharing": "Browse public pastes and discover what others are sharing."
+      }
+    }
+  },
+  "apiKeys": {
+    "deleteTitle": "Delete API key",
+    "deleteConfirm": "Are you sure you want to delete this API key?",
+    "loginRequiredSummary": "Login required",
+    "loginRequiredDetail": "You need to be logged in to view your API keys."
+  },
+  "catalog": {
+    "preview": {
+      "markdown-editor": {
+        "title": "Markdown Editor & Article Preview",
+        "shortTitle": "Markdown",
+        "description": "Write Markdown on the left and see the rendered article preview on the right before you decide to publish it."
+      },
+      "json-viewer": {
+        "title": "JSON Viewer & Formatter",
+        "shortTitle": "JSON",
+        "description": "Inspect, format, and preview JSON structures with a live editor and the richer JSON tools side by side."
+      },
+      "html-preview": {
+        "title": "HTML Preview Sandbox",
+        "shortTitle": "HTML",
+        "description": "Prototype HTML snippets in a lightweight split view and render them in the built-in sandbox before sharing."
+      },
+      "xml-viewer": {
+        "title": "XML Viewer & Inspector",
+        "shortTitle": "XML",
+        "description": "Load XML, inspect nested nodes, and validate the rendered structure in a tool page built for config and document files."
+      },
+      "yaml-viewer": {
+        "title": "YAML Viewer & Tree Explorer",
+        "shortTitle": "YAML",
+        "description": "Explore YAML like a structured document with collapsible sections, a live editor, and an instant preview."
+      },
+      "csv-viewer": {
+        "title": "CSV Table Preview",
+        "shortTitle": "CSV",
+        "description": "Preview CSV data in a readable table layout and tweak the source without needing to create a paste first."
+      },
+      "mermaid-live-editor": {
+        "title": "Mermaid Diagram Live Preview",
+        "shortTitle": "Mermaid",
+        "description": "Edit Mermaid diagrams with a live visual render so architecture and flowchart snippets are share-ready faster."
+      },
+      "geojson-viewer": {
+        "title": "GeoJSON Map Preview",
+        "shortTitle": "GeoJSON",
+        "description": "Preview spatial data with a map-first experience while editing raw GeoJSON side by side."
+      },
+      "svg-viewer": {
+        "title": "SVG Viewer",
+        "shortTitle": "SVG",
+        "description": "Test SVG snippets in a clean split layout and see the resulting vector preview immediately."
+      },
+      "diff-viewer": {
+        "title": "Diff Viewer",
+        "shortTitle": "Diff",
+        "description": "Review patches and code changes in a dedicated diff preview page that behaves more like a quick review tool."
+      },
+      "env-viewer": {
+        "title": ".env / Config Viewer",
+        "shortTitle": "Config",
+        "description": "Inspect environment-style config files in a dedicated preview tool that is useful for app settings and deployment data."
+      },
+      "terraform-viewer": {
+        "title": "Terraform / HCL Preview",
+        "shortTitle": "Terraform",
+        "description": "Edit Terraform and HCL files with a dedicated infrastructure preview, then publish the snippet when it is ready."
+      },
+      "log-viewer": {
+        "title": "Log Viewer",
+        "shortTitle": "Logs",
+        "description": "Paste application or server logs into a live viewer to filter and inspect them before creating a shareable paste."
+      },
+      "http-viewer": {
+        "title": "HTTP / cURL Preview",
+        "shortTitle": "HTTP",
+        "description": "Compose HTTP requests or cURL calls and inspect them in a dedicated request preview before publishing or sharing."
+      },
+      "github-actions-viewer": {
+        "title": "GitHub Actions Workflow Preview",
+        "shortTitle": "Actions",
+        "description": "Inspect workflow YAML with a specialized GitHub Actions preview that highlights jobs and steps while you edit."
+      },
+      "ansible-viewer": {
+        "title": "Ansible Playbook Preview",
+        "shortTitle": "Ansible",
+        "description": "Work on Ansible playbooks in a split editor and preview tasks, roles, and hosts in a clearer operational view."
+      },
+      "prometheus-rules-viewer": {
+        "title": "Prometheus / Alert Rules Preview",
+        "shortTitle": "Alerts",
+        "description": "Preview monitoring rules and alert groups in a page tailored to observability configs and alert definitions."
+      },
+      "regex-lab": {
+        "title": "Regex Tester",
+        "shortTitle": "Regex",
+        "description": "Prototype, inspect, and share regular expressions with a dedicated regex-focused preview."
+      },
+      "terminal-cast-viewer": {
+        "title": "Terminal Cast Preview",
+        "shortTitle": "Terminal Cast",
+        "description": "Preview recorded terminal sessions and shell demos before you publish them as pastes."
+      },
+      "calendar-viewer": {
+        "title": "ICS Calendar Preview",
+        "shortTitle": "Calendar",
+        "description": "Inspect calendar invites and event schedules in a quick reader-friendly preview."
+      }
+    },
+    "conversion": {
+      "json-to-yaml": {
+        "title": "Convert JSON to YAML",
+        "shortTitle": "JSON -> YAML",
+        "description": "Turn API payloads or config objects into clean YAML for infra and docs workflows."
+      },
+      "yaml-to-json": {
+        "title": "Convert YAML to JSON",
+        "shortTitle": "YAML -> JSON",
+        "description": "Turn deployment and config-style YAML into machine-friendly JSON."
+      },

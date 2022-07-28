@@ -27,3 +27,33 @@ public class DiscordOAuth2Provider implements OAuth2Provider {
     }
 
     public OAuth2Callback callback(AbstractObject queryParameters, String callbackUrl) {
+        AbstractObject abstractObject = discordClient.post("/api/oauth2/token")
+                .header("User-Agent", "JWSPassportClient/1")
+                .formBodyString(new QueryString()
+                        .set("client_id", clientId)
+                        .set("client_secret", secret)
+                        .set("code", queryParameters.string("code"))
+                        .set("grant_type", "authorization_code")
+                        .set("redirect_uri", callbackUrl)
+                        .set("scope", String.join(" ", scopes))
+                        .toString()
+                )
+                .data().object();
+        return new OAuth2Callback(this, abstractObject.string("access_token"), abstractObject.string("refresh_token"));
+    }
+
+    public String redirect(String callbackUrl) {
+        try {
+            return "https://discord.com/api/oauth2/authorize?response_type=code&client_id=" + clientId + "&prompt=consent&scope=" + URLEncoder.encode(String.join(" ", scopes), "UTF-8") + "&redirect_uri=" + URLEncoder.encode(callbackUrl, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static class OAuth2Callback extends de.interaapps.pastefy.auth.strategies.oauth2.OAuth2Callback {
+        public OAuth2Callback(OAuth2Provider provider, String accessToken, String refreshToken) {
+            super(provider, accessToken, refreshToken);
+        }
+
+        public HTTPClient createApiClient() {
