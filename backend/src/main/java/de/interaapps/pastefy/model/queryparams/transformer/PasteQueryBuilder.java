@@ -48,3 +48,54 @@ public class PasteQueryBuilder extends ListQueryTransformer<Paste, PasteResponse
 
             if (params.filters.has("createdAt")) {
                 publicPasteEngagements.where("createdAt", ">", params
+                        .filters
+                        .get("createdAt").object().string("$gt"));
+            }
+
+
+            List<PublicPasteEngagement> engagements = publicPasteEngagements.all();
+
+            query.whereIn("id", engagements.stream().map(p -> p.pasteId).toArray());
+            return;
+        }
+        super.applyORMOrder(params, query, field, asc);
+    }
+
+    @Override
+    protected void ormFieldFilter(QueryGroup<Paste> query, String operator, String key, AbstractElement value, boolean isOrFilter) {
+        if (key.equals("starredBy")) {
+            Function<Query<PasteStar>, Query<PasteStar>> queryQueryFunction = (q) -> q
+                    .where(PasteStar.class, "paste", "=", Paste.class, "key")
+                    .where("userId", value.string());
+            if (isOrFilter) {
+                query.orWhereExists(PasteStar.class, queryQueryFunction);
+                return;
+            }
+            query.whereExists(PasteStar.class, queryQueryFunction);
+            return;
+        }
+        super.ormFieldFilter(query, operator, key, value, isOrFilter);
+    }
+
+    @Override
+    public ObjectBuilder<BoolQuery> buildElasticSearchQuery(Exchange exchange, ListQueryParameters params, BoolQuery.Builder builder) {
+        PasteQueryParameters pasteQueryParameters = (PasteQueryParameters) params;
+        boolean loggedIn = exchange.attrib("loggedIn");
+        User user = exchange.attrib("user");
+        System.out.println(pasteQueryParameters.filters.toJsonString());
+        if (pasteQueryParameters.filterTags != null && pasteQueryParameters.filterTags.length > 0) {
+            builder.must(b -> {
+                List<String> tags = Arrays.asList(pasteQueryParameters.filterTags);
+                List<FieldValue> tagValues = tags.stream()
+                        .map(FieldValue::of)
+                        .collect(Collectors.toList());
+
+                b.terms(v -> v
+                    .field("tags")
+                    .terms(TermsQueryField.of(c -> c.value(tagValues)))
+                );
+
+                return b;
+            });
+        }
+
