@@ -23,15 +23,3 @@ const toKey = (value: string) =>
   value
     .replace(/[^a-zA-Z0-9]+(.)/g, (_, character: string) => character.toUpperCase())
     .replace(/^[A-Z]/, (character) => character.toLowerCase())
-
-export const localizeTool = <T extends TranslatableTool>(
-  kind: ToolCatalogKind,
-  tool: T,
-  t: TFunction,
-): T => ({
-  ...tool,
-  title: t(`catalog.${kind}.${tool.slug}.title`, { defaultValue: tool.title }),
-  shortTitle: t(`catalog.${kind}.${tool.slug}.shortTitle`, { defaultValue: tool.shortTitle }),
-  description: t(`catalog.${kind}.${tool.slug}.description`, { defaultValue: tool.description }),
-  category: t(`catalog.labels.${toKey(tool.category)}`, { defaultValue: tool.category }),
-})
