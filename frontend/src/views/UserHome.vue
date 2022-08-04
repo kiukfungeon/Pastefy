@@ -32,3 +32,38 @@ const quickActions = computed(() => [
     icon: 'search',
   },
   {
+    key: 'open-tools',
+    title: t('tools.title'),
+    get description() { return t('views.userHome.descriptions.previewConvertAndInspectContentWithoutPublishingIt') },
+    icon: 'tool',
+    to: { name: 'tool-home' as const },
+  },
+  currentUserStore.user?.type === 'ADMIN'
+    ? {
+        key: 'admin-home',
+        title: t('admin.title'),
+        get description() { return t('views.userHome.descriptions.jumpIntoModerationUsersAndRecentPlatformActivity') },
+        icon: 'shield',
+        to: { name: 'admin-home' as const },
+      }
+    : {
+        key: 'explore',
+        title: t('nav.explore'),
+        get description() { return t('views.userHome.descriptions.browsePublicPastesAndDiscoverWhatOthersAreSharing') },
+        icon: 'world',
+        to: { name: 'explore' as const },
+      },
+])
+
+const handleQuickAction = async (action: (typeof quickActions.value)[number]) => {
+  if (action.key === 'create-paste') {
+    if (window.innerWidth >= 1024) {
+      config.value.sideBarShown = true
+      appStore.createPasteFullscreenRequested = true
+    }
+    await router.push({ name: 'home-page' })
+    return
+  }
+
+  if (action.key === 'search-pastes') {
+    appStore.searchShownEndpoints.myPastes = true

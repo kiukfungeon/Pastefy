@@ -69,38 +69,3 @@ const download = async () => {
       },
       width: node.offsetWidth * scale.value,
       height: node.offsetHeight * scale.value,
-    })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.download = `${safeName}.png`
-    link.href = url
-    link.click()
-    setTimeout(() => URL.revokeObjectURL(url), 1000)
-  } finally {
-    isExporting.value = false
-  }
-}
-
-const outputCode = computed(() => source.value)
-
-const copyMermaid = async () => {
-  await navigator.clipboard?.writeText(outputCode.value)
-}
-</script>
-
-<template>
-  <UtilityShell
-    control-title="Export Setup"
-    control-description="Render a Mermaid diagram and export it as PNG or SVG with padding, background, and watermark options."
-    result-title="Export Preview"
-    result-description="Preview the export surface exactly as it will be rendered."
-  >
-    <template #controls>
-      <div class="grid gap-3 md:grid-cols-2">
-        <div>
-          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('common.filename') }}</label>
-          <InputText v-model="fileName" fluid />
-        </div>
-        <div>
-          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('common.format') }}</label>
-          <Select
