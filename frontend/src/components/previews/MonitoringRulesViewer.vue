@@ -9,14 +9,3 @@ const props = defineProps<{
 
 const alerts = computed(() =>
   Array.from(props.config.matchAll(/\b(alert|title)\s*[:=]\s*["']?([^"'\n]+)["']?/gim)).map(
-    (match) => ({
-      kind: match[1].toLowerCase(),
-      name: match[2].trim(),
-    }),
-  ),
-)
-
-const expressions = computed(
-  () => Array.from(props.config.matchAll(/\b(expr|expression)\s*[:=]\s*(.+)$/gim)).length,
-)
-

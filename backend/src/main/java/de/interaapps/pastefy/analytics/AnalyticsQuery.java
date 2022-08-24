@@ -24,3 +24,29 @@ public class AnalyticsQuery {
     public final Map<String, String> filters = new LinkedHashMap<>();
 
     public static AnalyticsQuery from(Exchange exchange) {
+        AnalyticsQuery query = new AnalyticsQuery();
+        query.from = parseInstant(exchange.query("from"), query.from);
+        query.to = parseInstant(exchange.query("to"), query.to);
+        if (query.from.isAfter(query.to)) {
+            Instant swap = query.from;
+            query.from = query.to;
+            query.to = swap;
+        }
+
+        String interval = exchange.query("interval", "day");
+        if (Set.of("hour", "day", "week", "month").contains(interval)) {
+            query.interval = interval;
+        }
+
+        String groupBy = exchange.query("group_by", "country");
+        if (AnalyticsService.GROUPABLE_FIELDS.contains(groupBy)) {
+            query.groupBy = groupBy;
+        }
+        query.includeSummary = !"false".equalsIgnoreCase(exchange.query("include_summary", "true"));
+        query.includeBreakdown = !"false".equalsIgnoreCase(exchange.query("include_breakdown", "true"));
+
+        FILTERS.forEach(filter -> {
+            String value = exchange.query(filter);
+            if (value != null && !value.isBlank()) {
+                query.filters.put(filter, value.trim());
+            }
