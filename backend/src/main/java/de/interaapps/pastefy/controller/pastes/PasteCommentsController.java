@@ -33,3 +33,74 @@ import java.util.stream.Collectors;
 
 @PathPrefix("/api/v2/paste")
 public class PasteCommentsController extends HttpController {
+    private static final int DEFAULT_PAGE_LIMIT = 10;
+    private static final int MAX_PAGE_LIMIT = 30;
+    private static final int MAX_CONTENT_LENGTH = 2000;
+    private static final int MAX_LINE_RANGE = 1000;
+
+    @Get("/{pasteId}/comments")
+    @With({"auth-login-required-read", "awaiting-access-check", "blocked-check"})
+    public List<PasteCommentResponse> getComments(Exchange exchange, @Path("pasteId") String pasteId, @Attrib("user") User user) {
+        Paste.getAccessiblePasteOrFail(pasteId, user);
+
+        int page = positiveQueryParameter(exchange, "page", 1);
+        int pageLimit = Math.min(positiveQueryParameter(exchange, "page_limit", DEFAULT_PAGE_LIMIT), MAX_PAGE_LIMIT);
+
+        Query<PasteComment> query = Repo.get(PasteComment.class)
+                .where("paste", pasteId)
+                .whereNull("parentId");
+
+        if (exchange.query("line") != null) {
+            int line = positiveQueryParameter(exchange, "line", 1);
+            query.where("lineFrom", line);
+        }
+
+        return query
+                .order("created_at", true)
+                .limit(pageLimit)
+                .offset((page - 1) * pageLimit)
+                .all()
+                .stream()
+                .map(comment -> new PasteCommentResponse(comment, true))
+                .collect(Collectors.toList());
+    }
+
+    @Get("/{pasteId}/comments/markers")
+    @With({"auth-login-required-read", "awaiting-access-check", "blocked-check"})
+    public List<PasteCommentMarkerResponse> getLineMarkers(@Path("pasteId") String pasteId, @Attrib("user") User user) {
+        Paste.getAccessiblePasteOrFail(pasteId, user);
+
+        Map<Integer, Map<String, PublicUserResponse>> profilesByLine = new LinkedHashMap<>();
+        Repo.get(PasteComment.class)
+                .where("paste", pasteId)
+                .whereNotNull("lineFrom")
+                .order("created_at")
+                .all()
+                .forEach(comment -> addMarkerProfiles(profilesByLine, comment));
+
+        return profilesByLine.entrySet().stream().map(entry -> {
+            PasteCommentMarkerResponse marker = new PasteCommentMarkerResponse(entry.getKey());
+            List<PublicUserResponse> profiles = new ArrayList<>(entry.getValue().values());
+            marker.profiles = profiles.stream().limit(2).collect(Collectors.toList());
+            marker.additionalProfiles = Math.max(0, profiles.size() - marker.profiles.size());
+            return marker;
+        }).collect(Collectors.toList());
+    }
+
+    @Post("/{pasteId}/comments")
+    @With({"rate-limiter", "auth", "awaiting-access-check", "blocked-check"})
+    public PasteCommentResponse createComment(@Path("pasteId") String pasteId, @Body CreatePasteCommentRequest request, @Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
+        if (authKey != null)
+            authKey.checkPermission("comments:create");
+
+        Paste.getAccessiblePasteOrFail(pasteId, user);
+        validateRequest(request);
+
+        PasteComment comment = new PasteComment();
+        comment.setPaste(pasteId);
+        comment.setUserId(user.getId());
+        comment.setContent(request.content.trim());
+        comment.setLineFrom(request.lineFrom);
+        comment.setLineTo(request.lineTo);
+
+        if (request.parentId != null) {
