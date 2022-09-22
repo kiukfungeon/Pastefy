@@ -54,31 +54,3 @@ const specialType = computed(() =>
   <MonitoringRulesViewer v-else-if="specialType === 'monitoring-rules'" :config="contents" />
   <MermaidViewer
     v-else-if="
-      type === 'mermaid' ||
-      type === 'mmd' ||
-      fileName?.endsWith('.mmd') ||
-      fileName?.endsWith('.mermaid')
-    "
-    :mermaid-code="contents"
-    :inEditor
-  />
-  <SVGViewer v-else-if="fileName?.endsWith('.svg')" :svg="contents" :inEditor />
-  <GeoJSONViewer v-else-if="fileName?.endsWith('.geojson')" :geo-json="contents" :inEditor />
-  <DiffViewer v-else-if="type === 'diff'" :diff="contents" :inEditor />
-  <ICSViewer v-else-if="type === 'ics'" :ics="contents" :inEditor />
-  <RegexViewer v-else-if="type === 'regex'" :regex="contents" :inEditor />
-  <JSONViewer v-else-if="type === 'json' || fileName?.endsWith('.json')" :json="contents" />
-  <HTMLViewer
-    v-else-if="type === 'html' || fileName?.endsWith('.html') || fileName?.endsWith('.htm')"
-    :html="contents"
-  />
-  <XMLViewer
-    v-else-if="
-      type === 'xml' ||
-      fileName?.endsWith('.xml') ||
-      fileName?.endsWith('.xhtml') ||
-      fileName?.endsWith('.iml')
-    "
-    :xml="contents"
-  />
-  <YAMLViewer

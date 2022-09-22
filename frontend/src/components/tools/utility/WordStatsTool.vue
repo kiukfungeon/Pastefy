@@ -48,3 +48,54 @@ const topWords = computed(() => {
 })
 
 const result = computed(() =>
+  JSON.stringify(
+    {
+      words: words.value.length,
+      uniqueWords: uniqueWords.value,
+      characters: characters.value,
+      charactersNoSpaces: charactersNoSpaces.value,
+      lines: lines.value,
+      paragraphs: paragraphs.value,
+      sentences: sentences.value,
+      averageWordLength: Number(averageWordLength.value),
+      readingTimeMinutes: readingTimeMinutes.value,
+      longestWord: longestWord.value,
+      topWords: topWords.value.map(([word, count]) => ({ word, count })),
+    },
+    null,
+    2,
+  ),
+)
+</script>
+
+<template>
+  <UtilityShell
+    control-title="Text"
+    control-description="Paste or write text to inspect counts and useful writing metrics."
+    result-title="Stats"
+    result-description="Detailed counts and heuristics for the current text."
+  >
+    <template #controls>
+      <label class="text-sm font-medium">{{ $t('utility.wordStatsTool.textInput') }}</label>
+      <Textarea v-model="input" auto-resize rows="14" fluid />
+    </template>
+
+    <template #result>
+      <div class="grid gap-3 md:grid-cols-2">
+        <div
+          v-for="entry of [
+            ['Words', words.length],
+            ['Unique words', uniqueWords],
+            ['Characters', characters],
+            ['Characters (no spaces)', charactersNoSpaces],
+            ['Lines', lines],
+            ['Paragraphs', paragraphs],
+            ['Sentences', sentences],
+            ['Avg. word length', averageWordLength],
+            ['Reading time (min)', readingTimeMinutes],
+            ['Longest word', longestWord || '—'],
+          ]"
+          :key="entry[0]"
+          class="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <div class="text-sm text-neutral-500 dark:text-neutral-400">{{ entry[0] }}</div>
