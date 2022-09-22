@@ -62,3 +62,198 @@ const parseLine = (line: string) => {
   return {
     ip: match[1],
     time: match[2],
+    request: match[3],
+    method: requestParts[0] || '-',
+    path: requestParts[1] || '-',
+    protocol: requestParts[2] || '-',
+    status: Number(match[4]),
+    size: match[5] === '-' ? null : Number(match[5]),
+    referrer: match[6] || '-',
+    userAgent: match[7] || '-',
+    raw: line,
+  } satisfies LogRow
+}
+
+const parsedRows = computed(() => {
+  const rawLines = source.value.split(/\r?\n/).map((line) => line.trim()).filter(Boolean)
+  const rows = rawLines.map(parseLine)
+  return {
+    parsed: rows.filter((row): row is LogRow => Boolean(row)),
+    invalid: rows.filter((row) => !row).length,
+  }
+})
+
+const filteredRows = computed(() => {
+  const query = search.value.trim().toLowerCase()
+
+  return parsedRows.value.parsed.filter((row) => {
+    const matchesQuery =
+      !query ||
+      [row.ip, row.method, row.path, row.status, row.referrer, row.userAgent, row.time]
+        .join(' ')
+        .toLowerCase()
+        .includes(query)
+
+    if (!matchesQuery) return false
+    if (statusFilter.value === 'all') return true
+    return String(row.status).startsWith(statusFilter.value[0])
+  })
+})
+
+const stats = computed(() => {
+  const rows = filteredRows.value
+  const errorRows = rows.filter((row) => row.status >= 400)
+  return {
+    requests: rows.length,
+    uniqueIps: new Set(rows.map((row) => row.ip)).size,
+    errors: errorRows.length,
+    invalid: parsedRows.value.invalid,
+  }
+})
+
+const topPaths = computed(() =>
+  Object.entries(
+    filteredRows.value.reduce<Record<string, number>>((acc, row) => {
+      acc[row.path] = (acc[row.path] || 0) + 1
+      return acc
+    }, {}),
+  )
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6),
+)
+
+const topIps = computed(() =>
+  Object.entries(
+    filteredRows.value.reduce<Record<string, number>>((acc, row) => {
+      acc[row.ip] = (acc[row.ip] || 0) + 1
+      return acc
+    }, {}),
+  )
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6),
+)
+
+const topUserAgents = computed(() =>
+  Object.entries(
+    filteredRows.value.reduce<Record<string, number>>((acc, row) => {
+      acc[row.userAgent] = (acc[row.userAgent] || 0) + 1
+      return acc
+    }, {}),
+  )
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6),
+)
+
+const statusBreakdown = computed(() =>
+  Object.entries(
+    filteredRows.value.reduce<Record<string, number>>((acc, row) => {
+      acc[String(row.status)] = (acc[String(row.status)] || 0) + 1
+      return acc
+    }, {}),
+  )
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 8),
+)
+
+const statusDotClass = (status: number) => {
+  if (status >= 500) return 'bg-red-500'
+  if (status >= 400) return 'bg-amber-500'
+  if (status >= 300) return 'bg-sky-500'
+  return 'bg-emerald-500'
+}
+
+const exportResult = computed(() => JSON.stringify(filteredRows.value, null, 2))
+</script>
+
+<template>
+  <UtilityShell
+    :control-title="props.server === 'nginx' ? 'NGINX Access Logs' : 'Apache Access Logs'"
+    control-description="Paste access logs, filter requests, and inspect parsed traffic details."
+    result-title="Parsed Requests"
+    result-description="Inspect status groups, top paths, and structured request rows."
+    fill-height
+  >
+    <template #controls>
+      <div class="grid gap-3 md:grid-cols-2">
+        <InputText v-model="search" :placeholder="$t('utility.accessLogInspectorBase.searchIpPathStatusReferrer')" fluid />
+        <Select v-model="statusFilter" :options="statusOptions" option-label="label" option-value="value" fluid />
+      </div>
+
+      <div>
+        <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.accessLogInspectorBase.accessLogs') }}</label>
+        <Textarea v-model="source" auto-resize rows="20" fluid />
+      </div>
+    </template>
+
+    <template #result>
+      <div class="space-y-4">
+        <div class="grid gap-3 md:grid-cols-4">
+          <div
+            v-for="entry of [
+              ['Requests', stats.requests],
+              ['Unique IPs', stats.uniqueIps],
+              ['Errors', stats.errors],
+              ['Invalid lines', stats.invalid],
+            ]"
+            :key="entry[0]"
+            class="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+          >
+            <div class="text-sm text-neutral-500 dark:text-neutral-400">{{ entry[0] }}</div>
+            <div class="mt-2 text-2xl font-semibold">{{ entry[1] }}</div>
+          </div>
+        </div>
+
+        <div class="grid gap-4 xl:grid-cols-[0.95fr_1.05fr]">
+          <div class="space-y-4">
+            <div class="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
+              <h3 class="font-semibold">{{ $t('utility.accessLogInspectorBase.topStatusCodes') }}</h3>
+              <div class="mt-3 space-y-2">
+                <div
+                  v-for="[status, count] of statusBreakdown"
+                  :key="status"
+                  class="flex items-center justify-between gap-3 rounded-lg bg-neutral-100 px-3 py-2 text-sm dark:bg-neutral-800"
+                >
+                  <span class="flex items-center gap-2">
+                    <span class="h-2.5 w-2.5 rounded-full" :class="statusDotClass(Number(status))" />
+                    <span>{{ status }}</span>
+                  </span>
+                  <span class="text-neutral-500 dark:text-neutral-400">{{ count }}</span>
+                </div>
+                <div v-if="!statusBreakdown.length" class="text-sm text-neutral-500 dark:text-neutral-400">
+                  {{ $t('utility.accessLogInspectorBase.noParsedRequestsMatchTheCurrentFilters') }}
+                </div>
+              </div>
+            </div>
+
+            <div class="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
+              <h3 class="font-semibold">{{ $t('utility.accessLogInspectorBase.topPaths') }}</h3>
+              <div class="mt-3 space-y-2">
+                <div
+                  v-for="[path, count] of topPaths"
+                  :key="path"
+                  class="flex items-center justify-between gap-3 rounded-lg bg-neutral-100 px-3 py-2 text-sm dark:bg-neutral-800"
+                >
+                  <span class="truncate">{{ path }}</span>
+                  <span class="text-neutral-500 dark:text-neutral-400">{{ count }}</span>
+                </div>
+                <div v-if="!topPaths.length" class="text-sm text-neutral-500 dark:text-neutral-400">
+                  {{ $t('utility.accessLogInspectorBase.noParsedRequestsMatchTheCurrentFilters') }}
+                </div>
+              </div>
+            </div>
+
+            <div class="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
+              <h3 class="font-semibold">{{ $t('utility.accessLogInspectorBase.topIps') }}</h3>
+              <div class="mt-3 space-y-2">
+                <div
+                  v-for="[ip, count] of topIps"
+                  :key="ip"
+                  class="flex items-center justify-between gap-3 rounded-lg bg-neutral-100 px-3 py-2 text-sm dark:bg-neutral-800"
+                >
+                  <span class="truncate font-mono">{{ ip }}</span>
+                  <span class="text-neutral-500 dark:text-neutral-400">{{ count }}</span>
+                </div>
+                <div v-if="!topIps.length" class="text-sm text-neutral-500 dark:text-neutral-400">
+                  {{ $t('utility.accessLogInspectorBase.noParsedRequestsMatchTheCurrentFilters') }}
+                </div>
+              </div>
