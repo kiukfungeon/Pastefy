@@ -7,3 +7,12 @@ import { useCurrentUserStore } from '@/stores/current-user.ts'
 
 const props = defineProps<{
   paste: Paste
+  pasteId: string
+  rounded?: boolean
+  text?: boolean
+  severity?: string
+  size?: 'small' | 'large'
+}>()
+
+const currentUser = useCurrentUserStore()
+
