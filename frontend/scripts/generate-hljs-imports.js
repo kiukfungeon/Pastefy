@@ -10,15 +10,3 @@ let i = 0
 function addLang(lang, langFile = undefined) {
   const langVar = `lang${i++}`
   outTop += `\nimport ${langVar} from 'highlight.js/lib/languages/${langFile || lang}'`
-  outBottom += `hljs.registerLanguage('${lang}', ${langVar})\n`
-}
-
-for (const file of fs.readdirSync('node_modules/highlight.js/lib/languages')) {
-  if (file.endsWith('.js.js')) continue
-
-  const lang = file.replace(/\.js$/, '')
-
-  if (ignoredLangs.includes(lang)) continue
-  addLang(lang, lang)
-}
-
