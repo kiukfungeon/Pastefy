@@ -15,3 +15,20 @@ const triggers = computed(() =>
 
 const jobs = computed(() =>
   Array.from(props.workflow.matchAll(/^\s{2}([a-zA-Z0-9_-]+)\s*:\s*$/gm)).map((match) => ({
+    name: match[1],
+  })),
+)
+
+const steps = computed(() =>
+  Array.from(props.workflow.matchAll(/^\s{6,}-\s+name:\s+(.+)$/gm)).map((match) => match[1]),
+)
+</script>
+
+<template>
+  <div class="overflow-hidden text-sm">
+    <div
+      class="flex flex-col gap-4 border-b border-neutral-200 bg-neutral-50 px-4 py-4 dark:border-neutral-700 dark:bg-neutral-900/70"
+    >
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <div class="text-xs font-semibold tracking-[0.2em] uppercase opacity-60">
