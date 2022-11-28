@@ -7,13 +7,3 @@ import de.interaapps.pastefy.exceptions.AuthenticationException;
 import de.interaapps.pastefy.exceptions.NotFoundException;
 import de.interaapps.pastefy.model.database.AuthKey;
 import de.interaapps.pastefy.model.database.User;
-import de.interaapps.pastefy.model.requests.auth.InteraAppsExternalAccessRequest;
-import org.javawebstack.http.router.Exchange;
-import org.javawebstack.http.router.router.annotation.PathPrefix;
-import org.javawebstack.http.router.router.annotation.params.Body;
-import org.javawebstack.http.router.router.annotation.verbs.Post;
-import org.javawebstack.orm.Repo;
-import org.javawebstack.webutils.config.Config;
-
-import java.util.Map;
-
