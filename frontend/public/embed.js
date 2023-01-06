@@ -5,3 +5,7 @@ export function embedPastefy(parentEl, pasteId, settings = {}, origin = 'https:/
 
   iframe.src = `${origin}/${pasteId}/embed?${new URLSearchParams(settings).toString()}`
 
+  if (iframe) {
+    iframe.onload = () => {
+      window.addEventListener('message', (e) => {
+        if (e.data && 'height' in e.data) {

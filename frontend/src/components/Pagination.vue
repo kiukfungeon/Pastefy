@@ -20,3 +20,14 @@ const previous = () => {
 <template>
   <div class="flex items-center justify-between gap-3">
     <div class="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
+      <span>{{ $t('common.page', { page }) }}</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <Button
+        @click="previous"
+        :disabled="page === 1"
+        size="small"
+        outlined
+        severity="contrast"
+        :label="$t('common.previous')"
+      />
