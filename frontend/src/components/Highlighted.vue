@@ -44,3 +44,97 @@ const selectGutterLine = (event: MouseEvent) => {
   if (!props.enableLineComments) return
 
   const target = event.target
+  if (!(target instanceof Element)) return
+
+  const lineElement = target.closest<HTMLElement>('[data-comment-line]')
+  const line = Number(lineElement?.dataset.commentLine)
+  if (lineElement && Number.isInteger(line)) emit('lineClick', event, line, lineElement)
+}
+
+const addColorIndicators = () => {
+  setTimeout(() => {
+    document
+      .querySelectorAll(`.higlighted-${id} .hljs-number, .higlighted-${id} .hljs-string`)
+      .forEach((el) => {
+        let val = el.textContent?.trim() || ''
+
+        if (val.startsWith('"') && val.endsWith('"')) {
+          val = val.substring(1, val.length - 1)
+        }
+
+        if (
+          !props.hideColorPreview &&
+          ((val.startsWith('#') &&
+            (val.length === 7 || val.length === 9 || val.length === 4 || val.length === 5)) ||
+            (val.startsWith('rgb') &&
+              /rgb(a?)\(\s?[0-9]{1,3}\s?,\s?[0-9]{1,3}\s?,\s?[0-9]{1,3}\s?(,\s?[0-9]{1,3}\s?)?\)/.test(
+                val,
+              )))
+        ) {
+          const colorPreview = document.createElement('span')
+
+          ;[
+            'h-[0.75rem]',
+            'w-[0.75rem]',
+            'rounded-sm',
+            'inline-block',
+            'mr-0.5',
+            'ml-0.5',
+            'border-1',
+            'border-neutral-200',
+            'dark:border-neutral-700',
+          ].forEach((c) => {
+            colorPreview.classList.add(c)
+          })
+
+          colorPreview.style.backgroundColor = val
+          el.prepend(colorPreview)
+        }
+      })
+  }, 500)
+}
+
+const initHighlight = () => {
+  const lang = findFromFileName(props.fileName || props.lang || '')
+
+  if (!props.contents) {
+    highlightedContents.value = ''
+    return
+  }
+
+  if ('Worker' in window && props.contents.length > 10000) {
+    const worker = new highlightWorker()
+
+    worker.onmessage = (e) => {
+      const { highlighted } = e.data
+      highlightedContents.value = highlighted
+      worker.terminate()
+      addColorIndicators()
+    }
+
+    worker.postMessage({
+      contents: props.contents,
+      lang,
+    })
+  } else {
+    highlightedContents.value = highlight(props.contents, lang)
+    addColorIndicators()
+  }
+}
+
+watch(
+  () => props.contents,
+  () => {
+    initHighlight()
+  },
+)
+
+onMounted(async () => {
+  initHighlight()
+})
+</script>
+<template>
+  <div
+    class="highlighted highlighted-group relative flex w-full overflow-auto text-sm"
+    :class="`higlighted-${id}`"
+    dir="ltr"
