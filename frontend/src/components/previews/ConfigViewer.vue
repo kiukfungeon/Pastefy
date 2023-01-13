@@ -50,3 +50,55 @@ const lines = computed(() =>
       key,
       value,
       isComment,
+      isSection,
+    }
+  }),
+)
+
+const filteredLines = computed(() => {
+  const needle = search.value.trim().toLowerCase()
+  if (!needle) return lines.value
+  return lines.value.filter((entry) =>
+    [entry.trimmed, entry.key, entry.value].join(' ').toLowerCase().includes(needle),
+  )
+})
+
+const stats = computed(() => ({
+  total: lines.value.length,
+  sections: lines.value.filter((entry) => entry.isSection).length,
+  comments: lines.value.filter((entry) => entry.isComment).length,
+  keys: lines.value.filter((entry) => entry.key).length,
+}))
+
+const exportConfig = () => {
+  const blob = new Blob([props.contents], { type: 'text/plain;charset=utf-8' })
+  const objectUrl = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = objectUrl
+  link.download = props.fileName || `pastefy-export.${props.type}`
+  link.click()
+  setTimeout(() => URL.revokeObjectURL(objectUrl), 1000)
+}
+</script>
+
+<template>
+  <div class="overflow-hidden text-sm">
+    <div
+      class="flex flex-col gap-4 border-b border-neutral-200 bg-neutral-50 px-4 py-4 dark:border-neutral-700 dark:bg-neutral-900/70"
+    >
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <div class="text-xs font-semibold tracking-[0.2em] uppercase opacity-60">
+            {{ type }} View
+          </div>
+          <div class="mt-1 text-xs opacity-60">{{ $t('previews.configViewer.configExplorerWithSearchAndExport') }}</div>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <Tag :value="`${stats.keys} keys`" severity="contrast" />
+          <Tag :value="`${stats.sections} sections`" severity="contrast" />
+          <Tag :value="`${stats.comments} comments`" severity="contrast" />
+        </div>
+      </div>
+
+      <div class="grid gap-3 xl:grid-cols-[minmax(0,1fr)_auto]">
+        <InputText v-model="search" :placeholder="$t('previews.configViewer.searchSectionsKeysAndValues')" fluid />
