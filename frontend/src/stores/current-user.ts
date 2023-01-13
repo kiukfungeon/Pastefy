@@ -12,17 +12,3 @@ export const useCurrentUserStore = defineStore('current-user', () => {
 
   const config = useConfig()
 
-  const userFoldersStore = useUserFoldersStore()
-
-  function logout() {
-    user.value = undefined
-    config.value.apiKey = undefined
-    client.defaults.headers.common.Authorization = undefined
-  }
-
-  function setUser(newUser: User) {
-    user.value = newUser
-  }
-
-  async function fetchUser() {
-    userLoading.value = true

@@ -4,3 +4,6 @@ public class MultiPastesElement {
     public String name;
 
     public String contents;
+
+    public MultiPastesElement(String name, String contents) {
+        this.name = name;
