@@ -38,3 +38,23 @@ const stats = computed(() => {
       : mode.value === 'chars'
         ? diffChars(left.value, right.value)
         : diffLines(left.value, right.value)
+
+  return changes.reduce(
+    (
+      acc: { added: number; removed: number; unchanged: number },
+      entry: { value: string; added?: boolean; removed?: boolean; count?: number },
+    ) => {
+      const length = entry.count || entry.value.length
+      if (entry.added) acc.added += length
+      else if (entry.removed) acc.removed += length
+      else acc.unchanged += length
+      return acc
+    },
+    { added: 0, removed: 0, unchanged: 0 },
+  )
+})
+</script>
+
+<template>
+  <UtilityShell
+    control-title="Compare Text"
