@@ -62,3 +62,36 @@ Visit the docs for everything around Pastefy here: https://docs.pastefy.app
 <img src="./.github/screenshots/fullscreen.png" width="46%" >
 
 ## Deploy
+
+See [Self-Hosting](https://docs.pastefy.app/self-hosting/index.html) for more options.
+
+### Container-Less
+```bash
+git clone https://github.com/interaapps/pastefy.git
+cd pastefy/frontend
+npm run install
+npm run build
+cd ../backend
+mvn clean package
+cd ..
+cp .env.example .env
+nano .env
+java -jar backend/target/backend.jar
+```
+Using intelliJ? Look at [Develop](#Develop)
+
+## Configuration
+See [Configuration](https://docs.pastefy.app/self-hosting/configuration.html) for all options.
+### Adding login
+You can choose between [INTERAAPPS](https://accounts.interaapps.de/developers) (best integration), [GOOGLE](https://support.google.com/cloud/answer/6158849?hl=en), [GITHUB](https://docs.github.com/en/developers/apps/building-oauth-apps/creating-an-oauth-app), [DISCORD](https://discord.com/developers/docs/topics/oauth2) or [TWITCH](https://dev.twitch.tv/docs/authentication) for the provider (You can use all of them at the same time).
+```properties
+OAUTH2_${provider}_CLIENT_ID=${client_id}
+OAUTH2_${provider}_CLIENT_SECRET=${client_secret}
+```
+#### Example
+```properties
+OAUTH2_INTERAAPPS_CLIENT_ID=dan3q9n
+OAUTH2_INTERAAPPS_CLIENT_SECRET=ASDFASDF
+```
+
+

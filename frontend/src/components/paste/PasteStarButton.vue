@@ -16,3 +16,12 @@ const props = defineProps<{
 
 const currentUser = useCurrentUserStore()
 
+const { isLoading: starLoading, execute: toggleStar } = useAsyncState(
+  async () => {
+    if (props.paste?.starred) {
+      await client.delete(`/api/v2/paste/${props.pasteId}/star`)
+      props.paste.starred = false
+    } else {
+      await client.post(`/api/v2/paste/${props.pasteId}/star`)
+      props.paste.starred = true
+    }

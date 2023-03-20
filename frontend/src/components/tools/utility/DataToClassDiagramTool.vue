@@ -32,3 +32,21 @@ const source = useStorage(
 const inputFormat = useStorage<StructuredInputFormat>('pastefy-utility-class-format', 'auto')
 const rootEntity = useStorage('pastefy-utility-class-root', 'Root')
 const includeTypes = useStorage('pastefy-utility-class-types', true)
+
+const formatOptions = [
+  { get label() { return t('utility.dataToClassDiagramTool.options.autoDetect') }, value: 'auto' as StructuredInputFormat },
+  { get label() { return t('utility.dataToClassDiagramTool.options.json') }, value: 'json' as StructuredInputFormat },
+  { get label() { return t('utility.dataToClassDiagramTool.options.yaml') }, value: 'yaml' as StructuredInputFormat },
+  { get label() { return t('utility.dataToClassDiagramTool.options.csv') }, value: 'csv' as StructuredInputFormat },
+]
+
+const diagram = computed(() => {
+  try {
+    const parsed = parseStructuredData(source.value, inputFormat.value)
+    return toMermaidClassDiagram(inferSchemaGraph(parsed, rootEntity.value), {
+      includeTypes: includeTypes.value,
+    })
+  } catch (error) {
+    return `%% ${(error as Error).message || 'Could not infer a class diagram.'}`
+  }
+})

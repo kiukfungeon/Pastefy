@@ -28,3 +28,18 @@ import java.util.stream.Collectors;
 public class PublicPastesController extends HttpController {
     @Get
     public List<PasteResponse> getPublicPastes(Exchange exchange) {
+        return PasteService.getAllPastes(exchange,
+                PasteQueryParameters.from(exchange)
+                .setFilter("visibility", Paste.Visibility.PUBLIC)
+        );
+    }
+
+    @Get("/trending")
+    public List<PasteResponse> getTrending(Exchange exchange) {
+        ListQueryParameters listQueryParameters = PasteQueryParameters.from(exchange)
+                .setFilter("visibility", Paste.Visibility.PUBLIC)
+                .setFilter("encrypted", "false")
+                .setSort("engagementScore");
+
+        if (exchange.getQueryParameters().has("trending")) {
+            listQueryParameters
