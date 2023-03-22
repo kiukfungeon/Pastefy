@@ -67,3 +67,38 @@ const handleQuickAction = async (action: (typeof quickActions.value)[number]) =>
 
   if (action.key === 'search-pastes') {
     appStore.searchShownEndpoints.myPastes = true
+    appStore.searchShownEndpoints.publicPastes = false
+    appStore.searchShown = true
+    return
+  }
+
+  if (action.to) {
+    await router.push(action.to)
+  }
+}
+
+useTitle(`Home | Pastefy`)
+</script>
+
+<template>
+  <div class="flex flex-col gap-14">
+    <ComponentInjection type="user-home-top" />
+
+    <section class="hidden space-y-4 md:block">
+      <div class="flex flex-col gap-1">
+        <h2 class="text-2xl font-bold">{{ $t('admin.quickActions') }}</h2>
+      </div>
+
+      <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <button
+          v-for="action of quickActions"
+          :key="action.key"
+          type="button"
+          @click="handleQuickAction(action)"
+          class="cursor-pointer rounded-xl border border-neutral-200 bg-neutral-100 p-3 text-left transition-all hover:-translate-y-0.5 hover:bg-white dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-900"
+        >
+          <div class="flex items-start gap-3">
+            <div
+              class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
+            >
+              <i :class="`ti ti-${action.icon} text-lg`" />
