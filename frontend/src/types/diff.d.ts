@@ -7,3 +7,7 @@ declare module 'diff' {
   ): string
 
   export function diffChars(
+    oldStr: string,
+    newStr: string,
+  ): Array<{ value: string; added?: boolean; removed?: boolean; count?: number }>
+
