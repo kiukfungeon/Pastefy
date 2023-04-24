@@ -26,3 +26,31 @@ public class GoogleOAuth2Provider implements OAuth2Provider {
         this.secret = secret;
 
         googleAuthorizationCodeFlow = new GoogleAuthorizationCodeFlow.Builder(
+                new NetHttpTransport(),
+                GsonFactory.getDefaultInstance(),
+                clientId,
+                secret,
+                Arrays.asList(
+                        "https://www.googleapis.com/auth/userinfo.profile",
+                        "https://www.googleapis.com/auth/userinfo.email"
+                )
+        ).build();
+    }
+
+    public GoogleOAuth2Provider setScopes(String[] scopes) {
+        googleAuthorizationCodeFlow.getScopes().clear();
+        for (String scope : scopes) {
+            googleAuthorizationCodeFlow.getScopes().add(scope);
+        }
+        return this;
+    }
+
+    public OAuth2Callback callback(AbstractObject queryParameters, String callbackUrl) {
+        try {
+            GoogleTokenResponse code = googleAuthorizationCodeFlow.newTokenRequest(queryParameters.string("code"))
+                    .setRedirectUri(callbackUrl)
+                    .execute();
+            return new OAuth2Callback(this, code.getAccessToken(), code.getRefreshToken(), clientId, secret);
+        } catch (IOException e) {
+            return null;
+        }
