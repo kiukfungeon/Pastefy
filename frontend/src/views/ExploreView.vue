@@ -19,3 +19,24 @@ const {
     await client.get('/api/v2/public/tags', {
       params: {
         page_limit: 4,
+      },
+    })
+  ).data as Tag[]
+}, undefined)
+</script>
+
+<template>
+  <main class="mx-auto w-full max-w-[1200px]">
+    <div class="mb-8 flex items-center justify-between">
+      <h1 class="text-3xl font-bold">{{ $t('explore.title') }}</h1>
+      <div>
+        <ShowSearchButton public-pastes />
+      </div>
+    </div>
+
+    <div class="mb-14 flex flex-col">
+      <ErrorContainer v-if="tagsError" :error="tagsError as any" />
+      <LoadingContainer v-else-if="tagsLoading" />
+      <div v-else-if="tags" class="flex flex-col gap-3 md:flex-row">
+        <TagCard v-for="tag of tags" :tag="tag" :key="tag.tag" />
+      </div>
