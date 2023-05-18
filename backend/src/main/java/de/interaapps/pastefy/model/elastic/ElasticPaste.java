@@ -39,3 +39,44 @@ public class ElasticPaste {
         ElasticPaste elasticPaste = new ElasticPaste();
         elasticPaste.id = paste.getId();
         elasticPaste.key = paste.getKey();
+        elasticPaste.title = paste.getTitle();
+        elasticPaste.content = paste.getContent(false);
+        elasticPaste.userId = paste.getUserId();
+        elasticPaste.forkedFrom = paste.getForkedFrom();
+        elasticPaste.encrypted = paste.isEncrypted();
+        elasticPaste.folder = paste.getFolderId();
+        elasticPaste.type = paste.getType();
+        elasticPaste.visibility = paste.getVisibility();
+        elasticPaste.expireAt = paste.expireAt;
+        elasticPaste.createdAt = paste.createdAt;
+        elasticPaste.updatedAt = paste.updatedAt;
+        elasticPaste.storageType = paste.getStorageType();
+        elasticPaste.version = paste.getVersion();
+        elasticPaste.tags = paste.getTags().toArray(new String[0]);
+
+        elasticPaste.starCount = paste.getStarCounts();
+        elasticPaste.starredBy = paste.getStarUsers().stream().map(u -> u.userId).toArray(String[]::new);
+        elasticPaste.engagementScore = paste.getEngagementScore();
+
+        if (paste.getUserId() != null) {
+            User user1 = paste.getUser();
+            if (user1 != null) {
+                elasticPaste.user = ElasticUser.fromUser(user1);
+            }
+        }
+
+        return elasticPaste;
+    }
+
+    public static void store(Paste paste) {
+        if (Pastefy.getInstance().isElasticsearchEnabled()) {
+            try {
+                Pastefy.getInstance()
+                        .getElasticsearchClient()
+                        .index(i -> i
+                                .index("pastefy_pastes")
+                                .id(String.valueOf(paste.getId()))
+                                .document(ElasticPaste.fromPaste(paste))
+                        );
+            } catch (Exception e) {
+                e.printStackTrace();
