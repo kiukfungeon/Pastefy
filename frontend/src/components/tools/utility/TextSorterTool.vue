@@ -17,3 +17,22 @@ const caseSensitive = useStorage('pastefy-utility-sorter-case', false)
 const output = computed(() => {
   let lines = input.value.split(/\r?\n/).filter((line) => line !== '')
   if (dedupe.value) lines = Array.from(new Set(lines))
+  lines = lines.sort((a, b) =>
+    caseSensitive.value ? a.localeCompare(b) : a.toLowerCase().localeCompare(b.toLowerCase()),
+  )
+  if (reverse.value) lines.reverse()
+  return lines.join('\n')
+})
+</script>
+
+<template>
+  <UtilityShell>
+    <template #controls>
+      <label class="text-sm font-medium">{{ $t('utility.textSorterTool.lines') }}</label>
+      <Textarea v-model="input" auto-resize rows="12" fluid />
+      <label class="flex items-center gap-2 text-sm">
+        <Checkbox v-model="dedupe" binary />
+        {{ $t('utility.textSorterTool.removeDuplicates') }}
+      </label>
+      <label class="flex items-center gap-2 text-sm">
+        <Checkbox v-model="reverse" binary />

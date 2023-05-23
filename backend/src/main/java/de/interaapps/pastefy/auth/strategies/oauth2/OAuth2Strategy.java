@@ -18,24 +18,3 @@ public class OAuth2Strategy extends Strategy {
 
         this.host = host;
     }
-
-    public OAuth2Strategy use(String name, OAuth2Provider oAuth2Provider) {
-        providers.put(name, oAuth2Provider);
-        return this;
-    }
-
-    public void createRoutes(String prefixUrl, HTTPRouter httpRouter) {
-        providers.forEach((name, oauth2) -> {
-            final String callbackUrl = prefixUrl + "/" + name + "/callback";
-            httpRouter.get(prefixUrl + "/" + name, e -> {
-                e.redirect(oauth2.redirect(host + callbackUrl));
-                return "";
-            });
-
-            httpRouter.get(callbackUrl, e -> {
-                return httpCallbackHandler.handle(e, oauth2.callback(e.getQueryParameters(), host + callbackUrl), name);
-            });
-        });
-    }
-
-    public Map<String, OAuth2Provider> getProviders() {
