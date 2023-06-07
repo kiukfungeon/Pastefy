@@ -18,23 +18,3 @@ public class StatsResponse {
     private int tagCount;
     private int folderCount;
 
-    private Long indexedPastes;
-
-    @SerializedName("s3_pastes")
-    private Integer s3Pastes;
-    private Integer databasePastes;
-
-    public static StatsResponse create() {
-        Pastefy instance = Pastefy.getInstance();
-        StatsResponse response = new StatsResponse();
-
-        response.createdPastes = Repo.get(Paste.class).count();
-        response.loggedInPastes = Repo.get(Paste.class).query().whereNotNull("userId").count();
-        response.userCount = Repo.get(User.class).query().count();
-        response.tagCount = Repo.get(TagListing.class).query().count();
-        response.folderCount = Repo.get(Folder.class).query().count();
-
-        response.s3Pastes = Repo.get(Paste.class).query().where("storageType", Paste.StorageType.S3).count();
-
-        if (instance.isElasticsearchEnabled()) {
-            try {

@@ -59,33 +59,3 @@ const toggle = () => {
 }
 
 const labelClass = computed(() => {
-  if (props.node.kind === 'comment') return 'opacity-50'
-  if (props.node.kind === 'sequence') return 'text-sky-700 dark:text-sky-300'
-  return 'text-amber-700 dark:text-amber-300'
-})
-
-const valueClass = computed(() => {
-  if (props.node.kind === 'comment') return 'opacity-50'
-  return 'text-emerald-700 dark:text-emerald-300'
-})
-</script>
-
-<template>
-  <div v-if="isVisible" class="font-[JetBrains_Mono_Variable] text-[0.92rem]">
-    <div
-      class="flex items-start gap-2 rounded-lg px-2 py-1 transition-colors hover:bg-neutral-100/80 dark:hover:bg-neutral-800/70"
-      :style="{ paddingLeft: `${depth * 18 + 8}px` }"
-    >
-      <button
-        v-if="hasChildren"
-        class="mt-0.5 flex h-5 w-5 items-center justify-center rounded text-neutral-500 hover:bg-neutral-200 dark:hover:bg-neutral-700"
-        @click="toggle"
-      >
-        <i :class="`ti ti-chevron-${expanded ? 'down' : 'right'} text-sm`" />
-      </button>
-      <span v-else class="block h-5 w-5" />
-
-      <div class="min-w-0 flex-1">
-        <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
-          <span class="text-xs opacity-40">{{ node.lineNumber }}</span>
-          <span :class="labelClass">{{ node.label }}</span>
