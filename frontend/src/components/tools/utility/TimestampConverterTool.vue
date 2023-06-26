@@ -30,3 +30,36 @@ const state = computed(() => {
     unixSeconds: Math.floor(date.getTime() / 1000),
     unixMillis: date.getTime(),
     iso: date.toISOString(),
+    local: date.toLocaleString(),
+    utc: date.toUTCString(),
+    error: undefined,
+  }
+})
+
+const result = computed(() => ('error' in state.value && state.value.error ? '' : JSON.stringify(state.value, null, 2)))
+</script>
+
+<template>
+  <UtilityShell>
+    <template #controls>
+      <label class="text-sm font-medium">{{ $t('utility.timestampConverterTool.timestampOrDate') }}</label>
+      <InputText v-model="input" fluid />
+      <div>
+        <Button
+          @click="input = String(Math.floor(Date.now() / 1000))"
+          :label="$t('utility.timestampConverterTool.useCurrentUnixTime')"
+          icon="ti ti-clock"
+          severity="contrast"
+          outlined
+        />
+      </div>
+    </template>
+
+    <template #result>
+      <Message v-if="'error' in state && state.error" severity="error">{{ state.error }}</Message>
+      <div v-else class="grid gap-3">
+        <div
+          v-for="entry of [
+            ['Unix seconds', 'unixSeconds' in state ? state.unixSeconds : ''],
+            ['Unix milliseconds', 'unixMillis' in state ? state.unixMillis : ''],
+            ['ISO', 'iso' in state ? state.iso : ''],
