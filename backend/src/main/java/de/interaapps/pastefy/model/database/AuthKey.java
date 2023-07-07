@@ -20,3 +20,47 @@ public class AuthKey extends Model {
     private String key;
 
     @Column(size = 255)
+    public String accessToken;
+
+    @Column(size = 255)
+    public String refreshToken;
+
+    @Column(size = 8)
+    public String userId;
+
+    @Column
+    public Type type = Type.USER;
+
+    @Column
+    private AbstractArray scopes;
+
+    @Column
+    public Timestamp createdAt;
+
+    @Column
+    public Timestamp updatedAt;
+
+    public AuthKey() {
+        key = RandomUtil.string(60);
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public boolean hasPermission(String permission) {
+        if (permission.equals(""))
+            return true;
+
+        return hasScope(permission) || hasScope(permission.split(":")[0]);
+    }
+
+    /**
+     * Standard: group.permission:action
+     * or pastefy|paste:read (Will passthrough the request but adds a user-id header)
+     */
+    public void checkPermission(String... permissions) {
+        for (String permission : permissions) {
+            if (hasPermission(permission))
+                return;
+        }
