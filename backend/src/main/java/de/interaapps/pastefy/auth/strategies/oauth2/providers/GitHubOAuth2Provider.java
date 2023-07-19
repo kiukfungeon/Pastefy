@@ -44,26 +44,3 @@ public class GitHubOAuth2Provider implements OAuth2Provider {
     }
 
     public String redirect(String callbackUrl) {
-        try {
-            return "https://github.com/login/oauth/authorize?client_id=" + clientId + "&scope=" + URLEncoder.encode(String.join(" ", scopes), "UTF-8") + "&redirect_uri=" + URLEncoder.encode(callbackUrl, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
-    public static class OAuth2Callback extends de.interaapps.pastefy.auth.strategies.oauth2.OAuth2Callback {
-        public OAuth2Callback(OAuth2Provider provider, String accessToken, String refreshToken) {
-            super(provider, accessToken, refreshToken);
-        }
-
-        public HTTPClient createApiClient() {
-            return new HTTPClient("https://api.github.com").authorization("token", accessToken);
-        }
-
-        public OAuth2Profile getProfile() {
-            HTTPClient apiClient = createApiClient();
-            OAuth2Profile profile = new OAuth2Profile();
-
-            AbstractObject userData = apiClient.get("/user")
-                    .header("Authorization", "token " + accessToken)
