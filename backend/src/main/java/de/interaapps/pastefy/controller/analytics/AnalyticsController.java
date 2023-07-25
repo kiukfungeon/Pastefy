@@ -21,3 +21,15 @@ import java.util.Objects;
 @PathPrefix("/api/v2/analytics")
 @With("auth")
 public class AnalyticsController extends HttpController {
+    @Get("/admin")
+    @With("admin")
+    public AnalyticsResponse admin(Exchange exchange, @Attrib("authkey") AuthKey authKey) {
+        authKey.checkPermission("analytics:read");
+        return query(exchange);
+    }
+
+    @Get("/pastes/{id}")
+    public AnalyticsResponse paste(Exchange exchange, @Path("id") String id, @Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
+        authKey.checkPermission("analytics:read");
+        Paste paste = Paste.get(id);
+        if (paste == null || (!user.isAdmin() && !Objects.equals(user.getId(), paste.getUserId()))) {

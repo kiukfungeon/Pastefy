@@ -27,32 +27,3 @@ public class PasteMetaController extends HttpController {
     public String pasteTags(Exchange exchange, @Path("paste") String pasteId) {
         return seo.render(exchange, () -> {
             if (pasteId == null || !VALID_PASTE_ID_PATTERN.matcher(pasteId).matches()) return null;
-
-            Paste paste = Paste.get(pasteId);
-            PasteAIInfo aiInfo = paste.getAiInfo();
-
-            if (paste == null || paste.isPrivate() || paste.isEncrypted()) return null;
-
-            String title = getTitle(paste);
-            SeoAuthor author = paste.isPublic() ? getAuthor(paste) : null;
-            String description = getDescription(title + (aiInfo != null && aiInfo.description != null ? " | " + aiInfo.description : ""), author);
-            String path = "/" + pasteId;
-
-            String seoContent = "";
-            if (paste.isPublic()) {
-                seoContent = getSeoContent(paste, title, author, aiInfo != null && aiInfo.description != null ? aiInfo.description : null);
-                if (seoContent == null) return null;
-            }
-
-            SeoRenderer.SeoPage page = seo.page(path, title, description)
-                    .type("article")
-                    .image(path + "/thumbnail.png")
-                    .content(seoContent);
-
-            if (author != null) {
-                page.meta("author", author.displayName + " (@" + author.username + ")")
-                        .openGraph("article:author", author.profileUrl)
-                        .twitter("twitter:creator", "@" + author.username);
-            }
-
-            return page;
