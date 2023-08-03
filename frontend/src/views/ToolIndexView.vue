@@ -131,3 +131,69 @@ const pinnedTools = computed(() =>
             :label="$t('views.toolIndexView.openPreviewTool')"
             icon="ti ti-arrow-right"
             severity="contrast"
+            class="mt-2"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="rounded-xl border border-neutral-200 bg-neutral-100 p-4 dark:border-neutral-700 dark:bg-neutral-800">
+      <div class="grid gap-3 md:grid-cols-[1fr_auto] md:items-center">
+        <InputText
+          v-model="search"
+          fluid
+          :placeholder="$t('views.toolIndexView.searchToolsFormatsAndConverters')"
+        />
+        <span class="text-sm text-neutral-500 dark:text-neutral-400">
+          {{ filteredPreviewTools.length + filteredConversionTools.length + filteredUtilityTools.length }} results
+        </span>
+      </div>
+    </div>
+
+    <section v-if="pinnedTools.length" class="flex flex-col gap-4">
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <h2 class="text-2xl font-bold">{{ $t('views.toolIndexView.pinnedTools') }}</h2>
+          <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            Your saved shortcuts live here and stay on this browser via local storage.
+          </p>
+        </div>
+        <span
+          class="rounded-full border border-neutral-200 px-3 py-1 text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-300"
+        >
+          {{ pinnedTools.length }} pinned
+        </span>
+      </div>
+
+      <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <ToolCard v-for="tool of pinnedTools" :key="`${tool.kind}:${tool.slug}`" :tool="tool" />
+      </div>
+    </section>
+
+    <section class="flex flex-col gap-4">
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <h2 class="text-2xl font-bold">{{ $t('views.toolIndexView.browseByCategory') }}</h2>
+          <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            Jump straight into focused tool collections with dedicated SEO pages.
+          </p>
+        </div>
+        <span
+          class="rounded-full border border-neutral-200 px-3 py-1 text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-300"
+        >
+          {{ categoryLinks.length }} categories
+        </span>
+      </div>
+
+      <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <router-link
+          v-for="category of categoryLinks"
+          :key="category.slug"
+          :to="{ name: 'tool-category', params: { category: category.slug } }"
+          class="rounded-xl border border-neutral-200 bg-neutral-100 p-5 transition-all hover:-translate-y-0.5 hover:bg-white dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-900"
+        >
+          <div class="flex items-start gap-3">
+            <div
+              class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white text-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
+            >
+              <i :class="`ti ti-${category.icon} text-2xl`" />
