@@ -17,22 +17,3 @@ useTitle(`Folder | Pastefy`)
 const route = useRoute()
 
 const {
-  isLoading,
-  state: folder,
-  error,
-} = useAsyncState(async () => {
-  const folder = (
-    await client.get(`/api/v2/folder/${route.params.folder}` as string, {
-      params: {
-        shorten_content: 'true',
-      },
-    })
-  ).data as Folder
-
-  useTitle(`${folder.name} | Pastefy`)
-  eventBus.emit('pageLoaded', 'folder')
-  return folder
-}, undefined)
-
-const confirm = useConfirm()
-const { t } = useTranslation()

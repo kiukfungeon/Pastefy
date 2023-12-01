@@ -171,3 +171,90 @@ const diagram = computed(() => {
               : []
           : []
 
+        depends.forEach((dependency) => {
+          const dependencyName = String(dependency)
+          const dependencyId = sanitizeNodeId(dependencyName)
+          ensureNode(dependencyId, dependencyName)
+          ensureEdge(serviceId, dependencyId)
+        })
+      })
+      return lines.join('\n')
+    }
+
+    if (detectedFormat.value === 'github-actions') {
+      const doc = parseYamlDocument(source.value)
+      if (!isRecord(doc) || !isRecord(doc.jobs)) return lines.join('\n')
+
+      Object.entries(doc.jobs).forEach(([name, config]) => {
+        const id = sanitizeNodeId(name)
+        ensureNode(id, name)
+        const needs = isRecord(config) ? config.needs : undefined
+        const deps = Array.isArray(needs) ? needs : needs ? [needs] : []
+        deps.forEach((dependency) => {
+          const dependencyName = String(dependency)
+          const dependencyId = sanitizeNodeId(dependencyName)
+          ensureNode(dependencyId, dependencyName)
+          ensureEdge(dependencyId, id)
+        })
+      })
+      return lines.join('\n')
+    }
+
+    if (detectedFormat.value === 'kubernetes') {
+      const resources = parseYamlDocuments(source.value)
+        .filter(isRecord)
+        .map((entry, index) => {
+          const kind = String(entry.kind || `Resource${index + 1}`)
+          const metadata = isRecord(entry.metadata) ? entry.metadata : {}
+          const name = String(metadata.name || `${kind}-${index + 1}`)
+          return {
+            id: sanitizeNodeId(kind, name),
+            kind,
+            name,
+            document: entry,
+          } satisfies KubernetesResource
+        })
+
+      const resourceIndex = new Map<string, KubernetesResource>()
+      const resourceKindsWithPods = new Set(['Deployment', 'StatefulSet', 'DaemonSet', 'ReplicaSet', 'Pod', 'Job', 'CronJob'])
+
+      const ensureResource = (kind: string, name: string) => {
+        const key = `${kind}:${name}`.toLowerCase()
+        const existing = resourceIndex.get(key)
+        if (existing) return existing
+
+        const resource = {
+          id: sanitizeNodeId(kind, name),
+          kind,
+          name,
+          document: {},
+        } satisfies KubernetesResource
+        resourceIndex.set(key, resource)
+        ensureNode(resource.id, `${kind}: ${name}`)
+        return resource
+      }
+
+      resources.forEach((resource) => {
+        resourceIndex.set(`${resource.kind}:${resource.name}`.toLowerCase(), resource)
+        ensureNode(resource.id, `${resource.kind}: ${resource.name}`)
+      })
+
+      resources.forEach((resource) => {
+        if (resource.kind === 'Ingress') {
+          const rules = toRecordArray(getNestedArray(resource.document, ['spec', 'rules']))
+          rules.forEach((rule) => {
+            const paths = toRecordArray(getNestedArray(rule, ['http', 'paths']))
+            paths.forEach((path) => {
+              const serviceName = getNestedRecord(path, ['backend', 'service'])
+              const name = typeof serviceName?.name === 'string' ? serviceName.name : ''
+              if (!name) return
+              ensureEdge(resource.id, ensureResource('Service', name).id)
+            })
+          })
+
+          const defaultBackend = getNestedRecord(resource.document, ['spec', 'defaultBackend', 'service'])
+          if (typeof defaultBackend?.name === 'string' && defaultBackend.name) {
+            ensureEdge(resource.id, ensureResource('Service', defaultBackend.name).id)
+          }
+          return
+        }

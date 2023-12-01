@@ -32,3 +32,20 @@ const steps = computed(() =>
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div>
           <div class="text-xs font-semibold tracking-[0.2em] uppercase opacity-60">
+            {{ $t('previews.gitHubActionsViewer.gitHubActions') }}
+          </div>
+          <div class="mt-1 text-xs opacity-60">{{ $t('previews.githubActionsViewer.description') }}</div>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <Tag :value="`${jobs.length} jobs`" severity="contrast" />
+          <Tag :value="`${steps.length} steps`" severity="contrast" />
+        </div>
+      </div>
+
+      <div v-if="triggers.length" class="flex flex-wrap gap-2">
+        <Tag v-for="trigger in triggers" :key="trigger" :value="trigger" severity="info" />
+      </div>
+    </div>
+
+    <div class="grid gap-0 border-b border-neutral-200 dark:border-neutral-700 md:grid-cols-2">
+      <div class="border-b border-neutral-200 p-4 md:border-r md:border-b-0 dark:border-neutral-700">
