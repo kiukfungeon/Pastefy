@@ -2,12 +2,3 @@
 import Button from 'primevue/button'
 
 defineProps<{
-  visible: boolean
-}>()
-
-const emit = defineEmits<{
-  close: []
-}>()
-</script>
-
-<template>
