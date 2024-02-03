@@ -632,3 +632,321 @@
     "jarStartScriptGeneratorTool": {
       "useNohupBackgroundLaunch": "Use nohup background launch",
       "scriptType": "Script type",
+      "appName": "App name",
+      "jarFile": "JAR file",
+      "workingDirectory": "Working directory",
+      "xms": "Xms",
+      "xmx": "Xmx",
+      "springProfile": "Spring profile",
+      "port": "Port",
+      "extraJvmArgs": "Extra JVM args",
+      "extraAppArgs": "Extra app args",
+      "logFile": "Log file",
+      "options": {
+        "startSh": "start.sh",
+        "startBat": "start.bat"
+      }
+    },
+    "jsonStringTool": {
+      "mode": "Mode",
+      "input": "Input",
+      "options": {
+        "escape": "Escape",
+        "unescape": "Unescape"
+      }
+    },
+    "jwtInspectorTool": {
+      "header": "Header",
+      "payload": "Payload"
+    },
+    "keyValueListField": {
+      "removeEntry": "Remove entry",
+      "noEntriesYet": "No entries yet."
+    },
+    "loremIpsumTool": {
+      "generateAgain": "generate again",
+      "mode": "Mode",
+      "count": "Count",
+      "options": {
+        "paragraphs": "Paragraphs",
+        "sentences": "Sentences",
+        "words": "Words"
+      }
+    },
+    "markdownToMermaidTool": {
+      "mode": "Mode",
+      "direction": "Direction",
+      "maxDepth": "Max depth",
+      "markdown": "Markdown",
+      "options": {
+        "mindmap": "Mindmap",
+        "flowchart": "Flowchart",
+        "topToBottom": "Top to bottom",
+        "leftToRight": "Left to right"
+      }
+    },
+    "mermaidImageExportTool": {
+      "copyMermaid": "copy mermaid",
+      "scale": "Scale",
+      "padding": "Padding",
+      "background": "Background",
+      "watermark": "Watermark",
+      "mermaidCode": "Mermaid code",
+      "options": {
+        "png": "PNG",
+        "svg": "SVG"
+      }
+    },
+    "mermaidThemeBuilderTool": {
+      "addMermaidCodeToPreviewTheThemedDiagram": "Add Mermaid code to preview the themed diagram.",
+      "curve": "Curve",
+      "fontFamily": "Font family",
+      "primaryColor": "Primary color",
+      "primaryTextColor": "Primary text color",
+      "borderColor": "Border color",
+      "lineColor": "Line color",
+      "tertiaryColor": "Tertiary color",
+      "background": "Background",
+      "nodeSpacing": "Node spacing",
+      "rankSpacing": "Rank spacing",
+      "padding": "Padding",
+      "mermaidSource": "Mermaid source",
+      "options": {
+        "base": "Base",
+        "default": "Default",
+        "dark": "Dark",
+        "forest": "Forest",
+        "neutral": "Neutral",
+        "basis": "Basis",
+        "linear": "Linear",
+        "step": "Step",
+        "monotone": "Monotone"
+      }
+    },
+    "numberBaseTool": {
+      "inputBase": "Input base",
+      "value": "Value",
+      "options": {
+        "binary": "Binary",
+        "octal": "Octal",
+        "decimal": "Decimal",
+        "hex": "Hex"
+      }
+    },
+    "passwordGeneratorTool": {
+      "generateAgain": "generate again",
+      "count": "Count",
+      "length": "Length",
+      "uppercaseLetters": "Uppercase letters",
+      "lowercaseLetters": "Lowercase letters",
+      "numbers": "Numbers",
+      "symbols": "Symbols",
+      "excludeAmbiguousCharacters": "Exclude ambiguous characters"
+    },
+    "queryStringTool": {
+      "queryString": "Query string",
+      "rebuilt": "Rebuilt",
+      "parsed": "Parsed"
+    },
+    "regexEscapeTool": {
+      "mode": "Mode",
+      "input": "Input",
+      "options": {
+        "escape": "Escape",
+        "unescape": "Unescape"
+      }
+    },
+    "sqlToMermaidErTool": {
+      "showSqlFieldTypes": "Show SQL field types",
+      "sqlSchema": "SQL schema"
+    },
+    "secretGeneratorTool": {
+      "generateAgain": "generate again",
+      "mode": "Mode",
+      "count": "Count",
+      "length": "Length",
+      "options": {
+        "uuid": "UUID",
+        "hexToken": "Hex token",
+        "base64UrlToken": "Base64Url token"
+      }
+    },
+    "slugGeneratorTool": {
+      "sourceText": "Source text"
+    },
+    "stringListField": {
+      "removeEntry": "Remove entry",
+      "noEntriesYet": "No entries yet."
+    },
+    "systemdServiceGeneratorTool": {
+      "serviceName": "Service name",
+      "description": "Description",
+      "user": "User",
+      "group": "Group",
+      "workingDirectory": "Working directory",
+      "restartPolicy": "Restart policy",
+      "execStartCommand": "ExecStart command",
+      "environmentVariables": "Environment variables"
+    },
+    "textSorterTool": {
+      "lines": "Lines",
+      "removeDuplicates": "Remove duplicates",
+      "reverseOrder": "Reverse order",
+      "caseSensitiveSort": "Case-sensitive sort"
+    },
+    "timestampConverterTool": {
+      "useCurrentUnixTime": "use current unix time",
+      "timestampOrDate": "Timestamp or date"
+    },
+    "urlEncoderTool": {
+      "mode": "Mode",
+      "input": "Input",
+      "options": {
+        "encode": "Encode",
+        "decode": "Decode"
+      }
+    },
+    "utilityResultActions": {
+      "copyResult": "copy result"
+    },
+    "webServerConfigGeneratorBase": {
+      "hostnamesSiteEntries": "Hostnames / site entries",
+      "addHost": "add host",
+      "enableTlsHttps": "Enable TLS / HTTPS",
+      "redirectWwwToPrimaryDomain": "Redirect www to primary domain",
+      "enableCompression": "Enable compression",
+      "addBasicSecurityHeaders": "Add basic security headers",
+      "enableHsts": "Enable HSTS",
+      "protectWithBasicAuth": "Protect with basic auth",
+      "cacheStaticAssets": "Cache static assets",
+      "enableSpaFallback": "Enable SPA fallback",
+      "forwardClientIpHeaders": "Forward client IP headers",
+      "extraHeaders": "Extra headers",
+      "xRobotsTag": "X-Robots-Tag",
+      "noindex": "noindex",
+      "trustedProxyIpsCidrs": "Trusted proxy IPs / CIDRs",
+      "addProxy": "add proxy",
+      "siteMode": "Site mode",
+      "tlsMode": "TLS mode",
+      "letsEncryptEmail": "Let's Encrypt email",
+      "certificatePath": "Certificate path",
+      "keyPath": "Key path",
+      "accessLogPath": "Access log path",
+      "errorLogPath": "Error log path",
+      "rootPath": "Root path",
+      "upstreamHost": "Upstream host",
+      "upstreamPort": "Upstream port",
+      "forwardedIpHeader": "Forwarded IP header",
+      "basicAuthUser": "Basic auth user",
+      "passwordHashPlaceholder": "Password hash / placeholder",
+      "options": {
+        "reverseProxy": "Reverse proxy",
+        "staticSite": "Static site",
+        "manualCertificatePaths": "Manual certificate paths"
+      }
+    },
+    "wordStatsTool": {
+      "textInput": "Text input",
+      "mostCommonWords": "Most common words",
+      "addMoreTextToSeeCommonWords": "Add more text to see common words."
+    }
+  },
+  "views": {
+    "aboutView": {
+      "thisIsAnAboutPage": "This is an about page"
+    },
+    "conversionToolView": {
+      "pasteYourSourceContentHere": "Paste your source content here...",
+      "convertedResultWithPreviewAndQuickActions": "Converted result with preview and quick actions."
+    },
+    "homeView": {
+      "apiDocs": "documentation API",
+      "explore": "explorer",
+      "openTools": "ouvrir les outils",
+      "pastefy": "Pastefy",
+      "explorePublicPastes": "Explorer les pastes publics",
+      "richFileViews": "Vues de fichiers enrichies",
+      "convert": "Convertir",
+      "formatTransforms": "Transformations de format",
+      "utilities": "Utilitaires",
+      "smallDevHelpers": "Petits outils de développement",
+      "tools": "Outils",
+      "previewConvertAndInspect": "Aperçu, conversion et inspection",
+      "richFileViewsDescription": "JSON, YAML, Markdown, HTML, logs, configs, diagrammes et plus encore.",
+      "formatTransformsDescription": "Convertissez entre JSON, YAML, CSV, HTTP, cURL, fichiers env et plus encore.",
+      "utilitiesDescription": "Générez des hashes, inspectez des JWT, expliquez cron, comptez les mots et plus encore.",
+      "toolsDescription": "Utilisez les outils Pastefy sans créer de paste au préalable. Ouvrez les aperçus, convertisseurs et utilitaires dev, puis partagez uniquement lorsque tout est prêt."
+    },
+    "markdownArticleView": {
+      "unlockArticle": "Unlock Article",
+      "openRegularPasteView": "Open Regular Paste View",
+      "viewMultiPaste": "View Multi-Paste",
+      "viewPaste": "View Paste",
+      "thisArticleIsEncrypted": "This article is encrypted",
+      "articleView": "ARTICLE VIEW",
+      "untitled": "Untitled Article",
+      "markdownOnly": "This article view is only available for markdown pastes."
+    },
+    "previewPresentationView": {
+      "unlockPreview": "Unlock Preview",
+      "openRegularPasteView": "Open Regular Paste View",
+      "rawFile": "Raw File",
+      "viewCode": "View Code",
+      "thisPreviewIsEncrypted": "This preview is encrypted",
+      "presentationView": "Presentation View"
+    },
+    "previewToolView": {
+      "startTypingToSeeThePreview": "Start typing to see the preview..."
+    },
+    "publicUserView": {
+      "searchThisUser": "Search This User",
+      "seeAllPastesInAdmin": "See All Pastes In Admin",
+      "publicPastes": "Public Pastes"
+    },
+    "readerShareModesView": {
+      "openPaste": "Open Paste",
+      "thisShareSheetIsEncrypted": "This share sheet is encrypted",
+      "readerShareModes": "Reader & Share Modes",
+      "options": {
+        "defaultPaste": "Default Paste",
+        "rawFile": "Raw File",
+        "articleView": "Article View",
+        "presentationView": "Presentation View"
+      },
+      "descriptions": {
+        "theFullPastefyPastePageWithCodeActionsMetadataAndSharingTools": "The full Pastefy paste page with code, actions, metadata, and sharing tools.",
+        "thePlainRawFileUrlForDirectDownloadsScriptsAndIntegrations": "The plain raw file URL for direct downloads, scripts, and integrations.",
+        "aReaderFriendlyLayoutForSharingMarkdownLikeaPolishedArticle": "A reader-friendly layout for sharing markdown like a polished article.",
+        "aFocusedPreviewPageForTablesDiagramsMapsSvgsDiffsJsonHtmlAndTerminalReplays": "A focused preview page for tables, diagrams, maps, SVGs, diffs, JSON, HTML, and terminal replays.",
+        "aDirectArticleLinkToThisMarkdownFileInsideTheMultiPaste": "A direct article link to this markdown file inside the multi-paste.",
+        "aDirectPresentationLinkToThisPreviewableFileInsideTheMultiPaste": "A direct presentation link to this previewable file inside the multi-paste."
+      }
+    },
+    "tagView": {
+      "publicPastes": "Public Pastes"
+    },
+    "toolCategoryView": {
+      "categorySummary": "Category summary",
+      "previewTools": "Preview Tools",
+      "conversionTools": "Conversion Tools",
+      "utilityTools": "Utility Tools",
+      "helpersGeneratorsAndInspectorsInThisCategory": "Helpers, generators, and inspectors in this category.",
+      "relatedCategories": "Related Categories",
+      "nearbyToolCategoriesThatFitSimilarWorkflows": "Nearby tool categories that fit similar workflows.",
+      "categoryNotFound": "Category not found",
+      "summaryDescription": "Built for share-ready workflows and cleaner developer exploration.",
+      "notFoundDescription": "This tool category does not exist or does not have a public page yet."
+    },
+    "toolIndexView": {
+      "openPreviewTool": "open a preview tool",
+      "searchToolsFormatsAndConverters": "Search tools, formats, and converters...",
+      "pastefyTools": "Pastefy Tools",
+      "whatYouCanDoHere": "What you can do here",
+      "previewStructuredFormatsWithDedicatedViewers": "Preview structured formats with dedicated viewers.",
+      "convertDataBetweenCommonDeveloperFormats": "Convert data between common developer formats.",
+      "pinnedTools": "Pinned Tools",
+      "browseByCategory": "Browse by Category",
+      "previewTools": "Preview Tools",
+      "conversions": "Conversions",
+      "noConversionToolsMatchYourSearchYet": "No conversion tools match your search yet.",
+      "utilities": "Utilities",
