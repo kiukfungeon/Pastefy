@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Start Server" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="de.interaapps.pastefy.Pastefy" />
+    <module name="core" />
+    <option name="PROGRAM_PARAMETERS" value="start" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="de.interaapps.pastefy.*" />

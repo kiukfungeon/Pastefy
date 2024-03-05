@@ -9,3 +9,14 @@ const config = useConfig()
 export function toggleTheme() {
   let darkClass = false
   if (config.value.theme === 'system') {
+    darkClass = window.matchMedia('(prefers-color-scheme: dark)').matches
+  } else if (config.value.theme === 'dark') {
+    darkClass = true
+  } else {
+    darkClass = false
+  }
+  document.documentElement.classList.toggle('dark', darkClass)
+
+  useFavicon(
+    window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? '/favicon-light.ico'
