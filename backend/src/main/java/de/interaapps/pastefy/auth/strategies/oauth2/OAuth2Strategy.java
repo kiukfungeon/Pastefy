@@ -8,13 +8,3 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class OAuth2Strategy extends Strategy {
-
-    private Map<String, OAuth2Provider> providers = new HashMap<>();
-    private HttpCallbackHandler httpCallbackHandler;
-    private String host;
-
-
-    public OAuth2Strategy(String host) {
-
-        this.host = host;
-    }
