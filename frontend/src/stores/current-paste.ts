@@ -57,3 +57,62 @@ export const useCurrentPasteStore = defineStore('current-paste', () => {
     tags.value = paste.tags || []
     expiresAt.value = paste.expire_at
     if (expiresAt.value) expiresAtEnabled.value = true
+  }
+
+  function addMultiPart() {
+    const i =
+      multiPastes.value.push({
+        name: '',
+        contents: '',
+      }) - 1
+    if (i === 0) {
+      multiPastes.value[0].name = title.value
+      multiPastes.value[0].contents = contents.value
+      title.value = ''
+    }
+    selectMultiPart(i)
+    type.value = 'MULTI_PASTE'
+  }
+
+  function selectMultiPart(index: number) {
+    currentMultiPasteIndex.value = index
+    const part = multiPastes.value[index]
+    if (part) contents.value = part.contents
+  }
+
+  function removeMultiPart(index: number) {
+    if (multiPastes.value.length === 1) {
+      type.value = 'PASTE'
+      currentMultiPasteIndex.value = undefined
+      contents.value = multiPastes.value[0].contents
+      title.value = multiPastes.value[0].name
+    }
+    multiPastes.value.splice(index, 1)
+    selectMultiPart(0)
+  }
+
+  function getCurrentMultiPart() {
+    return multiPastes.value[currentMultiPasteIndex.value!]
+  }
+
+  function toPaste(): Paste {
+    const paste: Paste = {
+      content: contents.value,
+      title: title.value,
+      encrypted: encrypted.value,
+      visibility: visibility.value,
+      type: type.value,
+      tags: tags.value,
+      forked_from: forkedFrom.value,
+      folder: folder.value,
+      expire_at: (expiresAtEnabled.value && expiresAt.value) || undefined,
+      ai: ai.value,
+    }
+
+    if (type.value === 'MULTI_PASTE') {
+      paste.content = JSON.stringify(multiPastes.value)
+    }
+
+    if (password.value) paste.encrypted = true
+
+    if (!password.value && paste.encrypted) {

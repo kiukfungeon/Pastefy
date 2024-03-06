@@ -28,3 +28,65 @@ const encodeBase64 = (value: string) => {
   return btoa(binary)
 }
 
+const decodeBase64 = (value: string) => {
+  const normalized = value.replace(/-/g, '+').replace(/_/g, '/')
+  const padded = normalized.padEnd(Math.ceil(normalized.length / 4) * 4, '=')
+  const binary = atob(padded)
+  const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0))
+  return new TextDecoder().decode(bytes)
+}
+
+const state = computed(() => {
+  try {
+    if (mode.value === 'encode') {
+      const encoded = encodeBase64(input.value)
+      return {
+        encoded,
+        base64url: encoded.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, ''),
+        decoded: '',
+        error: undefined,
+      }
+    }
+
+    return {
+      encoded: '',
+      base64url: '',
+      decoded: decodeBase64(input.value.trim()),
+      error: undefined,
+    }
+  } catch {
+    return {
+      encoded: '',
+      base64url: '',
+      decoded: '',
+      error: 'Input is not valid Base64 or Base64Url.',
+    }
+  }
+})
+
+const result = computed(() =>
+  mode.value === 'encode'
+    ? JSON.stringify({ base64: state.value.encoded, base64url: state.value.base64url }, null, 2)
+    : state.value.decoded,
+)
+</script>
+
+<template>
+  <UtilityShell>
+    <template #controls>
+      <label class="text-sm font-medium">{{ $t('utility.base64Tool.mode') }}</label>
+      <Select v-model="mode" :options="modeOptions" option-label="label" option-value="value" />
+      <label class="text-sm font-medium">{{ $t('utility.base64Tool.input') }}</label>
+      <Textarea v-model="input" auto-resize rows="10" fluid />
+    </template>
+
+    <template #result>
+      <Message v-if="state.error" severity="error">{{ state.error }}</Message>
+      <div v-else class="grid gap-3">
+        <div
+          v-if="mode === 'encode'"
+          class="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <div class="mb-2 flex items-center justify-between gap-3">
+            <span class="font-medium">{{ $t('utility.base64Tool.base64') }}</span>
+            <Button @click="clipboard.copy(state.encoded)" icon="ti ti-copy" severity="contrast" text />
