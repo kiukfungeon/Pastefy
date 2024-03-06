@@ -24,12 +24,3 @@ defineProps<{
 
     <div class="flex justify-end">
       <img
-        class="h-[5rem] w-full max-w-[13rem] rounded-tl-lg border-t border-l border-neutral-200 bg-neutral-100 object-cover object-top hover:bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-700"
-        :class="small ? 'ml-1 h-[2rem]!' : ''"
-        v-if="tag.image_url"
-        :src="tag.image_url"
-        alt="Preview"
-      />
-      <div
-        v-else
-        class="h-[5rem] w-full max-w-[13rem] overflow-hidden rounded-tl-lg border-t border-l border-neutral-200 bg-neutral-100 p-3 hover:bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-700"
