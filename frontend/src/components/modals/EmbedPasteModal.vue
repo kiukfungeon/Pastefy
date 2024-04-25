@@ -18,3 +18,45 @@ const addPadding = ref(false)
 const settingsQuery = computed(() => {
   const query: Record<string, string> = {}
   if (hideTitle.value) query.hideTitle = 'true'
+  if (hideActions.value) query.hideActions = 'true'
+  if (addPadding.value) query.addPadding = 'true'
+
+  return Object.keys(query).length ? '?' + new URLSearchParams(query).toString() : ''
+})
+const embedCode = computed(
+  () => `<div id="pastefy"></div>
+${'<'}script type="module">
+  import { embedPastefy } from '${origin}/embed.js'
+  embedPastefy(document.getElementById('pastefy'), 'P3fKIHq3'${
+    origin !== 'https://pastefy.app'
+      ? `, ${JSON.stringify({
+          hideTitle: hideTitle.value || undefined,
+          hideActions: hideActions.value || undefined,
+        })}, "${origin}"`
+      : ''
+  })
+</${'script>'}`,
+)
+const iframeEmbedCode = computed(
+  () => `<iframe class="paste" src="${origin}/${props.pasteId}/embed${settingsQuery.value}" style="width: 700px; border: none; border-radius: 11px"></iframe>
+<${'script'}>
+  /** @type {HTMLIFrameElement} */
+  const iframe = document.querySelector('.paste')
+  if (iframe) {
+    iframe.onload = () => {
+      window.addEventListener('message', e => {
+        if (e.data && 'height' in e.data) {
+          iframe.style.height = e.data.height + 'px'
+        }
+      })
+    }
+  }
+</${'script'}>`,
+)
+</script>
+<template>
+  <Dialog v-model:visible="visible" modal :header="$t('modals.embedPasteModal.embed')" class="w-[80rem] max-w-full">
+    <div class="gap-4 md:grid md:grid-cols-2">
+      <div class="md:h-full md:overflow-auto">
+        <h2 class="mb-2 text-lg font-bold">{{ $t('common.options') }}</h2>
+        <div

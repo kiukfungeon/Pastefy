@@ -26,3 +26,17 @@ const md = markdownit({
   highlight: (str, lang) => {
     const container = document.createElement('div')
 
+    'border-neutral-300 dark:border-neutral-700 border rounded-md mb-8'.split(' ').forEach((c) => {
+      container.classList.add(c.trim())
+    })
+
+    if (lang === 'mermaid' || lang === 'mmd') {
+      useMermaidViewer()
+      const pastefyMermaid = document.createElement('pastefy-mermaid-viewer')
+      pastefyMermaid.setAttribute('mermaid-code', str?.trim() || '')
+      container.appendChild(pastefyMermaid)
+      return container.outerHTML
+    }
+
+    const pastefyHighlighted = document.createElement('pastefy-highlighted')
+

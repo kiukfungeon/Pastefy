@@ -14,20 +14,3 @@ public class AnthropicAIProvider implements AIProvider {
     private static final long MAX_TOKENS = 512L;
 
     private final AnthropicClient client;
-    private final String model;
-
-    public AnthropicAIProvider(Config config) {
-        client = AnthropicOkHttpClient.builder()
-                .apiKey(config.get("ai.antrophic.token"))
-                .build();
-        model = config.get("ai.model", DEFAULT_MODEL);
-    }
-
-    @Override
-    public String generate(String systemPrompt, String userPrompt) {
-        MessageCreateParams params = MessageCreateParams.builder()
-                .maxTokens(MAX_TOKENS)
-                .model(model)
-                .system(systemPrompt)
-                .addUserMessage(userPrompt)
-                .build();
