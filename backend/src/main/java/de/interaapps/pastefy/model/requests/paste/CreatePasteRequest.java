@@ -8,3 +8,9 @@ import java.util.List;
 public class CreatePasteRequest {
 
     public String title = "";
+    @RequiredRule
+    public String content;
+    public boolean encrypted = false;
+    public String folder;
+
+    public String expireAt;
