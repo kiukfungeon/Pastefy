@@ -19,3 +19,24 @@ const source = useStorage(
   "users": [
     {
       "id": 1,
+      "name": "Ada",
+      "profile": { "avatar": "ada.png", "bio": "Engineer" },
+      "posts": [
+        { "id": 10, "title": "Hello", "published": true }
+      ]
+    }
+  ]
+}`,
+)
+const inputFormat = useStorage<StructuredInputFormat>('pastefy-utility-data-er-format', 'auto')
+const rootEntity = useStorage('pastefy-utility-data-er-root', 'Dataset')
+const includeTypes = useStorage('pastefy-utility-data-er-types', true)
+
+const formatOptions = [
+  { get label() { return t('utility.dataToMermaidErTool.options.autoDetect') }, value: 'auto' as StructuredInputFormat },
+  { get label() { return t('utility.dataToMermaidErTool.options.json') }, value: 'json' as StructuredInputFormat },
+  { get label() { return t('utility.dataToMermaidErTool.options.yaml') }, value: 'yaml' as StructuredInputFormat },
+  { get label() { return t('utility.dataToMermaidErTool.options.csv') }, value: 'csv' as StructuredInputFormat },
+]
+
+const diagram = computed(() => {
