@@ -3,3 +3,8 @@
     <option name="MAIN_CLASS_NAME" value="de.interaapps.pastefy.Pastefy" />
     <module name="core" />
     <option name="PROGRAM_PARAMETERS" value="automigrateelastic" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="de.interaapps.pastefy.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
