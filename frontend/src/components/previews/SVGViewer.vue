@@ -4,10 +4,3 @@ import { onMounted, ref, watch } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
 const props = defineProps<{
-  svg: string
-}>()
-
-const src = ref('')
-
-const render = async () => {
-  const pure = DOMPurify.sanitize(props.svg, {

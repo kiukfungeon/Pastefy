@@ -104,3 +104,39 @@ public class PasteCommentsController extends HttpController {
         comment.setLineTo(request.lineTo);
 
         if (request.parentId != null) {
+            PasteComment parent = PasteComment.get(request.parentId);
+            if (parent == null || !pasteId.equals(parent.getPaste()))
+                throw new NotFoundException();
+            comment.setParentId(parent.getParentId() == null ? parent.getId() : parent.getParentId());
+        }
+
+        comment.save();
+        return new PasteCommentResponse(comment, false);
+    }
+
+    @Delete("/{pasteId}/comments/{commentId}")
+    @With({"rate-limiter", "auth", "awaiting-access-check", "blocked-check"})
+    public ActionResponse deleteComment(@Path("pasteId") String pasteId, @Path("commentId") String commentId, @Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
+        if (authKey != null)
+            authKey.checkPermission("comments:delete");
+
+        Paste paste = Paste.get(pasteId);
+        PasteComment comment = PasteComment.get(parseCommentId(commentId));
+        if (paste == null || comment == null || !pasteId.equals(comment.getPaste()))
+            throw new NotFoundException();
+
+        if (!user.isAdmin()
+                && !user.getId().equals(comment.getUserId())
+                && (paste.getUserId() == null || !paste.getUserId().equals(user.getId())))
+            throw new PermissionsDeniedException();
+
+        Repo.get(PasteComment.class).where("parentId", comment.getId()).delete();
+        comment.delete();
+        return new ActionResponse(true);
+    }
+
+    private void addMarkerProfiles(Map<Integer, Map<String, PublicUserResponse>> profilesByLine, PasteComment comment) {
+        User commentUser = comment.getUser();
+        if (commentUser == null)
+            return;
+
