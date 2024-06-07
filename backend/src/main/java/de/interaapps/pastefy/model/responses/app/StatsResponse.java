@@ -18,3 +18,13 @@ public class StatsResponse {
     private int tagCount;
     private int folderCount;
 
+    private Long indexedPastes;
+
+    @SerializedName("s3_pastes")
+    private Integer s3Pastes;
+    private Integer databasePastes;
+
+    public static StatsResponse create() {
+        Pastefy instance = Pastefy.getInstance();
+        StatsResponse response = new StatsResponse();
+

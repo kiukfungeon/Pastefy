@@ -21,3 +21,49 @@ const resolvedFileName = () => toValue(props.fileName)
 
 const copyResult = async () => {
   if (!resolvedResult()) return
+  await clipboard.copy(resolvedResult())
+}
+
+const openInPasteEditor = async () => {
+  if (!resolvedResult()) return
+  currentPaste.clear()
+  currentPaste.type = 'PASTE'
+  currentPaste.title = resolvedFileName()
+  currentPaste.contents = resolvedResult()
+  await router.push({ name: 'home-page' })
+}
+
+const createPaste = async () => {
+  if (!resolvedResult()) return
+  isCreatingPaste.value = true
+  try {
+    const res = await client.post('/api/v2/paste', {
+      title: resolvedFileName(),
+      content: resolvedResult(),
+      encrypted: false,
+      visibility: 'UNLISTED',
+      type: 'PASTE',
+      ai: true,
+    })
+
+    const createdPaste = res.data.paste as Paste
+    await router.push({
+      name: 'paste',
+      params: {
+        paste: createdPaste.id,
+      },
+    })
+  } finally {
+    isCreatingPaste.value = false
+  }
+}
+</script>
+
+<template>
+  <div class="flex flex-wrap items-center justify-between gap-3 border-t border-neutral-200 bg-white px-4 py-3 dark:border-neutral-700 dark:bg-neutral-900">
+    <div class="flex flex-wrap gap-2">
+      <Button
+        @click="copyResult"
+        :disabled="!resolvedResult()"
+        :label="$t('utility.utilityResultActions.copyResult')"
+        icon="ti ti-copy"
