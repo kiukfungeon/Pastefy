@@ -62,3 +62,67 @@ app.use(createPinia())
 app.use(router)
 app.use(I18NextVue, { i18next })
 
+import('codemirror-editor-vue3').then(({ InstallCodeMirror }) => {
+  app.use(InstallCodeMirror)
+  useAppStore().codeMirrorAvailable = true
+})
+
+app.use(VAnimateCss)
+app.use(ViewTransitionsPlugin())
+
+const preset = definePreset(Aura, theme)
+
+app.use(PrimeVue, {
+  theme: {
+    preset,
+    options: {
+      darkModeSelector: '.dark',
+      cssLayer: {
+        name: 'primevue',
+        order: 'theme, base, primevue',
+      },
+    },
+  },
+})
+app.use(ToastService)
+app.directive('tooltip', Tooltip)
+app.use(ConfirmationService)
+app.use(vue3Shortkey, { prevent: ['input', 'textarea'] })
+
+if (!customElements.get('pastefy-highlighted')) {
+  customElements.define(
+    'pastefy-highlighted',
+    defineCustomElement(
+      defineAsyncComponent(() => import('@/components/Highlighted.vue')),
+      {
+        shadowRoot: false,
+      },
+    ),
+  )
+}
+
+app.mount('#app')
+
+const currentUserStore = useCurrentUserStore()
+const config = useConfig()
+
+client.interceptors.response.use((response) => {
+  if (typeof response.data === 'string') {
+    try {
+      response.data = JSON.parse(response.data)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  return response
+})
+
+client.defaults.headers.common = { Accept: `application/json` }
+if (config.value?.apiKey) {
+  client.defaults.headers.common.Authorization = `Bearer ${config.value.apiKey}`
+}
+currentUserStore.fetchUser()
+
+const appInfoStore = useAppInfoStore()
+const componentInjections = useComponentInjectionStore()
+appInfoStore.fetchAppInfo()
