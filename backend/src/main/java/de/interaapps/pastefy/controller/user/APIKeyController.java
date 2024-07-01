@@ -18,3 +18,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @PathPrefix("/api/v2/user/keys")
+public class APIKeyController extends HttpController {
+    @Post
+    @With("auth")
+    public CreateAuthKeyResponse addKey(@Attrib("user") User user, @Attrib("authkey") AuthKey requestAuthKey) {
+        if (requestAuthKey != null)
+            requestAuthKey.checkPermission("authkeys:create");
+
+        CreateAuthKeyResponse response = new CreateAuthKeyResponse();
+        AuthKey authKey = new AuthKey();
+        AuthKey userAuthKey = Repo.get(AuthKey.class).where("userId", user.getId()).order("createdAt", true).first();
+        if (userAuthKey != null) {
+            authKey.type = AuthKey.Type.API;
+            authKey.userId = userAuthKey.userId;
+            authKey.save();
+
+            response.success = true;
+            response.key = authKey.getKey();
+        }
+        return response;
+    }
