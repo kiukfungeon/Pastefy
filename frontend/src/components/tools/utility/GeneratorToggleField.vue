@@ -2,7 +2,3 @@
 import Checkbox from 'primevue/checkbox'
 
 defineProps<{
-  label: string
-  help?: string
-}>()
-

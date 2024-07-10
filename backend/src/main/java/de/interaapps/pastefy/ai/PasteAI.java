@@ -85,3 +85,46 @@ public class PasteAI {
 
                 JSON schema:
                 {
+                  "tags": ["string"],
+                  "description": "string",
+                  "system_warnings": [{"description": "string", "severity": 1}],
+                  "suggested_filename": "string",
+                  "dangerous": false
+                }
+
+                If a nullable/optional field is not needed, omit it.
+                """,
+                "Title: " + paste.getTitle() + "\n\nContent preview:\n" + contents
+        );
+
+        return AbstractElement.fromJson(response).object();
+    }
+
+    public AbstractObject generateTags(Paste paste) {
+        String contents = paste.getContent();
+        if (contents.length() > 500)
+            contents = contents.substring(0, 500);
+
+        String response = provider.generate(
+                """
+                You are a code metadata classifier for Pastefy.
+
+                Task:
+                Generate tags, a likely file name and a file extension from the paste title and content preview.
+
+                Rules:
+                - Return valid JSON only. No markdown. No explanation.
+                - Tags must be lowercase slugs using only a-z, 0-9 and hyphen.
+                - Max 6 tags.
+                - Max tag length: 30 characters.
+                - Always include exactly one language tag if identifiable: lang-{language}.
+                - Use common language names: javascript, typescript, python, kotlin, java, lua, html, css, json, yaml, sql, shell, php, ruby, rust, go, csharp, cpp, c.
+                - Do not create spammy, adult, piracy, leak or credential-related SEO tags.
+                - file_name must include an extension if obvious.
+                - file_extension must not include a dot.
+                - If no good filename or extension is obvious, use an empty string.
+
+                JSON schema:
+                {
+                  "tags": ["string"],
+                  "file_name": "string",
