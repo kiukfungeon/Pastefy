@@ -8,8 +8,3 @@ export type PasteComment = {
   line_to?: number
   created_at: string
   user?: PublicUser
-  replies: PasteComment[]
-}
-
-export type PasteCommentMarker = {
-  line: number
