@@ -7,13 +7,3 @@ stages:
   - package
   - deploy
 
-build_image:
-  stage: package
-  image: docker:latest
-  services:
-    - docker:dind
-  variables:
-    DOCKER_DRIVER: overlay
-  only:
-    - master
-  script:

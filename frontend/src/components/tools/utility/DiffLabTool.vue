@@ -58,3 +58,23 @@ const stats = computed(() => {
 <template>
   <UtilityShell
     control-title="Compare Text"
+    control-description="Diff any two texts locally and inspect the generated unified patch."
+    result-title="Diff"
+    result-description="Rendered diff preview plus reusable patch output."
+  >
+    <template #controls>
+      <div class="grid gap-3 md:grid-cols-3">
+        <InputText v-model="leftName" fluid placeholder="before.txt" />
+        <InputText v-model="rightName" fluid placeholder="after.txt" />
+        <Select v-model="mode" :options="modeOptions" option-label="label" option-value="value" fluid />
+      </div>
+      <div class="grid gap-3 md:grid-cols-2">
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.diffLabTool.before') }}</label>
+          <Textarea v-model="left" auto-resize rows="18" fluid />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.diffLabTool.after') }}</label>
+          <Textarea v-model="right" auto-resize rows="18" fluid />
+        </div>
+      </div>
