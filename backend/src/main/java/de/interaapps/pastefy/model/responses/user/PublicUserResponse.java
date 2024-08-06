@@ -13,3 +13,8 @@ public class PublicUserResponse {
         id = user.id;
         name = user.uniqueName;
         displayName = user.name;
+        avatar = user.avatar;
+    }
+
+    public PublicUserResponse(ElasticUser user) {
+        id = user.id;
