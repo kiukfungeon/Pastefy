@@ -43,3 +43,138 @@ public class User extends Model {
     public String avatar;
 
     @Column(size = 455)
+    @Filterable
+    public String authId;
+
+    @Column
+    @Filterable
+    @Searchable
+    public AuthenticationProvider authProvider;
+
+    @Column
+    @Filterable
+    @Searchable
+    public Type type = Type.USER;
+
+    @Column
+    public Timestamp createdAt;
+
+    @Column
+    public Timestamp updatedAt;
+
+    public User() {
+        do {
+            id = RandomUtil.string(8);
+        } while (Repo.get(User.class).where("id", id).isNotEmpty());
+    }
+
+    public List<Paste> getPastes() {
+        return Repo.get(Paste.class).where("userId", id).all();
+    }
+
+    public List<Folder> getFolders() {
+        return Repo.get(Folder.class).where("userId", id).all();
+    }
+
+    public List<FolderResponse> getFolderTree(boolean fetchChildren, boolean fetchSubChildren, boolean fetchPastes) {
+        return Repo.get(Folder.class)
+                .where("userId", id)
+                .whereNull("parent")
+                .all()
+                .stream()
+                .map(folder -> new FolderResponse(folder, fetchChildren, fetchSubChildren, fetchPastes, true))
+                .collect(Collectors.toList());
+    }
+
+    public List<FolderResponse> getFolderWithChildren() {
+        return Repo.get(Folder.class).where("userId", id).whereNull("parent").all().stream().map(folder -> new FolderResponse(folder, true, true, false, true)).collect(Collectors.toList());
+    }
+
+    public void sendNotification(Notification notification) {
+        notification.userId = id;
+        notification.save();
+    }
+
+    public boolean roleCheck() {
+        return type != Type.AWAITING_ACCESS && type != Type.BLOCKED;
+    }
+
+    public static User get(String id) {
+        return Repo.get(User.class).get(id);
+    }
+
+    public static User getByName(String name) {
+        return Repo.get(User.class).where("uniqueName", name).first();
+    }
+
+    public void star(Paste paste) {
+        if (!hasStarred(paste)) {
+            PasteStar pasteStar = new PasteStar();
+            pasteStar.paste = paste.getKey();
+            pasteStar.userId = id;
+            pasteStar.save();
+
+            Pastefy.getInstance().executeAsync(() -> {
+                ElasticStars.addStarCount(paste, this);
+                PublicPasteEngagement.addInterestFromPaste(paste, 20);
+            });
+        }
+    }
+
+    public void unstar(Paste paste) {
+        Repo.get(PasteStar.class)
+                .where("paste", paste.getKey())
+                .where("userId", id)
+                .delete();
+
+        Pastefy.getInstance().executeAsync(() -> {
+            ElasticStars.removeStarCount(paste, this);
+            PublicPasteEngagement.addInterestFromPaste(paste, -20);
+        });
+    }
+
+    public boolean hasStarred(Paste paste) {
+        return Repo.get(PasteStar.class)
+                .where("paste", paste.getKey())
+                .where("userId", id)
+                .count() > 0;
+    }
+
+    public enum AuthenticationProvider {
+        INTERAAPPS(InteraAppsOAuth2Provider.class, "interaapps"),
+        GOOGLE(GoogleOAuth2Provider.class, "google"),
+        GITHUB(GitHubOAuth2Provider.class, "github"),
+        TWITCH(TwitchOAuth2Provider.class, "twitch"),
+        OIDC(CustomOAuth2Provider.class, "oidc"),
+        DISCORD(DiscordOAuth2Provider.class, "discord");
+
+        private Class<? extends OAuth2Provider> oauth2Service;
+        private String name;
+
+
+        AuthenticationProvider(Class<? extends OAuth2Provider> oauth2Service, String name) {
+            this.name = name;
+            this.oauth2Service = oauth2Service;
+        }
+
+        public Class<? extends OAuth2Provider> getOAuth2ServiceClass() {
+            return oauth2Service;
+        }
+
+        public static AuthenticationProvider getProviderByClass(Class<? extends OAuth2Provider> oauth2ServiceClass) {
+            for (AuthenticationProvider authenticationProvider : AuthenticationProvider.values()) {
+                if (oauth2ServiceClass == authenticationProvider.getOAuth2ServiceClass())
+                    return authenticationProvider;
+            }
+            return null;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
+    public enum Type {
+        USER,
+        ADMIN,
+        BLOCKED,
