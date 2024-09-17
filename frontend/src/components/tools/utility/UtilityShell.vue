@@ -25,17 +25,3 @@ const shouldFillHeight = computed(() => props.fillHeight || inheritedFocusMode?.
       <div class="border-b border-neutral-200 bg-white px-4 py-3 dark:border-neutral-700 dark:bg-neutral-900">
         <h2 class="font-semibold">{{ controlTitle || 'Tool' }}</h2>
         <p class="text-sm text-neutral-500 dark:text-neutral-400">
-          {{ controlDescription || 'Interactive controls for this utility.' }}
-        </p>
-      </div>
-
-      <div class="flex min-h-0 flex-1 flex-col gap-4 overflow-auto p-4">
-        <slot name="controls" />
-      </div>
-    </div>
-
-    <div
-      class="flex flex-col overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-800"
-      :class="shouldFillHeight ? 'min-h-0 h-full' : 'min-h-[42rem]'"
-    >
-      <div class="border-b border-neutral-200 bg-white px-4 py-3 dark:border-neutral-700 dark:bg-neutral-900">

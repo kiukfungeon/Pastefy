@@ -38,3 +38,44 @@ public class UserController extends HttpController {
 
         UserPastesResponse response = new UserPastesResponse();
         int page = 0;
+        if (exchange.getQueryParameters().has("page"))
+            page = Integer.parseInt(exchange.getQueryParameters().get("page").string()) - 1;
+
+        response.pastes = Repo.get(Paste.class).where("userId", user.getId()).whereNull("folder").order("updated_at", true).limit(10).offset(page * 10).all().stream().map(paste -> PasteResponse.create(paste, exchange, user, false, false)).collect(Collectors.toList());
+        response.folder = Repo.get(Folder.class).where("userId", user.getId()).whereNull("parent").order("updated_at", true).all().stream().map(folder -> new FolderResponse(folder, !exchange.getQueryParameters().has("hide_children"))).collect(Collectors.toList());
+
+        return response;
+    }
+
+    @Get("/folders")
+    @With({"auth", "awaiting-access-check", "blocked-check"})
+    public List<FolderResponse> getFolder(Exchange exchange, @Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
+        if (authKey != null)
+            authKey.checkPermission("folders:read");
+
+        return user.getFolderTree(
+                !exchange.getQueryParameters().has("hide_children"),
+                !exchange.getQueryParameters().has("hide_sub_children"),
+                !exchange.getQueryParameters().has("hide_pastes")
+        );
+    }
+
+    @Get("/pastes")
+    @With({"auth", "awaiting-access-check", "blocked-check"})
+    public List<PasteResponse> getPastes(Exchange exchange, @Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
+        if (authKey != null)
+            authKey.checkPermission("pastes:read");
+
+        return PasteService
+                .getAllPastes(
+                    exchange,
+                    PasteQueryParameters.from(exchange)
+                        .setFilter("userId", user.getId()),
+                    false
+                );
+    }
+
+
+    /**
+     * @deprecated This is not implemented anymore
+     */
