@@ -74,28 +74,3 @@ public class PasteQueryBuilder extends ListQueryTransformer<Paste, PasteResponse
             query.whereExists(PasteStar.class, queryQueryFunction);
             return;
         }
-        super.ormFieldFilter(query, operator, key, value, isOrFilter);
-    }
-
-    @Override
-    public ObjectBuilder<BoolQuery> buildElasticSearchQuery(Exchange exchange, ListQueryParameters params, BoolQuery.Builder builder) {
-        PasteQueryParameters pasteQueryParameters = (PasteQueryParameters) params;
-        boolean loggedIn = exchange.attrib("loggedIn");
-        User user = exchange.attrib("user");
-        System.out.println(pasteQueryParameters.filters.toJsonString());
-        if (pasteQueryParameters.filterTags != null && pasteQueryParameters.filterTags.length > 0) {
-            builder.must(b -> {
-                List<String> tags = Arrays.asList(pasteQueryParameters.filterTags);
-                List<FieldValue> tagValues = tags.stream()
-                        .map(FieldValue::of)
-                        .collect(Collectors.toList());
-
-                b.terms(v -> v
-                    .field("tags")
-                    .terms(TermsQueryField.of(c -> c.value(tagValues)))
-                );
-
-                return b;
-            });
-        }
-
