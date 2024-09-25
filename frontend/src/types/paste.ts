@@ -14,3 +14,19 @@ export type PasteAiInfo = {
   description: string
 }
 export type Paste = {
+  id?: string
+  content: string
+  title: string
+  encrypted: boolean
+  visibility: PasteVisibility
+  raw_url?: string
+  type: PasteType
+  created_at?: string
+  expire_at?: string
+  tags?: string[]
+  forked_from?: string
+  user_id?: string
+  folder?: string
+  user?: PublicUser
+  starred?: boolean
+

@@ -9,3 +9,9 @@ export const useUserFoldersStore = defineStore('user-folders', () => {
 
   async function fetchFolders() {
     isLoading.value = true
+    try {
+      folders.value = (
+        await client.get('/api/v2/user/folders', {
+          params: { hide_pastes: 'true' },
+        })
+      ).data
