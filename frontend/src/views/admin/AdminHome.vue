@@ -29,3 +29,34 @@ const {
   <LoadingContainer v-else-if="isLoading" class="flex items-center justify-center p-3" />
   <div v-else-if="stats">
     <div
+      class="mb-9 flex flex-col gap-4 rounded-2xl border border-neutral-200 bg-white/80 p-5 dark:border-neutral-800 dark:bg-neutral-900/70 lg:flex-row lg:items-center lg:justify-between"
+    >
+      <div>
+        <h2 class="text-xl font-bold">{{ $t('admin.quickActions') }}</h2>
+        <p class="text-sm text-neutral-600 dark:text-neutral-300">
+          Jump straight into the two moderation queues you are most likely to use.
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <Button
+          as="router-link"
+          :to="{ name: 'admin-users' }"
+          icon="ti ti-users"
+          :label="$t('admin.manageUsers')"
+          size="small"
+          outlined
+          severity="contrast"
+        />
+        <Button
+          as="router-link"
+          :to="{ name: 'admin-pastes', query: { sort: 'createdAt', page: '1' } }"
+          icon="ti ti-script"
+          :label="$t('admin.latestPastes')"
+          size="small"
+        />
+      </div>
+    </div>
+
+    <div class="mb-9">
+      <h2 class="mb-3 text-2xl font-bold">{{ $t('paste.pastes') }}</h2>
+      <div class="grid w-full grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
