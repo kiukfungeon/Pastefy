@@ -21,3 +21,14 @@ const renderedDiff = computed(() => {
 
   return html(props.diff, {
     colorScheme: document.documentElement.classList.contains('dark')
+      ? ColorSchemeType.DARK
+      : ColorSchemeType.LIGHT,
+  })
+})
+</script>
+
+<template>
+  <div class="p-3">
+    <div v-html="renderedDiff" class="diff-container m-[-1px]" />
+  </div>
+</template>
