@@ -21,26 +21,3 @@ public class GitHubOAuth2Provider implements OAuth2Provider {
     }
 
     public GitHubOAuth2Provider setScopes(String... scopes) {
-        this.scopes = scopes;
-        return this;
-    }
-
-    public OAuth2Callback callback(AbstractObject queryParameters, String callbackUrl) {
-        AbstractObject abstractObject = new HTTPClient("https://github.com").post("/login/oauth/access_token")
-                .formBodyString(new QueryString()
-                        .set("client_id", clientId)
-                        .set("client_secret", secret)
-                        .set("code", queryParameters.string("code"))
-                        .toString())
-                .header("Accept", MimeType.JSON.getMimeTypes().get(0))
-                .data().object();
-
-
-        if (abstractObject.has("scope")/* && abstractObject.get("scope").string().equals("read:user,user:email")*/) {
-            return new OAuth2Callback(this, abstractObject.string("access_token"), abstractObject.has("refresh_token") ? abstractObject.string("refresh_token") : null);
-        }
-
-        return null;
-    }
-
-    public String redirect(String callbackUrl) {
