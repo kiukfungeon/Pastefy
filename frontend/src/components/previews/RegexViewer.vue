@@ -22,27 +22,3 @@
             v-model="testInput"
             fluid
             :placeholder="$t('previews.regexViewer.insertYourTestStringHere')"
-            class="relative z-10 bg-transparent text-transparent caret-neutral-500"
-            style="font-size: 1rem"
-            auto-resize
-            wrap="hard"
-          />
-        </div>
-      </div>
-
-      <p v-if="error" class="mono mt-2 text-sm text-red-500">{{ error }}</p>
-    </div>
-  </div>
-</template>
-
-<script setup lang="ts">
-import { computed, ref } from 'vue'
-import InputText from 'primevue/inputtext'
-import Textarea from 'primevue/textarea'
-import Highlighted from '@/components/Highlighted.vue'
-
-const props = defineProps<{
-  regex: string
-  inEditor?: boolean
-}>()
-
