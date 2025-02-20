@@ -10,15 +10,3 @@ public abstract class OAuth2Callback {
     public OAuth2Callback(OAuth2Provider provider, String accessToken, String refreshToken) {
         this.provider = provider;
         this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
-    }
-
-    public abstract HTTPClient createApiClient();
-
-    public abstract OAuth2Profile getProfile();
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public String getRefreshToken() {
