@@ -12,3 +12,18 @@ const props = withDefaults(
     text?: boolean
     outlined?: boolean
     size?: 'small' | 'large'
+  }>(),
+  {
+    label: true,
+    text: false,
+    outlined: true,
+  },
+)
+
+const pinnedTools = usePinnedTools()
+const pinned = computed(() => pinnedTools.isPinned(props.kind, props.slug))
+const buttonLabel = computed(() => (pinned.value ? 'pinned' : 'pin tool'))
+
+const toggle = () => {
+  pinnedTools.togglePinned(props.kind, props.slug)
+}
