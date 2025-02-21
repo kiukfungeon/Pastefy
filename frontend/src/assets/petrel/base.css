@@ -43,3 +43,94 @@
   color: #000FFF00;
   background: #FFFFFF21;
   border-radius: 10px;
+}
+
+.petrel-code-editor pre {
+  padding: 0px;
+  margin: 0px;
+  user-select: none;
+  line-height: inherit;
+  position: absolute;
+  top: 0;
+  padding-left: 0;
+  pointer-events: none;
+  font-family: inherit;
+  font-size: inherit;
+  z-index: 3;
+}
+
+
+
+.petrel-code-editor .petrel-code-editor-overlay {
+  position: absolute;
+  pointer-events: none;
+  top: 15px;
+  left: 20px;
+}
+
+.petrel-code-editor .petrel-code-editor-overlay-line-indicator {
+  position: absolute;
+  background: #FFFFFF11;
+  z-index: 1;
+}
+
+.petrel-code-editor .petrel-code-editor-overlay-bracket-indicator {
+  position: absolute;
+  background: #FFFFFF11;
+  border: #FFFFFF22 1px solid;
+  box-sizing: border-box;
+  z-index: 4;
+}
+
+.petrel-code-editor .petrel-code-editor-overlay-cursor {
+  position: absolute;
+  background: #FFFFFF;
+  animation: 1s cursor infinite linear;
+  width: 2px;
+  z-index: 10;
+}
+
+.petrel-code-editor .petrel-code-editor-selection {
+  position: absolute;
+  background: #3B74F133;
+  z-index: 2;
+}
+.petrel-code-editor .petrel-code-editor-selection-single {
+  border-radius: 4px;
+}
+.petrel-code-editor .petrel-code-editor-selection-first {
+  border-radius: 4px 0 0 0;
+}
+.petrel-code-editor .petrel-code-editor-selection-last {
+  border-radius: 0 0 4px 0;
+}
+
+@keyframes cursor {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 1;
+  }
+  51% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.petrel-code-editor .petrel-code-editor-line-numbering {
+  position: sticky;
+  min-height: 100%;
+  left: 0;
+
+  line-height: inherit;
+  float: left;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding-right: 5px;
+  text-align: right;
+  z-index: 10;

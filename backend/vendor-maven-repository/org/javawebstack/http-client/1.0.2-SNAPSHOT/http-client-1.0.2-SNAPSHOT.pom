@@ -25,30 +25,3 @@
         </license>
     </licenses>
 
-    <developers>
-        <developer>
-            <name>Jan Bebendorf</name>
-            <email>jan@bebendorf.eu</email>
-            <organization>JavaWebStack</organization>
-            <organizationUrl>https://javawebstack.org</organizationUrl>
-        </developer>
-        <developer>
-            <name>Julian Gojani</name>
-            <email>julian@gojani.xyz</email>
-            <organization>JavaWebStack</organization>
-            <organizationUrl>https://javawebstack.org</organizationUrl>
-        </developer>
-    </developers>
-
-    <scm>
-        <connection>scm:git:git://github.com/JavaWebStack/http-client.git</connection>
-        <developerConnection>scm:git:ssh://github.com:JavaWebStack/http-client.git</developerConnection>
-        <url>https://github.com/JavaWebStack/http-client/tree/master</url>
-    </scm>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.javawebstack</groupId>
-            <artifactId>abstract-data</artifactId>
-            <version>1.0.7-SNAPSHOT</version>
-        </dependency>
