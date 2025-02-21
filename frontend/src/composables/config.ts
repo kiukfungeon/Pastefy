@@ -13,3 +13,10 @@ export function useConfig() {
     defaultVisibility?: PasteVisibility
     language?: LanguagePreference
   }>(
+    'config',
+    // Default values:
+    {
+      apiKey: localStorage['session'] || undefined,
+      sideBarShown: window.innerWidth > 1024,
+      theme: 'system',
+      animations: !prefersReducedMotion.matches,
