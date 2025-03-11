@@ -226,3 +226,117 @@ watch(
     darkColor,
     lightColor,
     showBackground,
+    includeQuietZone,
+  ],
+  () => {
+    renderQRCode()
+  },
+)
+
+onMounted(() => renderQRCode())
+</script>
+<template>
+  <Dialog v-model:visible="visible" modal :header="$t('modals.qrModal.qrCode')" class="w-[75rem] max-w-full">
+    <div class="grid gap-5 xl:grid-cols-[minmax(0,1fr)_23rem]">
+      <div
+        class="flex min-h-[24rem] items-start justify-center rounded-2xl border border-neutral-200 bg-neutral-100 p-5 dark:border-neutral-700 dark:bg-neutral-900"
+      >
+        <div
+          v-if="qrCodeDataUrl"
+          class="relative flex items-center justify-start rounded-[2rem] border border-neutral-200 p-6 shadow-sm dark:border-neutral-700"
+          :style="previewCardStyle"
+        >
+          <img
+            class="block rounded-md"
+            :style="previewWrapperStyle"
+            :src="qrCodeDataUrl"
+            alt="QR Code"
+          />
+          <div
+            v-if="logoDataUrl"
+            class="absolute overflow-hidden rounded-2xl shadow-sm"
+            :style="logoWrapperStyle"
+          >
+            <img :src="logoDataUrl" alt="QR Logo" class="h-full w-full rounded-xl object-contain" />
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <section
+          class="rounded-2xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <h3 class="mb-8 text-sm font-semibold tracking-[0.2em] uppercase opacity-60">{{ $t('common.export') }}</h3>
+          <div class="space-y-7">
+            <FloatLabel>
+              <InputText v-model="fileName" fluid />
+              <label>{{ $t('common.filename') }}</label>
+            </FloatLabel>
+            <FloatLabel>
+              <Select
+                v-model="exportFormat"
+                :options="exportFormats"
+                option-label="label"
+                option-value="value"
+                fluid
+              />
+              <label>{{ $t('common.format') }}</label>
+            </FloatLabel>
+            <FloatLabel>
+              <InputNumber v-model="width" :min="180" :max="2048" fluid />
+              <label>{{ $t('modals.qrModal.sizePx') }}</label>
+            </FloatLabel>
+            <FloatLabel>
+              <InputNumber v-model="margin" :min="0" :max="20" fluid />
+              <label>{{ $t('modals.qrModal.quietZone') }}</label>
+            </FloatLabel>
+          </div>
+        </section>
+
+        <section
+          class="rounded-2xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <h3 class="mb-8 text-sm font-semibold tracking-[0.2em] uppercase opacity-60">{{ $t('common.colors') }}</h3>
+          <div class="space-y-7">
+            <Select
+              :options="colorPresets"
+              option-label="label"
+              :placeholder="$t('modals.qrModal.applyPreset')"
+              fluid
+              @update:model-value="applyPreset"
+            >
+              <template #option="{ option }">
+                <div class="flex items-center gap-3">
+                  <div class="flex gap-1">
+                    <span
+                      class="block h-4 w-4 rounded-full border border-neutral-300"
+                      :style="{ backgroundColor: option.dark }"
+                    />
+                    <span
+                      class="block h-4 w-4 rounded-full border border-neutral-300"
+                      :style="{ backgroundColor: option.light }"
+                    />
+                  </div>
+                  <span>{{ option.label }}</span>
+                </div>
+              </template>
+            </Select>
+            <div class="rounded-xl border border-neutral-200 p-3 dark:border-neutral-700">
+              <div class="mb-2 flex items-center justify-between text-xs uppercase opacity-60">
+                <span>{{ $t('modals.qrModal.currentPalette') }}</span>
+                <span>{{ darkColor }} / {{ showBackground ? lightColor : 'transparent' }}</span>
+              </div>
+              <div
+                class="h-12 rounded-lg border border-neutral-200 dark:border-neutral-700"
+                :style="colorPreviewStyle"
+              />
+            </div>
+            <FloatLabel>
+              <InputText v-model="darkColor" fluid />
+              <label>{{ $t('modals.qrModal.foregroundColor') }}</label>
+            </FloatLabel>
+            <div
+              class="flex items-center gap-3 rounded-xl border border-neutral-200 p-3 dark:border-neutral-700"
+            >
+              <span
+                class="block h-8 w-8 rounded-full border border-neutral-300"
