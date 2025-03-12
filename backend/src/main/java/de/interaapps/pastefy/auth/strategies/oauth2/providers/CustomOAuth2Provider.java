@@ -29,34 +29,3 @@ public class CustomOAuth2Provider implements OAuth2Provider {
     public CustomOAuth2Provider setScopes(String... scopes) {
         this.scopes = scopes;
         return this;
-    }
-
-    public OAuth2Callback callback(AbstractObject queryParameters, String callbackUrl) {
-        HTTPClient httpClient = new HTTPClient();
-
-        AbstractObject tokenData = httpClient.post(tokenEndpoint)
-                .header("User-Agent", "PastefyOIDCClient/1")
-                .formBodyString(new QueryString()
-                        .set("client_id", clientId)
-                        .set("client_secret", secret)
-                        .set("code", queryParameters.string("code"))
-                        .set("grant_type", "authorization_code")
-                        .set("redirect_uri", callbackUrl)
-                        .set("scope", String.join(" ", scopes))
-                        .toString())
-                .data().object();
-
-        return new OAuth2Callback(this, tokenData.string("access_token"), tokenData.string("refresh_token"), userInfoEndpoint);
-    }
-
-    public String redirect(String callbackUrl) {
-        return authEndpoint +
-                "?response_type=code" +
-                "&client_id=" + URLEncoder.encode(clientId, StandardCharsets.UTF_8) +
-                "&redirect_uri=" + URLEncoder.encode(callbackUrl, StandardCharsets.UTF_8) +
-                "&scope=" + URLEncoder.encode(String.join(" ", scopes), StandardCharsets.UTF_8) +
-                "&prompt=consent";
-    }
-
-
-    public static class OAuth2Callback extends de.interaapps.pastefy.auth.strategies.oauth2.OAuth2Callback {
