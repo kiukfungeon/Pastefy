@@ -36,3 +36,23 @@ try {
     const event = new ICAL.Event(e)
 
     return {
+      uid: event.uid,
+      summary: event.summary,
+      description: event.description,
+      location: event.location,
+      organizer: event.organizer,
+      color: event.color,
+      attendees: event.attendees.map((a) => a?.jCal?.[3]),
+      start: event.startDate.toJSDate(),
+      end: event.endDate?.toJSDate(),
+    }
+  })
+} catch (err) {
+  console.error('Failed to parse ICS:', err)
+}
+</script>
+<template>
+  <div class="p-4">
+    <ul class="space-y-4">
+      <li
+        v-for="event in events"
