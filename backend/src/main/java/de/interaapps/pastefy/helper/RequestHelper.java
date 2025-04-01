@@ -15,37 +15,3 @@ public class RequestHelper {
         int page = 0;
         if (exchange.query("page") != null)
             page = Integer.parseInt(exchange.query("page")) - 1;
-
-        int limit = 10;
-
-        if (exchange.query("page_limit") != null)
-            limit = exchange.query("page_limit", Integer.class);
-
-        if (Pastefy.getInstance().getConfig().has("pastefy.paginaton.pagelimit")) {
-            int configLimit = Pastefy.getInstance().getConfig().getInt("pastefy.paginaton.pagelimit", 50);
-            if (limit > configLimit)
-                limit = configLimit;
-        }
-
-        query.limit(limit).offset(page * limit);
-
-        exchange.header("PAGINATION_LIMIT", String.valueOf(limit));
-        exchange.header("PAGINATION_PAGE", String.valueOf(page));
-    }
-
-    public static void queryFilter(Query<?> query, AbstractObject params) {
-        if (params.has("filter")) {
-            query.filter(params.get("filter").toFormData().getMap());
-        }
-    }
-
-    public static void filterTags(Query<Paste> query, AbstractObject params) {
-        if (params.has("filter_tags")) {
-            String[] filterTags = params.get("filter_tags").string().split(",");
-
-            for (String filterTag : filterTags) {
-                query.whereExists(PasteTag.class, (pasteTagQuery) -> pasteTagQuery.where("tag", filterTag).where(PasteTag.class, "paste", "=", Paste.class, "key"));
-            }
-        }
-    }
-
