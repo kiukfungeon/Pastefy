@@ -54,3 +54,31 @@ public class GoogleOAuth2Provider implements OAuth2Provider {
         } catch (IOException e) {
             return null;
         }
+    }
+
+    @Override
+    public String redirect(String callbackUrl) {
+        return googleAuthorizationCodeFlow
+                .newAuthorizationUrl()
+                .setAccessType("offline")
+                .setRedirectUri(callbackUrl)
+                .build();
+    }
+
+    public static class OAuth2Callback extends de.interaapps.pastefy.auth.strategies.oauth2.OAuth2Callback {
+        private String clientId;
+        private String secret;
+
+        public OAuth2Callback(OAuth2Provider provider, String accessToken, String refreshToken, String clientId, String secret) {
+            super(provider, accessToken, refreshToken);
+            this.clientId = clientId;
+            this.secret = secret;
+        }
+
+        public HTTPClient createApiClient() {
+            return new HTTPClient("https://www.googleapis.com/oauth2/v1").bearer(accessToken);
+        }
+
+        public OAuth2Profile getProfile() {
+            Credential credential = new GoogleCredential.Builder()
+                    .setTransport(new NetHttpTransport())
