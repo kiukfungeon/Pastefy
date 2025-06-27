@@ -80,3 +80,44 @@ public class ElasticPaste {
                         );
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+            paste.setIndexedInElastic(true);
+            Map<String, Object> update = new HashMap<>();
+            update.put("indexed_in_elastic", paste.isIndexedInElastic());
+            Repo.get(Paste.class)
+                    .where("id", paste.getId())
+                    .update(update);
+            System.out.println("Storing to elastic done "+ paste.getId());
+        }
+    }
+
+    public static void delete(Paste paste) {
+        if (Pastefy.getInstance().isElasticsearchEnabled()) {
+            try {
+                Pastefy.getInstance()
+                        .getElasticsearchClient()
+                        .delete(d -> d
+                            .index("pastefy_pastes")
+                            .id(String.valueOf(paste.getId()))
+                        );
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void updateEngagement(Paste paste) {
+        if (Pastefy.getInstance().isElasticsearchEnabled()) {
+            try {
+                Pastefy.getInstance()
+                        .getElasticsearchClient()
+                        .updateByQuery(u -> u
+                            .index("pastefy_pastes")
+                                .query(q -> q.term(t -> t.field("id").value(String.valueOf(paste.getId()))))
+                                .script(s -> s
+                                        .source(su -> su.scriptString("ctx._source.engagementScore = params.engagementScore"))
+                                        .params("engagementScore", JsonData.of(paste.getEngagementScore()))
+                                )
+                        );
+            } catch (Exception e) {
+                e.printStackTrace();

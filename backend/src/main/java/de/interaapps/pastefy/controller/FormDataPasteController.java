@@ -25,31 +25,3 @@ public class FormDataPasteController extends HttpController {
     @Post("/api/asciicasts")
     @With({"rate-limiter", "auth-login-required-create", "awaiting-access-check", "blocked-check"})
     public String createPaste(Exchange exchange, @Attrib("user") User user) throws IOException {
-        exchange.enableMultipart(new File("/tmp"));
-        Paste paste = new Paste();
-
-        Map<String, String> files = new HashMap<>();
-        exchange.getParts().forEach(part -> {
-            try {
-                files.put(part.getName(), IO.readTextStream(part.getContentStream()));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
-        if (!files.isEmpty()) {
-            if (user != null) {
-                paste.setUserId(user.getId());
-            }
-
-            if (files.size() == 1) {
-                files.forEach((name, contents) -> {
-                    paste.setContent(contents);
-                    if (exchange.getPath().equals("/api/asciicasts")) {
-                        paste.setTitle(name+".cast");
-                        paste.addTag("asciicast");
-                        paste.addTag("asciinema");
-                    } else {
-                        paste.setTitle(name);
-                    }
-                    paste.setType(Paste.Type.PASTE);
