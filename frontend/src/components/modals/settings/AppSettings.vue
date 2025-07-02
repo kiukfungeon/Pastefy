@@ -18,14 +18,3 @@ const config = useConfig()
     <Divider />
 
     <div class="flex items-center justify-between gap-2">
-      <label for="theme" class="text-sm">{{ $t('settings.theme') }}</label>
-      <ThemeSwitcher />
-    </div>
-    <Divider />
-    <div class="flex items-center justify-between gap-2">
-      <label for="language" class="text-sm">{{ $t('settings.language') }}</label>
-      <LanguageSwitcher id="language" />
-    </div>
-    <Divider />
-    <div class="flex items-center justify-between gap-2">
-      <label for="default-visibility" class="text-sm">{{ $t('settings.defaultVisibility') }}</label>

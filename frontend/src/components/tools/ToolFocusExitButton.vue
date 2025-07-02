@@ -6,12 +6,3 @@ defineProps<{
 }>()
 
 const emit = defineEmits<{
-  close: []
-}>()
-</script>
-
-<template>
-  <Button
-    v-if="visible"
-    icon="ti ti-minimize"
-    severity="contrast"
