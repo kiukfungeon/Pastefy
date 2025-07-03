@@ -45,19 +45,3 @@ public class NotificationController extends HttpController {
     public List<Notification> getNotifications(Exchange exchange, @Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
         if (authKey != null)
             authKey.checkPermission("notifications:read");
-
-        Query<Notification> query = Repo.get(Notification.class).where("userId", user.getId());
-
-        if (exchange.getQueryParameters().has("not_received"))
-            query.where("received", false);
-
-
-        if (exchange.getQueryParameters().has("not_read"))
-            query.where("alreadyRead", false);
-
-        List<Notification> notifications = query.all();
-        if (!notifications.isEmpty())
-            query.update(new HashMap<String, Object>() {{
-                put("received", true);
-            }});
-
