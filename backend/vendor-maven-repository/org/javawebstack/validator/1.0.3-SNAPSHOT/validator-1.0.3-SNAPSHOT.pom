@@ -30,36 +30,3 @@
             <name>Jan Bebendorf</name>
             <email>jan@bebendorf.eu</email>
             <organization>JavaWebStack</organization>
-            <organizationUrl>https://javawebstack.org</organizationUrl>
-        </developer>
-    </developers>
-
-    <scm>
-        <connection>scm:git:git://github.com/JavaWebStack/validator.git</connection>
-        <developerConnection>scm:git:ssh://github.com:JavaWebStack/validator.git</developerConnection>
-        <url>https://github.com/JavaWebStack/validator/tree/master</url>
-    </scm>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.javawebstack</groupId>
-            <artifactId>abstract-data</artifactId>
-            <version>1.0.7-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>javax.mail</artifactId>
-            <version>1.6.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.10.0</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.sonatype.central</groupId>

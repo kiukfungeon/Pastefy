@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <buildVersion>1.0.3-SNAPSHOT</buildVersion>
+    </properties>
+
+    <groupId>org.javawebstack</groupId>
+    <artifactId>http-router</artifactId>
+    <version>${buildVersion}</version>
+
+    <name>http-router</name>
+    <description>This library provides an http routing and request mapping stack</description>
+    <url>https://github.com/JavaWebStack/http-router</url>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Jan Bebendorf</name>
+            <email>jan@bebendorf.eu</email>
+            <organization>JavaWebStack</organization>
+            <organizationUrl>https://javawebstack.org</organizationUrl>
+        </developer>
+        <developer>
+            <name>Julian Gojani</name>
+            <email>julian@gojani.xyz</email>
+            <organization>JavaWebStack</organization>
+            <organizationUrl>https://javawebstack.org</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/JavaWebStack/http-router.git</connection>
+        <developerConnection>scm:git:ssh://github.com:JavaWebStack/http-router.git</developerConnection>
+        <url>https://github.com/JavaWebStack/http-router/tree/master</url>
+    </scm>
+
