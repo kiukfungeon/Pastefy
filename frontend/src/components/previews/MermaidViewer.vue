@@ -41,3 +41,46 @@ const resolveMermaidInput = (raw: string) => {
       init: JSON.parse(directiveMatch[1]) as Record<string, unknown>,
       error: '',
     }
+  } catch {
+    return {
+      code: raw,
+      init: undefined as Record<string, unknown> | undefined,
+      error: 'The Mermaid init directive is not valid JSON.',
+    }
+  }
+}
+
+mermaid.initialize(getBaseConfig())
+
+const mermaidHTML = ref('Loading')
+const mermaidError = ref('')
+
+const render = async () => {
+  mermaidHTML.value = ''
+  mermaidError.value = ''
+
+  try {
+    const resolvedInput = resolveMermaidInput(props.mermaidCode)
+    if (resolvedInput.error) {
+      mermaidError.value = resolvedInput.error
+      return
+    }
+
+    mermaid.mermaidAPI.reset()
+    mermaid.initialize(getBaseConfig())
+
+    if (resolvedInput.init) {
+      mermaid.mermaidAPI.updateSiteConfig(resolvedInput.init)
+    }
+
+    const out = await mermaid.render(
+      `mermaid-preview-${Math.random().toString().replace('.', '')}`,
+      resolvedInput.code,
+    )
+    mermaidHTML.value = out.svg
+  } catch (error) {
+    mermaidError.value = (error as Error)?.message || 'Could not render this Mermaid diagram.'
+  } finally {
+    mermaid.mermaidAPI.reset()
+    mermaid.initialize(getBaseConfig())
+  }
