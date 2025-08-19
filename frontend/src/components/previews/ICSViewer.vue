@@ -56,3 +56,22 @@ try {
     <ul class="space-y-4">
       <li
         v-for="event in events"
+        :key="event.uid"
+        class="flex flex-col gap-2 rounded-lg border border-neutral-300 bg-neutral-50 p-4 dark:border-neutral-700 dark:bg-neutral-800"
+      >
+        <div class="flex items-center space-x-2">
+          <i class="ti ti-calendar text-xl" />
+          <strong class="text-lg">{{ event.summary }}</strong>
+        </div>
+        <div class="flex flex-wrap gap-5">
+          <div v-if="event.location" class="flex items-center gap-2 opacity-60">
+            <i class="ti ti-map-pin text-xl" />
+            {{ event.location }}
+          </div>
+          <div v-if="event.organizer" class="flex items-center gap-2 opacity-60">
+            <i class="ti ti-user-star text-xl" />
+            {{ event.organizer }}
+          </div>
+          <div v-if="event.attendees?.length" class="flex items-center gap-2 opacity-60">
+            <i class="ti ti-users text-xl" />
+            {{ event.attendees.join(', ') }}
