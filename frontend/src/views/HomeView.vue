@@ -81,3 +81,86 @@ await client.createPaste({
             class="flex h-full flex-col justify-between overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-800"
           >
             <div class="flex h-full flex-col gap-1 p-4 pb-0">
+              <h2 class="text-xl font-bold">{{ $t('home.organize') }}</h2>
+              <p>{{ $t('home.organizeDescription') }}</p>
+            </div>
+            <div class="flex w-full items-center justify-between gap-2 p-2 px-5">
+              <FolderCard
+                disabled
+                v-for="(name, i) of ['Game Scripts', 'Web', 'Mobile']"
+                :key="name"
+                :folder="{
+                  id: String(i),
+                  name,
+                  children: [],
+                  created: '',
+                  pastes: [],
+                }"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="mb-3 flex flex-col gap-3 md:grid md:h-[18rem] md:grid-cols-[1fr_2fr]">
+          <div
+            class="flex h-full flex-col justify-between overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-800"
+          >
+            <div class="flex h-full flex-col gap-1 p-4 pb-0">
+              <h2 class="text-xl font-bold">{{ $t('home.keepSecret') }}</h2>
+              <p>{{ $t('home.keepSecretDescription') }}</p>
+            </div>
+            <div class="flex w-full flex-col items-center justify-between gap-2 p-2">
+              <i class="ti ti-lock text-3xl" />
+              <div
+                class="mono w-full rounded-lg border border-neutral-300 p-2 text-center dark:border-neutral-600"
+              >
+                * * * * * *
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="h-full items-start overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 md:grid md:grid-cols-2 dark:border-neutral-700 dark:bg-neutral-800"
+          >
+            <div class="flex h-full flex-col justify-between gap-3 p-4">
+              <div class="flex-col gap-3">
+                <h2 class="text-xl font-bold">{{ $t('home.integration') }}</h2>
+                <p>{{ $t('home.integrationDescription') }}</p>
+              </div>
+
+              <div>
+                <Button
+                  as="a"
+                  icon="ti ti-book"
+                  href="https://docs.pastefy.app/api/"
+                  target="_blank"
+                  :label="$t('views.homeView.apiDocs')"
+                  size="small"
+                  severity="contrast"
+                  outlined
+                />
+              </div>
+            </div>
+            <div class="h-full overflow-hidden">
+              <div
+                class="h-full border-t border-neutral-300 md:border-t-0 md:border-l dark:border-neutral-700"
+              >
+                <Highlighted hide-divider :contents="exampleIntegrationCode" file-name=".js" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          v-if="appInfo.appInfo?.public_pastes_enabled"
+          class="mb-3 flex h-full flex-col items-center gap-3 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 p-3 dark:border-neutral-700 dark:bg-neutral-800"
+        >
+          <i class="ti ti-world text-4xl" />
+          <h2 class="text-lg font-bold">{{ $t('views.homeView.explorePublicPastes') }}</h2>
+
+          <Button
+            as="router-link"
+            :to="{ name: 'explore' }"
+            :label="$t('views.homeView.explore')"
+            outlined
+            fluid
+            class="max-w-[10rem]"
