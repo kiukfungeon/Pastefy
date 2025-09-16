@@ -15,3 +15,20 @@ const words = computed(() =>
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-zA-Z0-9]+/g, ' ')
     .trim()
+    .split(/\s+/)
+    .filter(Boolean),
+)
+
+const state = computed(() => {
+  const lower = input.value.toLowerCase()
+  const upper = input.value.toUpperCase()
+  const sentence = input.value
+    ? `${input.value.charAt(0).toUpperCase()}${input.value.slice(1).toLowerCase()}`
+    : ''
+  const title = words.value
+    .map((word) => `${word.charAt(0).toUpperCase()}${word.slice(1).toLowerCase()}`)
+    .join(' ')
+  const camel = words.value
+    .map((word, index) =>
+      index === 0
+        ? word.toLowerCase()
