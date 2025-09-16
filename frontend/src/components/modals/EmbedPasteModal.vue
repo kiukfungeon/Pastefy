@@ -60,3 +60,24 @@ const iframeEmbedCode = computed(
       <div class="md:h-full md:overflow-auto">
         <h2 class="mb-2 text-lg font-bold">{{ $t('common.options') }}</h2>
         <div
+          class="mb-5 flex flex-wrap gap-5 rounded-xl border border-neutral-200 bg-neutral-100 p-5 dark:border-neutral-700 dark:bg-neutral-800"
+        >
+          <div class="flex items-center gap-3">
+            <label for="hide-title">{{ $t('modals.embedPasteModal.hideTitle') }}</label>
+            <Checkbox input-id="hide-title" binary v-model="hideTitle" />
+          </div>
+          <div class="flex items-center gap-3">
+            <label for="hide-actions">{{ $t('modals.embedPasteModal.hideActions') }}</label>
+            <Checkbox input-id="hide-actions" binary v-model="hideActions" />
+          </div>
+          <div class="flex items-center gap-3">
+            <label for="add-padding">{{ $t('modals.embedPasteModal.addPadding') }}</label>
+            <Checkbox input-id="add-padding" binary v-model="addPadding" />
+          </div>
+        </div>
+
+        <h2 class="mb-2 text-lg font-bold">{{ $t('modals.embedPasteModal.embedViaScript') }}</h2>
+        <div
+          class="mb-5 rounded-xl border border-neutral-200 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-800"
+        >
+          <Highlighted show-copy-button file-name=".html" :contents="embedCode" />

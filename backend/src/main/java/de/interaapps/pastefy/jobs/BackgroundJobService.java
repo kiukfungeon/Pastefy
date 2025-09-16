@@ -49,3 +49,54 @@ public class BackgroundJobService {
     }
 
     public void scheduleWithFixedDelay(Runnable task, long initialDelay, long delay, TimeUnit unit) {
+        scheduler.scheduleWithFixedDelay(task, initialDelay, delay, unit);
+    }
+
+    public synchronized void enqueue(BackgroundJob.Type type, int entityId, int sourceVersion, int promptVersion) {
+        String key = type + ":" + entityId + ":" + sourceVersion + ":" + promptVersion;
+        BackgroundJob existingJob = Repo.get(BackgroundJob.class).get(key);
+        if (existingJob != null) {
+            if (existingJob.status == BackgroundJob.Status.DONE) {
+                Map<String, Object> update = new HashMap<>();
+                update.put("status", BackgroundJob.Status.PENDING);
+                update.put("attempts", 0);
+                update.put("available_at", Timestamp.from(Instant.now()));
+                update.put("lease_until", null);
+                update.put("lease_token", null);
+                update.put("last_error", null);
+                Repo.get(BackgroundJob.class).where("key", key).update(update);
+            }
+            return;
+        }
+
+        BackgroundJob job = new BackgroundJob();
+        job.key = key;
+        job.type = type;
+        job.entityId = entityId;
+        job.sourceVersion = sourceVersion;
+        job.promptVersion = promptVersion;
+        job.availableAt = Timestamp.from(Instant.now());
+
+        try {
+            job.save();
+        } catch (RuntimeException exception) {
+            // Another instance may have inserted the deterministic key concurrently.
+            if (Repo.get(BackgroundJob.class).get(key) == null) throw exception;
+        }
+    }
+
+    private void pollSafely() {
+        try {
+            poll();
+        } catch (RuntimeException exception) {
+            LOGGER.log(Level.WARNING, "Unable to poll background jobs", exception);
+        }
+    }
+
+    private void poll() {
+        int availableWorkers = workerCount - activeWorkers.get();
+        for (int i = 0; i < availableWorkers; i++) {
+            BackgroundJob job = claimNext();
+            if (job == null) return;
+
+            activeWorkers.incrementAndGet();
