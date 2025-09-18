@@ -5,3 +5,10 @@ export const useAppStore = defineStore('app-store', () => {
   const searchShown = ref(false)
   const codeMirrorAvailable = ref(false)
   const createPasteFullscreenRequested = ref(false)
+  const searchShownEndpoints = ref({
+    myPastes: true,
+    publicPastes: true,
+  })
+
+  const settingsModalShown = ref(false)
+
