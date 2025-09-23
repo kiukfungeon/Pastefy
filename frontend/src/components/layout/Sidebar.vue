@@ -34,3 +34,39 @@ const appStore = useAppStore()
           icon="ti ti-home text-lg"
           :label="$t('nav.home').toLowerCase()"
           severity="contrast"
+          outlined
+          fluid
+        />
+        <Button
+          v-if="appInfo.appInfo?.public_pastes_enabled"
+          as="router-link"
+          :to="{ name: 'explore' }"
+          class="border-neutral-400 bg-gradient-to-b from-[transparent] to-neutral-100 dark:border-neutral-600 dark:to-neutral-900"
+          size="small"
+          icon="ti ti-world text-lg"
+          :label="$t('nav.explore').toLowerCase()"
+          severity="contrast"
+          outlined
+          fluid
+        />
+        <Button
+          @click="appStore.searchShown = true"
+          class="border-neutral-400 bg-gradient-to-b from-[transparent] to-neutral-100 dark:border-neutral-600 dark:to-neutral-900"
+          size="small"
+          icon="ti ti-search text-lg"
+          :label="$t('nav.search').toLowerCase()"
+          severity="contrast"
+          outlined
+          fluid
+        />
+      </nav>
+      <Divider class="m-0" />
+
+      <LoadingContainer v-if="!appStore.codeMirrorAvailable" />
+      <CreatePaste v-else-if="!isHidden" />
+    </div>
+
+    <div id="sidenav-center" />
+    <ComponentInjection type="sidebar-center" />
+
+    <footer>
