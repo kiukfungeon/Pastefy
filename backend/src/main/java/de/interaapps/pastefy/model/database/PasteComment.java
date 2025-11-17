@@ -23,3 +23,28 @@ public class PasteComment extends Model {
     @Column(size = 2000)
     private String content;
 
+    @Column
+    private Integer parentId;
+
+    @Column
+    private Integer lineFrom;
+
+    @Column
+    private Integer lineTo;
+
+    @Column
+    public Timestamp createdAt;
+
+    @Column
+    public Timestamp updatedAt;
+
+    public int getId() {
+        return id;
+    }
+
+    public String getPaste() {
+        return paste;
+    }
+
+    public void setPaste(String paste) {
+        this.paste = paste;

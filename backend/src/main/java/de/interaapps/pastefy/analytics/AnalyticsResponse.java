@@ -10,3 +10,9 @@ public class AnalyticsResponse {
     public boolean botTrackingEnabled;
     public List<SeriesPoint> series = new ArrayList<>();
     public List<BreakdownPoint> breakdown = new ArrayList<>();
+
+    public static class SeriesPoint {
+        public String bucket;
+        public long visits;
+        public long uniqueVisitors;
+    }
