@@ -11,3 +11,16 @@ const settings = useUrlSearchParams<{
   hideTitle?: boolean
   hideActions?: boolean
   addPadding?: boolean
+  hideEmbedBottom?: boolean
+}>('history')
+
+const sendHeight = () => {
+  window.parent.postMessage({ height: 200 }, '*')
+  setTimeout(() => {
+    window.parent.postMessage({ height: document.body.scrollHeight }, '*')
+  }, 50)
+}
+
+onMounted(() => {})
+</script>
+<template>

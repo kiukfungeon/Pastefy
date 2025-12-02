@@ -19,24 +19,3 @@ const modes = [
 ]
 
 const state = computed(() => {
-  try {
-    return {
-      value: mode.value === 'escape' ? JSON.stringify(input.value) : JSON.parse(input.value),
-      error: undefined,
-    }
-  } catch {
-    return {
-      value: '',
-      error: 'Input could not be parsed for JSON string unescaping.',
-    }
-  }
-})
-</script>
-
-<template>
-  <UtilityShell>
-    <template #controls>
-      <label class="text-sm font-medium">{{ $t('utility.jsonStringTool.mode') }}</label>
-      <Select v-model="mode" :options="modes" option-label="label" option-value="value" />
-      <label class="text-sm font-medium">{{ $t('utility.jsonStringTool.input') }}</label>
-      <Textarea v-model="input" auto-resize rows="10" fluid />
