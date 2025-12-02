@@ -15,3 +15,20 @@ public class SharedPaste extends Model {
     private int id;
 
     @Column(size = 8)
+    private String userId;
+
+    @Column(size = 8)
+    private String targetId;
+
+    @Column
+    private String paste;
+
+    @Column
+    public Timestamp createdAt;
+
+    @Column
+    public Timestamp updatedAt;
+
+
+    public void setUser(User user) {
+        this.userId = user.getId();
