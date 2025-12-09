@@ -13,35 +13,3 @@ import org.javawebstack.http.router.router.annotation.verbs.Get;
 import org.javawebstack.http.router.router.annotation.verbs.Post;
 import org.javawebstack.orm.Repo;
 import org.javawebstack.orm.query.Query;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-@PathPrefix("/api/v2/user/notification")
-public class NotificationController extends HttpController {
-    /**
-     * Send the logged in user a notification
-     */
-    @Post
-    @With("auth")
-    public ActionResponse add(@Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
-        if (authKey != null)
-            authKey.checkPermission("notifications:create");
-
-        ActionResponse response = new ActionResponse();
-        //Notification notification = new Notification();
-        //notification.setMessage();
-        //user.sendNotification(notification);
-
-        List<String> list = new ArrayList<>();
-
-
-        return response;
-    }
-
-    @Get
-    @With("auth")
-    public List<Notification> getNotifications(Exchange exchange, @Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
-        if (authKey != null)
-            authKey.checkPermission("notifications:read");
