@@ -27,3 +27,32 @@ const randomChars = (charset: string, targetLength: number) => {
   return Array.from(values, (value) => charset[value % charset.length]).join('')
 }
 
+const encodeBase64Url = (bytes: Uint8Array) =>
+  btoa(String.fromCharCode(...bytes))
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/g, '')
+
+const generateValues = () => {
+  const targetCount = Math.max(1, Math.min(count.value || 1, 25))
+  const targetLength = Math.max(8, Math.min(length.value || 32, 256))
+
+  generatedValues.value = Array.from({ length: targetCount }, () => {
+    if (mode.value === 'uuid') return window.crypto.randomUUID()
+    if (mode.value === 'hex') return randomChars('0123456789abcdef', targetLength)
+    const bytes = new Uint8Array(Math.ceil((targetLength * 3) / 4))
+    window.crypto.getRandomValues(bytes)
+    return encodeBase64Url(bytes).slice(0, targetLength)
+  })
+}
+
+watch([mode, count, length], generateValues, { immediate: true })
+
+const result = computed(() => generatedValues.value.join('\n'))
+</script>
+
+<template>
+  <UtilityShell>
+    <template #controls>
+      <label class="text-sm font-medium">{{ $t('utility.secretGeneratorTool.mode') }}</label>
+      <Select v-model="mode" :options="modeOptions" option-label="label" option-value="value" />
