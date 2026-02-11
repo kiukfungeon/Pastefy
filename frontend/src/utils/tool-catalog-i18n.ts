@@ -10,16 +10,3 @@ type TranslatableTool = {
   category: string
 }
 
-type TranslatableCategory = {
-  slug: string
-  title: string
-  eyebrow: string
-  description: string
-  seoTitle: string
-  seoDescription: string
-}
-
-const toKey = (value: string) =>
-  value
-    .replace(/[^a-zA-Z0-9]+(.)/g, (_, character: string) => character.toUpperCase())
-    .replace(/^[A-Z]/, (character) => character.toLowerCase())
