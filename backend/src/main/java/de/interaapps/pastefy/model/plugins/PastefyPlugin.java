@@ -7,8 +7,3 @@ import java.io.File;
 import java.io.IOException;
 
 public class PastefyPlugin {
-    public PastefyPluginConfig config;
-    public PastefyBackendPlugin backendPlugin;
-    public String path;
-
-    public PastefyPlugin(String folder) throws IOException {

@@ -10,15 +10,3 @@ const sanitizedHtml = computed(() =>
   DOMPurify.sanitize(props.html, {
     USE_PROFILES: { html: true },
   }),
-)
-</script>
-
-<template>
-  <div class="overflow-hidden text-sm">
-    <div
-      class="border-b border-neutral-200 bg-neutral-50 px-4 py-3 text-xs font-semibold tracking-[0.2em] uppercase opacity-60 dark:border-neutral-700 dark:bg-neutral-900/70"
-    >
-      {{ $t('previews.htmlViewer.htmlPreview') }}
-    </div>
-    <iframe
-      class="h-[36rem] w-full bg-white"
