@@ -24,3 +24,16 @@ const sendHeight = () => {
 onMounted(() => {})
 </script>
 <template>
+  <div :class="settings.addPadding ? 'p-4' : ''">
+    <ComponentInjection type="paste-embed-top" />
+    <Paste
+      :paste-id="route.params.paste as string"
+      as-embed
+      @update-height="sendHeight"
+      :hide-actions="settings.hideActions"
+      :hide-title="settings.hideTitle"
+      :hide-embed-bottom="settings.hideEmbedBottom"
+    />
+    <ComponentInjection type="paste-embed-bottom" />
+  </div>
+</template>
