@@ -38,3 +38,24 @@ public class APIKeyController extends HttpController {
         }
         return response;
     }
+
+    @Get
+    @With("auth")
+    public List<String> getKeys(@Attrib("user") User user, @Attrib("authkey") AuthKey requestAuthKey) {
+        if (requestAuthKey != null)
+            requestAuthKey.checkPermission("authkeys:read");
+
+        return Repo.get(AuthKey.class).where("type", AuthKey.Type.API).where("userId", user.getId()).all().stream().map(authKey -> authKey.getKey()).collect(Collectors.toList());
+    }
+
+    @Delete("/{key}")
+    @With("auth")
+    public ActionResponse delete(@Attrib("user") User user, @Path("key") String key, @Attrib("authkey") AuthKey requestAuthKey) {
+        if (requestAuthKey != null)
+            requestAuthKey.checkPermission("authkeys:delete");
+
+        Repo.get(AuthKey.class).where("key", key).where("userId", user.getId()).all().forEach(authKey -> authKey.delete());
+        return new ActionResponse(true);
+    }
+
+}
