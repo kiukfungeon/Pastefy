@@ -120,3 +120,125 @@ export const dockerfilePresetDefaults: Record<
   },
   custom: {
     base: 'ubuntu:24.04',
+    install: [],
+    build: [],
+    start: '/bin/sh',
+    port: 8080,
+  },
+}
+
+export const composePresetDefaults: Record<
+  ComposePreset,
+  {
+    service: string
+    image: string
+    port: number
+    includeProxy: boolean
+    includePostgres: boolean
+    includeRedis: boolean
+    restart: RestartPolicy
+  }
+> = {
+  blank: {
+    service: 'app',
+    image: 'ghcr.io/acme/app:latest',
+    port: 3000,
+    includeProxy: false,
+    includePostgres: false,
+    includeRedis: false,
+    restart: 'unless-stopped',
+  },
+  'node-web': {
+    service: 'web',
+    image: 'ghcr.io/acme/node-app:latest',
+    port: 3000,
+    includeProxy: false,
+    includePostgres: false,
+    includeRedis: false,
+    restart: 'unless-stopped',
+  },
+  'python-web': {
+    service: 'web',
+    image: 'ghcr.io/acme/python-app:latest',
+    port: 8000,
+    includeProxy: false,
+    includePostgres: false,
+    includeRedis: false,
+    restart: 'unless-stopped',
+  },
+  'java-app': {
+    service: 'app',
+    image: 'ghcr.io/acme/java-app:latest',
+    port: 8080,
+    includeProxy: false,
+    includePostgres: false,
+    includeRedis: false,
+    restart: 'unless-stopped',
+  },
+  'static-nginx': {
+    service: 'web',
+    image: 'nginx:1.27-alpine',
+    port: 80,
+    includeProxy: false,
+    includePostgres: false,
+    includeRedis: false,
+    restart: 'unless-stopped',
+  },
+  'proxy-app-postgres': {
+    service: 'app',
+    image: 'ghcr.io/acme/app:latest',
+    port: 3000,
+    includeProxy: true,
+    includePostgres: true,
+    includeRedis: true,
+    restart: 'unless-stopped',
+  },
+}
+
+export const restartPolicyOptions = [
+  { label: 'No restart', value: 'no' as RestartPolicy },
+  { label: 'Always', value: 'always' as RestartPolicy },
+  { label: 'On failure', value: 'on-failure' as RestartPolicy },
+  { label: 'Unless stopped', value: 'unless-stopped' as RestartPolicy },
+]
+
+export const toLines = (value: string) =>
+  value
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+
+export const toKeyValueLines = (value: string) =>
+  toLines(value)
+    .map((line) => {
+      const separator = line.indexOf('=')
+      if (separator === -1) return undefined
+      return {
+        key: line.slice(0, separator).trim(),
+        value: line.slice(separator + 1).trim(),
+      }
+    })
+    .filter((entry): entry is { key: string; value: string } => Boolean(entry?.key))
+
+export const toKeyValueEntries = (entries: KeyValueEntry[]) =>
+  entries
+    .map((entry) => ({
+      key: entry.key.trim(),
+      value: entry.value.trim(),
+    }))
+    .filter((entry) => entry.key)
+
+export const toStringEntries = (entries: string[]) =>
+  entries.map((entry) => entry.trim()).filter(Boolean)
+
+export const toCommandArray = (value: string) =>
+  value
+    .split(/\s+/)
+    .map((entry) => entry.trim())
+    .filter(Boolean)
+
+export const indentBlock = (value: string, spaces = 2) =>
+  value
+    .split('\n')
+    .map((line) => `${' '.repeat(spaces)}${line}`)
+    .join('\n')
