@@ -7,3 +7,12 @@ export type User = {
   color: string
   profile_picture: string
   auth_type: string
+  auth_types: string[]
+  type: UserType
+}
+export type PublicUser = {
+  id: string
+  name: string
+  display_name: string
+  avatar: string
+}
