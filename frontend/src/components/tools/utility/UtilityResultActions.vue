@@ -44,3 +44,49 @@ const createPaste = async () => {
       visibility: 'UNLISTED',
       type: 'PASTE',
       ai: true,
+    })
+
+    const createdPaste = res.data.paste as Paste
+    await router.push({
+      name: 'paste',
+      params: {
+        paste: createdPaste.id,
+      },
+    })
+  } finally {
+    isCreatingPaste.value = false
+  }
+}
+</script>
+
+<template>
+  <div class="flex flex-wrap items-center justify-between gap-3 border-t border-neutral-200 bg-white px-4 py-3 dark:border-neutral-700 dark:bg-neutral-900">
+    <div class="flex flex-wrap gap-2">
+      <Button
+        @click="copyResult"
+        :disabled="!resolvedResult()"
+        :label="$t('utility.utilityResultActions.copyResult')"
+        icon="ti ti-copy"
+        severity="contrast"
+        outlined
+      />
+      <Button
+        @click="openInPasteEditor"
+        :disabled="!resolvedResult()"
+        :label="$t('paste.openInEditor')"
+        icon="ti ti-edit"
+        severity="contrast"
+        outlined
+      />
+    </div>
+
+    <Button
+      @click="createPaste"
+      :disabled="!resolvedResult()"
+      :loading="isCreatingPaste"
+      :label="$t('tools.createPaste')"
+      icon="ti ti-send"
+      severity="contrast"
+    />
+  </div>
+</template>
