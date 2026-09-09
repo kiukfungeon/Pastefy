@@ -128,3 +128,133 @@ const topLinks = computed(() => [
               <div v-if="'cards' in link" class="group relative">
                 <Button
                   as="router-link"
+                  :to="link.to"
+                  text
+                  severity="contrast"
+                  size="small"
+                  :icon="link.icon"
+                  :label="link.label"
+                />
+                <div
+                  class="pointer-events-none absolute top-full left-0 pt-2 opacity-0 transition-all duration-150 group-hover:pointer-events-auto group-hover:opacity-100"
+                >
+                  <div
+                    :class="[
+                      'rounded-xl border border-neutral-200 bg-white p-3 shadow-xl dark:border-neutral-700 dark:bg-neutral-900',
+                      link.panelClass || 'w-[38rem]',
+                    ]"
+                  >
+                    <div class="grid grid-cols-2 gap-2 xl:grid-cols-3">
+                      <router-link
+                        v-for="card of link.cards"
+                        :key="card.title"
+                        :to="card.to"
+                        class="rounded-xl border border-neutral-200 bg-neutral-100 p-3 transition-all hover:bg-white dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-950"
+                      >
+                        <div class="flex items-start gap-3">
+                          <div
+                            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white text-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
+                          >
+                            <i :class="`ti ti-${card.icon}`" />
+                          </div>
+                          <div class="min-w-0">
+                            <div class="font-medium">{{ card.title }}</div>
+                            <p
+                              class="mt-1 line-clamp-2 text-xs text-neutral-500 dark:text-neutral-400"
+                            >
+                              {{ card.description }}
+                            </p>
+                          </div>
+                        </div>
+                      </router-link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <Button
+                v-else
+                as="router-link"
+                :to="link.to"
+                text
+                severity="contrast"
+                size="small"
+                :icon="link.icon"
+                :label="link.label"
+              />
+            </template>
+          </nav>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <LanguageSwitcher class="hidden max-w-[8rem] sm:flex" />
+          <div class="relative hidden md:block">
+            <InputText
+              v-model="toolSearch"
+              :placeholder="$t('tools.search')"
+              class="w-[10rem]"
+              size="small"
+            />
+            <div
+              v-if="toolSearchResults.length"
+              class="absolute top-full right-0 mt-2 w-[24rem] rounded-xl border border-neutral-200 bg-white p-2 shadow-xl dark:border-neutral-700 dark:bg-neutral-900"
+            >
+              <router-link
+                v-for="entry of toolSearchResults"
+                :key="`${entry.kind}:${entry.slug}`"
+                :to="entry.to"
+                class="flex items-start gap-3 rounded-xl p-3 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                @click="toolSearch = ''"
+              >
+                <div
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-200"
+                >
+                  <i :class="`ti ti-${entry.icon}`" />
+                </div>
+                <div class="min-w-0">
+                  <div class="font-medium">{{ entry.shortTitle }}</div>
+                  <p class="mt-1 line-clamp-2 text-xs text-neutral-500 dark:text-neutral-400">
+                    {{ entry.description }}
+                  </p>
+                </div>
+              </router-link>
+            </div>
+          </div>
+          <Button
+            v-if="!currentUserStore.user && currentUserStore.authTypes?.[0]"
+            @click="currentUserStore.authTypes?.length > 1 ? (loginModalVisible = true) : null"
+            :as="currentUserStore.authTypes?.length === 1 ? 'a' : 'button'"
+            :href="`/api/v2/auth/oauth2/${currentUserStore.authTypes[0]}`"
+            icon="ti ti-login"
+            :label="$t('auth.login')"
+            severity="contrast"
+            outlined
+            size="small"
+            :loading="currentUserStore.userLoading"
+          />
+          <button
+            v-if="currentUserStore.user"
+            class="cursor-pointer"
+            @click="(e) => userMenu?.toggle(e)"
+          >
+            <img
+              class="h-[32px] w-[32px] rounded-full border border-neutral-200 object-cover dark:border-neutral-700"
+              :src="currentUserStore.user.profile_picture"
+              alt="Profile Picture"
+            />
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto w-full max-w-[1500px] px-4 py-6 md:px-6 md:py-8">
+      <router-view />
+    </main>
+  </div>
+
+  <Popover ref="userMenu" class="w-[14rem]" :pt="{ content: 'p-0' }">
+    <UserMenu @element-clicked="userMenu?.hide()" />
+  </Popover>
+
+  <LoginModal v-model:visible="loginModalVisible" />
+</template>
