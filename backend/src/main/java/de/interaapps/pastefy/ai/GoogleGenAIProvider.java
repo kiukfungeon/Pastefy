@@ -29,3 +29,14 @@ public class GoogleGenAIProvider implements AIProvider {
         GenerateContentResponse response = client.models.generateContent(model, userPrompt, config);
         return response.text();
     }
+
+    @Override
+    public String getName() {
+        return "google";
+    }
+
+    @Override
+    public String getModel() {
+        return model;
+    }
+}

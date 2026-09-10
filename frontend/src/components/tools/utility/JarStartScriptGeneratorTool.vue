@@ -65,3 +65,70 @@ const fileName = computed(() => (scriptType.value === 'bat' ? 'start.bat' : 'sta
     control-description="Generate a start script for Java JAR deployments with JVM options, profiles, logs, and app args."
     result-title="Generated Script"
     result-description="Use this as a starting point for manual or scripted JAR launches."
+  >
+    <template #controls>
+      <div class="grid gap-3 md:grid-cols-2">
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.jarStartScriptGeneratorTool.scriptType') }}</label>
+          <Select v-model="scriptType" :options="scriptTypeOptions" option-label="label" option-value="value" fluid />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.jarStartScriptGeneratorTool.appName') }}</label>
+          <InputText v-model="appName" fluid />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.jarStartScriptGeneratorTool.jarFile') }}</label>
+          <InputText v-model="jarPath" fluid />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.jarStartScriptGeneratorTool.workingDirectory') }}</label>
+          <InputText v-model="workingDir" fluid />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.jarStartScriptGeneratorTool.xms') }}</label>
+          <InputText v-model="xms" fluid />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.jarStartScriptGeneratorTool.xmx') }}</label>
+          <InputText v-model="xmx" fluid />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.jarStartScriptGeneratorTool.springProfile') }}</label>
+          <InputText v-model="profile" fluid />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.jarStartScriptGeneratorTool.port') }}</label>
+          <InputText v-model="port" fluid />
+        </div>
+        <div class="md:col-span-2">
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.jarStartScriptGeneratorTool.extraJvmArgs') }}</label>
+          <InputText v-model="extraJvmArgs" fluid />
+        </div>
+        <div class="md:col-span-2">
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.jarStartScriptGeneratorTool.extraAppArgs') }}</label>
+          <InputText v-model="extraAppArgs" fluid />
+        </div>
+        <div class="md:col-span-2">
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.jarStartScriptGeneratorTool.logFile') }}</label>
+          <InputText v-model="logFile" fluid />
+        </div>
+      </div>
+      <GeneratorToggleField
+        v-if="scriptType === 'sh'"
+        v-model="useNohup"
+        :label="$t('utility.jarStartScriptGeneratorTool.useNohupBackgroundLaunch')"
+        help="Disable this when you want the script to run in the foreground."
+      />
+    </template>
+
+    <template #result>
+      <div class="overflow-hidden rounded-xl border border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900">
+        <Highlighted :contents="script" :file-name="fileName" />
+      </div>
+    </template>
+
+    <template #footer>
+      <UtilityResultActions :result="script" :file-name="fileName" />
+    </template>
+  </UtilityShell>
+</template>
