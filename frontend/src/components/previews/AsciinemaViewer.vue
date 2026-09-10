@@ -30,3 +30,11 @@ onMounted(() => {
     <div>
       <div id="demo" />
     </div>
+  </div>
+</template>
+
+<style>
+.ap-play-button .ap-icon {
+  margin: auto;
+}
+</style>
