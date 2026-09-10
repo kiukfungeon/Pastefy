@@ -20,3 +20,14 @@ export function toggleTheme() {
   useFavicon(
     window.matchMedia('(prefers-color-scheme: dark)').matches
       ? '/favicon-light.ico'
+      : '/favicon.ico',
+  )
+}
+
+export function registerEventHandlers() {
+  toggleTheme()
+  watch(config, toggleTheme)
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    toggleTheme()
+  })
+}
