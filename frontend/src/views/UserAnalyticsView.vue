@@ -10,3 +10,7 @@ useTitle('My analytics | pastefy')
     <AnalyticsDashboard
       endpoint="/api/v2/analytics/user"
       title="My analytics"
+      description="Analyze visits across your pastes."
+    />
+  </div>
+</template>
