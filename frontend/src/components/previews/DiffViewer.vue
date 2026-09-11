@@ -32,3 +32,15 @@ const renderedDiff = computed(() => {
     <div v-html="renderedDiff" class="diff-container m-[-1px]" />
   </div>
 </template>
+
+<style>
+.diff-container {
+  font-family: monospace;
+  overflow-x: auto;
+  max-width: 100%;
+  .d2h-file-list-wrapper,
+  .d2h-wrapper {
+    background: transparent !important;
+  }
+}
+</style>
