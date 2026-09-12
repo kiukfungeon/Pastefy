@@ -31,3 +31,36 @@ const calculateHashes = async () => {
 }
 
 watch(hashInput, calculateHashes, { immediate: true })
+
+const result = computed(() => hashResults.value.map((entry) => `${entry.label}: ${entry.value}`).join('\n'))
+</script>
+
+<template>
+  <UtilityShell>
+    <template #controls>
+      <label class="text-sm font-medium">{{ $t('utility.hashGeneratorTool.inputText') }}</label>
+      <Textarea v-model="hashInput" auto-resize rows="10" fluid />
+      <div class="text-sm text-neutral-500 dark:text-neutral-400">{{ hashInput.length }} characters</div>
+    </template>
+
+    <template #result>
+      <div class="grid gap-3">
+        <div
+          v-for="entry of hashResults"
+          :key="entry.label"
+          class="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <div class="mb-2 flex items-center justify-between gap-3">
+            <span class="font-medium">{{ entry.label }}</span>
+            <Button @click="clipboard.copy(entry.value)" icon="ti ti-copy" severity="contrast" text />
+          </div>
+          <code class="block break-all text-sm">{{ entry.value }}</code>
+        </div>
+      </div>
+    </template>
+
+    <template #footer>
+      <UtilityResultActions :result="result" file-name="hashes.txt" />
+    </template>
+  </UtilityShell>
+</template>
