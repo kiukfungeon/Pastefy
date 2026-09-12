@@ -36,3 +36,22 @@ const output = computed(() => {
       </label>
       <label class="flex items-center gap-2 text-sm">
         <Checkbox v-model="reverse" binary />
+        {{ $t('utility.textSorterTool.reverseOrder') }}
+      </label>
+      <label class="flex items-center gap-2 text-sm">
+        <Checkbox v-model="caseSensitive" binary />
+        {{ $t('utility.textSorterTool.caseSensitiveSort') }}
+      </label>
+    </template>
+
+    <template #result>
+      <div class="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
+        <code class="block whitespace-pre-wrap text-sm">{{ output }}</code>
+      </div>
+    </template>
+
+    <template #footer>
+      <UtilityResultActions :result="output" file-name="sorted-lines.txt" />
+    </template>
+  </UtilityShell>
+</template>

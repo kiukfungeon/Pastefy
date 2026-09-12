@@ -126,3 +126,131 @@ public class SeoRenderer {
             return null;
         }
 
+        String preparedHtml = sourceHtml.substring(0, startMetaTags)
+                + META_REPLACEMENT
+                + sourceHtml.substring(endMetaTags + META_END_TAG.length());
+
+        Matcher appMountMatcher = APP_MOUNT_PATTERN.matcher(preparedHtml);
+        if (!appMountMatcher.find()) {
+            LOGGER.warning("Unable to find the Vue app mount element in static/index.html");
+            return null;
+        }
+        preparedHtml = appMountMatcher.replaceFirst(
+                Matcher.quoteReplacement(appMountMatcher.group(1) + SEO_CONTENT_REPLACEMENT + "</div>")
+        );
+
+        Matcher titleMatcher = TITLE_TAG_PATTERN.matcher(preparedHtml);
+        if (titleMatcher.find()) {
+            return titleMatcher.replaceFirst(Matcher.quoteReplacement("<title>" + TITLE_REPLACEMENT + "</title>"));
+        }
+
+        int endHead = preparedHtml.indexOf("</head>");
+        if (endHead < 0) {
+            LOGGER.warning("Unable to find a head element in static/index.html");
+            return null;
+        }
+
+        return preparedHtml.substring(0, endHead)
+                + "<title>" + TITLE_REPLACEMENT + "</title>"
+                + preparedHtml.substring(endHead);
+    }
+
+    private String tagsToHTML(SeoPage page) {
+        StringBuilder out = new StringBuilder();
+        appendMetaTags(out, "name", page.seoTags);
+        out.append("<link rel=\"canonical\" href=\"").append(escapeHtml(page.canonicalUrl)).append("\" />");
+        appendMetaTags(out, "property", page.openGraphTags);
+        appendMetaTags(out, "name", page.twitterTags);
+        return out.toString();
+    }
+
+    private void appendMetaTags(StringBuilder out, String attribute, Map<String, String> tags) {
+        tags.forEach((key, value) -> out
+                .append("<meta ")
+                .append(attribute)
+                .append("=\"")
+                .append(escapeHtml(key))
+                .append("\" content=\"")
+                .append(escapeHtml(value))
+                .append("\" />"));
+    }
+
+    private String getBaseUrl() {
+        String baseUrl = Pastefy.getInstance().getConfig().get("server.name", "http://localhost");
+        if (baseUrl == null || baseUrl.trim().isEmpty()) return "http://localhost";
+
+        baseUrl = baseUrl.trim();
+        if (!HTTP_SCHEME_PATTERN.matcher(baseUrl).find()) {
+            baseUrl = ANY_SCHEME_PATTERN.matcher(baseUrl).replaceFirst("");
+            baseUrl = "https://" + baseUrl;
+        }
+
+        int schemeEnd = baseUrl.indexOf("://") + 3;
+        String scheme = baseUrl.substring(0, schemeEnd);
+        String remainder = baseUrl.substring(schemeEnd)
+                .replaceFirst("^/+", "")
+                .replaceAll("/{2,}", "/")
+                .replaceFirst("/+$", "");
+
+        return remainder.isEmpty() ? "http://localhost" : scheme + remainder;
+    }
+
+    public class SeoPage {
+        private final String canonicalUrl;
+        private final String title;
+        private final Map<String, String> seoTags = new LinkedHashMap<>();
+        private final Map<String, String> openGraphTags = new LinkedHashMap<>();
+        private final Map<String, String> twitterTags = new LinkedHashMap<>();
+        private String content = "";
+
+        private SeoPage(String canonicalUrl, String title, String description) {
+            this.canonicalUrl = canonicalUrl;
+            this.title = title;
+
+            meta("description", description);
+            openGraph("og:site_name", "Pastefy");
+            type("website");
+            openGraph("og:title", title);
+            openGraph("og:description", description);
+            openGraph("og:url", canonicalUrl);
+            twitter("twitter:card", "summary");
+            twitter("twitter:title", title);
+            twitter("twitter:description", description);
+            twitter("twitter:url", canonicalUrl);
+        }
+
+        public SeoPage meta(String name, String value) {
+            if (value != null) seoTags.put(name, value);
+            return this;
+        }
+
+        public SeoPage openGraph(String name, String value) {
+            if (value != null) openGraphTags.put(name, value);
+            return this;
+        }
+
+        public SeoPage twitter(String name, String value) {
+            if (value != null) twitterTags.put(name, value);
+            return this;
+        }
+
+        public SeoPage type(String type) {
+            return openGraph("og:type", type);
+        }
+
+        public SeoPage image(String pathOrUrl) {
+            if (pathOrUrl == null || pathOrUrl.trim().isEmpty()) return this;
+
+            String imageUrl = absoluteUrl(pathOrUrl);
+            openGraph("og:image", imageUrl);
+            twitter("twitter:card", "summary_large_image");
+            twitter("twitter:image", imageUrl);
+            return this;
+        }
+
+        public SeoPage content(String content) {
+            this.content = content == null ? "" : content;
+            return this;
+        }
+    }
+}
