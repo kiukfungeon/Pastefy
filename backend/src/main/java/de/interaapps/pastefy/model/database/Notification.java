@@ -36,3 +36,42 @@ public class Notification extends Model {
     public Timestamp updatedAt;
 
     public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setAlreadyRead(boolean alreadyRead) {
+        this.alreadyRead = alreadyRead;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setReceived(boolean received) {
+        this.received = received;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+}

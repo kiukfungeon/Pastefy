@@ -81,3 +81,24 @@ const iframeEmbedCode = computed(
           class="mb-5 rounded-xl border border-neutral-200 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-800"
         >
           <Highlighted show-copy-button file-name=".html" :contents="embedCode" />
+        </div>
+
+        <h2 class="mb-2 text-lg font-bold">{{ $t('modals.embedPasteModal.embedViaIframeTag') }}</h2>
+        <div
+          class="mb-6 rounded-xl border border-neutral-200 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-800"
+        >
+          <Highlighted show-copy-button file-name=".html" :contents="iframeEmbedCode" />
+        </div>
+      </div>
+
+      <div class="md:h-full md:overflow-auto">
+        <h2 class="mb-2 text-lg font-bold">{{ $t('common.preview') }}</h2>
+        <div
+          class="h-[20rem] rounded-xl border border-neutral-200 p-6 md:h-full dark:border-neutral-700"
+        >
+          <iframe :src="`/${pasteId}/embed${settingsQuery}`" class="h-full w-full" />
+        </div>
+      </div>
+    </div>
+  </Dialog>
+</template>
