@@ -31,3 +31,15 @@ const previous = () => {
         severity="contrast"
         :label="$t('common.previous')"
       />
+      <Button
+        @click="next"
+        :disabled="loading || nextDisabled"
+        size="small"
+        outlined
+        severity="contrast"
+        icon-pos="right"
+        :label="$t('common.next')"
+      />
+    </div>
+  </div>
+</template>

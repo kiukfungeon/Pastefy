@@ -83,3 +83,46 @@ const result = computed(() => {
     <template #controls>
       <label class="text-sm font-medium">JWT</label>
       <Textarea v-model="jwtInput" auto-resize rows="8" fluid />
+      <Message severity="secondary" size="small" variant="simple">
+        The token is only decoded locally. Signature verification is not performed.
+      </Message>
+    </template>
+
+    <template #result>
+      <Message v-if="'error' in jwtState && jwtState.error" severity="error">
+        {{ jwtState.error }}
+      </Message>
+      <template v-else>
+        <div class="mb-4 flex flex-wrap gap-2">
+          <span
+            v-for="entry of jwtTiming"
+            :key="entry?.key"
+            class="rounded-full border border-neutral-200 bg-white px-3 py-1 text-xs dark:border-neutral-700 dark:bg-neutral-900"
+          >
+            {{ entry?.key }}: {{ entry?.label }} ({{ entry?.status }})
+          </span>
+        </div>
+        <div class="grid gap-4 xl:grid-cols-2">
+          <div class="overflow-hidden rounded-xl border border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900">
+            <div class="border-b border-neutral-200 px-4 py-2 text-sm font-medium dark:border-neutral-700">{{ $t('utility.jwtInspectorTool.header') }}</div>
+            <Highlighted
+              :contents="JSON.stringify(('header' in jwtState ? jwtState.header : {}), null, 2)"
+              file-name="header.json"
+            />
+          </div>
+          <div class="overflow-hidden rounded-xl border border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900">
+            <div class="border-b border-neutral-200 px-4 py-2 text-sm font-medium dark:border-neutral-700">{{ $t('utility.jwtInspectorTool.payload') }}</div>
+            <Highlighted
+              :contents="JSON.stringify(('payload' in jwtState ? jwtState.payload : {}), null, 2)"
+              file-name="payload.json"
+            />
+          </div>
+        </div>
+      </template>
+    </template>
+
+    <template #footer>
+      <UtilityResultActions :result="result" file-name="jwt-inspection.json" />
+    </template>
+  </UtilityShell>
+</template>
