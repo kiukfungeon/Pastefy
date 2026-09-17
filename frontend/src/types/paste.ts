@@ -30,3 +30,11 @@ export type Paste = {
   user?: PublicUser
   starred?: boolean
 
+  ai?: boolean
+  ai_info?: PasteAiInfo
+}
+
+export type MultiPastePart = {
+  name: string
+  contents: string
+}
