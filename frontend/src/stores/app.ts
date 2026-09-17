@@ -12,3 +12,11 @@ export const useAppStore = defineStore('app-store', () => {
 
   const settingsModalShown = ref(false)
 
+  return {
+    searchShown,
+    searchShownEndpoints,
+    codeMirrorAvailable,
+    settingsModalShown,
+    createPasteFullscreenRequested,
+  }
+})
