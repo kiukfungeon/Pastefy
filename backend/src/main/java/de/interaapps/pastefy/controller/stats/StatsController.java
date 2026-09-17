@@ -16,3 +16,12 @@ public class StatsController extends HttpController {
     public StatsResponse stats(@Attrib("authkey") AuthKey authKey, @Attrib("user") User user) {
 
         if (
+                !Pastefy.getInstance().getConfig().get("pastefy.publicstats", "false").equalsIgnoreCase("true")
+                        && (authKey == null || !authKey.hasPermission("stats:read"))
+                        && (user == null || user.type != User.Type.ADMIN)
+        )
+            throw new PermissionsDeniedException();
+
+        return StatsResponse.create();
+    }
+}
