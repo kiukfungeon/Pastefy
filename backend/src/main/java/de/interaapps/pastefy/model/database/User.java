@@ -178,3 +178,49 @@ public class User extends Model {
         USER,
         ADMIN,
         BLOCKED,
+        AWAITING_ACCESS
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public String getAuthId() {
+        return authId;
+    }
+
+    public AuthenticationProvider getAuthProvider() {
+        return authProvider;
+    }
+
+    public String geteMail() {
+        return eMail;
+    }
+
+    public String getUniqueName() {
+        return uniqueName;
+    }
+
+    public boolean isAdmin() {
+        return type == Type.ADMIN;
+    }
+
+
+    public void delete() {
+        Repo.get(Paste.class).where("userId", id).get().forEach(Paste::delete);
+        Repo.get(Folder.class).where("userId", id).delete();
+        Repo.get(AuthKey.class).where("userId", id).delete();
+        Repo.get(Notification.class).where("userId", id).delete();
+        Repo.get(PasteComment.class).where("userId", id).delete();
+        Repo.get(SharedPaste.class).where("targetId", id).orWhere("userId", id).delete();
+        super.delete();
+    }
+}
