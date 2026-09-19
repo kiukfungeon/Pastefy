@@ -35,3 +35,40 @@ const updateItem = (index: number, next: Partial<Entry>) => {
   )
 }
 </script>
+
+<template>
+  <div class="space-y-3">
+    <div class="flex items-center justify-between gap-3">
+      <label class="block text-sm text-neutral-500 dark:text-neutral-400">{{ props.label }}</label>
+      <Button @click="addItem" :label="props.addLabel" icon="ti ti-plus" severity="contrast" outlined size="small" />
+    </div>
+
+    <div class="space-y-2">
+      <div v-for="(entry, index) of model" :key="index" class="grid gap-2 md:grid-cols-[0.9fr_1.1fr_auto]">
+        <InputText
+          :model-value="entry.key"
+          @update:model-value="(value) => updateItem(index, { key: String(value ?? '') })"
+          :placeholder="props.keyPlaceholder || 'Key'"
+          fluid
+        />
+        <InputText
+          :model-value="entry.value"
+          @update:model-value="(value) => updateItem(index, { value: String(value ?? '') })"
+          :placeholder="props.valuePlaceholder || 'Value'"
+          fluid
+        />
+        <Button
+          @click="removeItem(index)"
+          icon="ti ti-trash"
+          severity="contrast"
+          outlined
+          :aria-label="$t('utility.keyValueListField.removeEntry')"
+        />
+      </div>
+    </div>
+
+    <div v-if="!model.length" class="rounded-xl border border-dashed border-neutral-200 px-3 py-3 text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-400">
+      {{ $t('utility.keyValueListField.noEntriesYet') }}
+    </div>
+  </div>
+</template>
