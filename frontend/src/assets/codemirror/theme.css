@@ -54,3 +54,60 @@
 .hljs-string, .cm-s-pastefy span.cm-string {
   @apply text-green-700;
 }
+.dark {
+  .hljs-string, .cm-s-pastefy span.cm-string {
+    @apply text-green-500;
+  }
+}
+
+
+.cm-s-pastefy.CodeMirror {
+  @apply bg-neutral-100 dark:bg-neutral-900 text-black dark:text-white rounded-md text-sm;
+
+  * {
+    font-family: "JetBrains Mono Variable", monospace;
+  }
+}
+
+.cm-s-pastefy .CodeMirror-cursor {
+  @apply border-l border-black dark:border-white;
+}
+
+.cm-s-pastefy .CodeMirror-matchingbracket {
+  @apply underline  text-black dark:text-white;
+}
+
+.cm-s-pastefy div.CodeMirror-selected {
+  @apply bg-neutral-300 dark:bg-neutral-700;
+}
+
+.codemirror-container.bordered {
+  @apply border border-neutral-600;
+}
+
+.cm-s-pastefy .CodeMirror-line {
+}
+.cm-s-pastefy .CodeMirror-line::selection, .cm-s-pastefy .CodeMirror-line > span::selection, .cm-s-pastefy .CodeMirror-line > span > span::selection {
+  @apply bg-neutral-200 dark:bg-neutral-600;
+}
+.cm-s-pastefy .CodeMirror-line::-moz-selection, .cm-s-pastefy .CodeMirror-line > span::-moz-selection, .cm-s-pastefy .CodeMirror-line > span > span::-moz-selection {
+  @apply bg-neutral-600;
+}
+.cm-s-pastefy .CodeMirror-gutters {
+  @apply bg-neutral-100 dark:bg-neutral-900 border-r-1 border-neutral-300 dark:border-neutral-600;
+}
+.cm-s-pastefy .CodeMirror-guttermarker {
+  @apply text-black dark:text-white bg-neutral-300;
+}
+.cm-s-pastefy .CodeMirror-guttermarker-subtle {
+  @apply bg-neutral-100 dark:bg-neutral-800;
+}
+.cm-s-pastefy .CodeMirror-activeline-background {
+  @apply  bg-neutral-200 dark:bg-neutral-800;
+}
+
+
+
+.cm-s-pastefy .cm-animate-fat-cursor { background-color: #a2a8a175 !important; }
+
+
