@@ -9,3 +9,15 @@ import java.util.concurrent.Callable;
 
 @CommandLine.Command(
         name = "automigrateelastic",
+        mixinStandardHelpOptions = true,
+        description = "Automatically migrate elastic to the latest version"
+)
+public class AutoMigrateElasticCommand implements Callable<Integer> {
+    @Override
+    public Integer call() throws Exception {
+        System.out.println("Automigrate");
+        new ElasticMigrator(Pastefy.getInstance(), Pastefy.getInstance().getElasticsearchClient()).migrateAll();
+        System.out.println("Automigrated");
+        return 0;
+    }
+}

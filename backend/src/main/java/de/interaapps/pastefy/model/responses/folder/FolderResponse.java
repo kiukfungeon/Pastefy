@@ -28,3 +28,18 @@ public class FolderResponse {
                     pastes = folder.getPastes(showPrivate).stream().map(p -> new PasteResponse(p, null, false, false)).collect(Collectors.toList());
             }
         }
+    }
+
+    public FolderResponse(Folder folder, boolean showChildren, boolean fetchSubChildren) {
+        this(folder, showChildren, fetchSubChildren, true, false);
+    }
+
+    public FolderResponse(Folder folder, boolean showChildren) {
+        this(folder, showChildren, showChildren);
+    }
+
+    public FolderResponse(Folder folder) {
+        this(folder, true, true);
+    }
+
+}
