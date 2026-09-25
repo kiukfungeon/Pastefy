@@ -138,3 +138,50 @@ onMounted(async () => {
     class="highlighted highlighted-group relative flex w-full overflow-auto text-sm"
     :class="`higlighted-${id}`"
     dir="ltr"
+  >
+    <CopyButton
+      v-if="showCopyButton"
+      :contents
+      class="highlighted-group-show absolute top-2 right-2 opacity-0 transition-all"
+      :getCopyContents
+    />
+    <div
+      v-if="!hideLineNumbering"
+      class="p-3 text-right select-none"
+      :class="hideDivider ? ' ' : 'border-r-1 border-neutral-200 dark:border-neutral-700'"
+      @click="selectGutterLine"
+    >
+      <span
+        v-for="line of lineCount"
+        :key="line"
+        class="flex w-full items-center justify-between gap-1"
+        :class="enableLineComments ? 'cursor-pointer' : ''"
+        :data-comment-line="line + (startingLineNumber || 0)"
+      >
+        <PasteLineCommentAvatars
+          v-if="markerByLine.get(line + (startingLineNumber || 0))"
+          :marker="markerByLine.get(line + (startingLineNumber || 0))!"
+          class="-ml-2"
+        />
+        <span v-else aria-hidden="true" />
+        <span class="opacity-30">{{ line + (startingLineNumber || 0) }}</span>
+      </span>
+    </div>
+    <code class="w-full p-3">
+      <pre v-if="highlightedContents !== undefined" v-html="highlightedContents" />
+      <pre v-else>{{ contents }}</pre>
+    </code>
+  </div>
+</template>
+<style>
+.highlighted-group {
+  .highlighted-group-show {
+    opacity: 0;
+  }
+  &:hover {
+    .highlighted-group-show {
+      opacity: 1;
+    }
+  }
+}
+</style>

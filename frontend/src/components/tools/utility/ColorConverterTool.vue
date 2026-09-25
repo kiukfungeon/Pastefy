@@ -33,3 +33,73 @@ const hsl = computed(() => {
   let h = 0
   let s = 0
 
+  if (d !== 0) {
+    s = d / (1 - Math.abs(2 * l - 1))
+    switch (max) {
+      case r:
+        h = 60 * (((g - b) / d) % 6)
+        break
+      case g:
+        h = 60 * ((b - r) / d + 2)
+        break
+      default:
+        h = 60 * ((r - g) / d + 4)
+    }
+  }
+
+  return {
+    h: Math.round((h + 360) % 360),
+    s: Math.round(s * 100),
+    l: Math.round(l * 100),
+  }
+})
+
+const result = computed(() =>
+  JSON.stringify(
+    {
+      hex: `#${normalizedHex.value}`,
+      rgb: `rgb(${rgb.value.r}, ${rgb.value.g}, ${rgb.value.b})`,
+      hsl: `hsl(${hsl.value.h}, ${hsl.value.s}%, ${hsl.value.l}%)`,
+    },
+    null,
+    2,
+  ),
+)
+</script>
+
+<template>
+  <UtilityShell>
+    <template #controls>
+      <label class="text-sm font-medium">{{ $t('utility.colorConverterTool.hexColor') }}</label>
+      <div class="grid gap-3 md:grid-cols-[1fr_auto]">
+        <InputText v-model="input" fluid />
+        <ColorPicker v-model="input" />
+      </div>
+    </template>
+
+    <template #result>
+      <div class="mb-4 h-32 rounded-xl border border-neutral-200 dark:border-neutral-700" :style="{ backgroundColor: `#${normalizedHex}` }" />
+      <div class="grid gap-3">
+        <div
+          v-for="entry of [
+            ['HEX', `#${normalizedHex}`],
+            ['RGB', `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`],
+            ['HSL', `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`],
+          ]"
+          :key="entry[0]"
+          class="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <div class="mb-2 flex items-center justify-between gap-3">
+            <span class="font-medium">{{ entry[0] }}</span>
+            <Button @click="clipboard.copy(String(entry[1]))" icon="ti ti-copy" severity="contrast" text />
+          </div>
+          <code class="block break-all text-sm">{{ entry[1] }}</code>
+        </div>
+      </div>
+    </template>
+
+    <template #footer>
+      <UtilityResultActions :result="result" file-name="color-conversion.json" />
+    </template>
+  </UtilityShell>
+</template>
