@@ -3,3 +3,5 @@ import AccessLogInspectorBase from '@/components/tools/utility/AccessLogInspecto
 </script>
 
 <template>
+  <AccessLogInspectorBase server="nginx" />
+</template>
