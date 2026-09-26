@@ -22,3 +22,27 @@ public class PasteQueryParameters extends ListQueryParameters {
     }
 
     public static PasteQueryParameters fromWithDefaults(Exchange exchange, Consumer<PasteQueryParameters> function) {
+        return new PasteQueryParameters(exchange, function);
+    }
+    public static PasteQueryParameters from(Exchange exchange) {
+        return new PasteQueryParameters(exchange, (a) -> a.sort = "createdAt");
+    }
+
+
+    public ListQueryParameters guarded(Exchange exchange) {
+        boolean loggedIn = exchange.attrib("loggedIn");
+        User user = exchange.attrib("user");
+
+        AbstractArray orFilters = new AbstractArray();
+        if (user == null || !user.isAdmin()) {
+            if (user != null) {
+                orFilters.add(new AbstractObject().set("userId", user.getId()));
+                orFilters.add(new AbstractObject().set("starredBy", user.getId()));
+            }
+            orFilters.add(new AbstractObject().set("visibility", "PUBLIC"));
+        }
+        filters.set("$or", orFilters);
+
+        return this;
+    }
+}
