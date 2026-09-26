@@ -6,3 +6,17 @@ defineProps<{
 }>()
 
 const emit = defineEmits<{
+  close: []
+}>()
+</script>
+
+<template>
+  <Button
+    v-if="visible"
+    icon="ti ti-minimize"
+    severity="contrast"
+    class="fixed top-4 right-4 z-[130]"
+    :aria-label="$t('tools.exitFocusMode')"
+    @click="emit('close')"
+  />
+</template>

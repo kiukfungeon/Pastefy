@@ -76,3 +76,55 @@ const formatDate = (value: string) => new Date(value).toLocaleString()
           text
           class="px-0 py-0 text-xs"
           @click="emit('delete', comment.id)"
+        />
+      </div>
+      <PasteCommentLinePreview
+        v-if="comment.line_from && pasteContents"
+        :contents="pasteContents"
+        :file-name="pasteFileName"
+        :line-from="comment.line_from"
+        :line-to="comment.line_to"
+      />
+      <p class="mt-1 text-sm break-words whitespace-pre-wrap">{{ comment.content }}</p>
+      <PasteCommentForm
+        v-if="replying"
+        class="mt-2"
+        compact
+        :loading="submitting"
+        @submit="reply"
+        @cancel="replying = false"
+      />
+      <Button
+        v-if="comment.replies?.length"
+        :label="
+          $t(repliesExpanded ? 'comments.hideReplies' : 'comments.showReplies', {
+            count: comment.replies.length,
+          })
+        "
+        size="small"
+        severity="contrast"
+        text
+        class="mt-1 px-0 py-0 text-xs"
+        @click="repliesExpanded = !repliesExpanded"
+      />
+      <div
+        v-if="comment.replies?.length && repliesExpanded"
+        class="mt-3 flex flex-col gap-3 border-l border-neutral-200 pl-3 dark:border-neutral-700"
+      >
+        <PasteCommentItem
+          v-for="replyComment of comment.replies"
+          :key="replyComment.id"
+          :comment="replyComment"
+          :can-delete
+          :can-reply
+          :submitting
+          :current-user-id
+          :paste-contents
+          :paste-file-name
+          @reply="(commentId, content) => emit('reply', commentId, content)"
+          @delete="(commentId) => emit('delete', commentId)"
+        />
+      </div>
+    </div>
+  </article>
+</template>
