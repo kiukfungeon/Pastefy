@@ -366,3 +366,371 @@ public class Pastefy {
     }
 
     protected void setupElastic() {
+        if (config.has("elasticsearch.url")) {
+            String host = config.get("elasticsearch.url");
+
+            elasticsearchClient = ElasticsearchClient.of(b -> {
+                b = b.host(host);
+                if (config.has("elasticsearch.user") && config.has("elasticsearch.password")) {
+                    System.out.println("ELASTIC: Using username and password for authentication");
+                    b = b.usernameAndPassword(config.get("elasticsearch.user", "elastic"), config.get("elasticsearch.password", "changeme"));
+                } else {
+                    System.out.println("ELASTIC: Using API key for authentication");
+                    b = b.apiKey(config.get("elasticsearch.apikey", "elastic"));
+                }
+                return b;
+            });
+
+            for (String index : INDEXES) {
+                try {
+                    if (elasticsearchClient.indices().exists(e -> e.index(index)).value()) {
+                        availableIndexes.add(index);
+                    }
+                } catch (IOException e) {
+                    System.out.println("ELASTIC: Index " + index + " does not exist");
+                }
+            }
+
+            if (config.get("pastefy.automigrate", "true").equals("true")) {
+                ElasticMigrator elasticMigrator = new ElasticMigrator(this, elasticsearchClient);
+                try {
+                    elasticMigrator.migrateAll();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
+    protected void setupPassport() {
+        passport = new Passport("/api/v2/auth");
+        oAuth2Strategy = new OAuth2Strategy(getConfig().get("server.name", "http://localhost"));
+        oAuth2Strategy.setHttpCallbackHandler(new OAuth2Callback());
+
+        if (!getConfig().get("oauth2.interaapps.id", "NONE").equalsIgnoreCase("NONE"))
+            oAuth2Strategy.use("interaapps", new InteraAppsOAuth2Provider(getConfig().get("oauth2.interaapps.id"), getConfig().get("oauth2.interaapps.secret")).setScopes("user:read", "contacts.accepted:read"));
+        if (!getConfig().get("oauth2.google.id", "NONE").equalsIgnoreCase("NONE"))
+            oAuth2Strategy.use("google", new GoogleOAuth2Provider(getConfig().get("oauth2.google.id"), getConfig().get("oauth2.google.secret")));
+        if (!getConfig().get("oauth2.discord.id", "NONE").equalsIgnoreCase("NONE"))
+            oAuth2Strategy.use("discord", new DiscordOAuth2Provider(getConfig().get("oauth2.discord.id"), getConfig().get("oauth2.discord.secret")));
+        if (!getConfig().get("oauth2.github.id", "NONE").equalsIgnoreCase("NONE"))
+            oAuth2Strategy.use("github", new GitHubOAuth2Provider(getConfig().get("oauth2.github.id"), getConfig().get("oauth2.github.secret")));
+        if (!getConfig().get("oauth2.twitch.id", "NONE").equalsIgnoreCase("NONE"))
+            oAuth2Strategy.use("twitch", new TwitchOAuth2Provider(getConfig().get("oauth2.twitch.id"), getConfig().get("oauth2.twitch.secret")));
+        if (!getConfig().get("oauth2.oidc.id", "NONE").equalsIgnoreCase("NONE")) {
+            oAuth2Strategy.use("oidc", new CustomOAuth2Provider(
+                    getConfig().get("oauth2.oidc.id"),
+                    getConfig().get("oauth2.oidc.secret"),
+                    getConfig().get("oauth2.oidc.authendpoint"),
+                    getConfig().get("oauth2.oidc.tokenendpoint"),
+                    getConfig().get("oauth2.oidc.userinfoendpoint")
+            ));
+        }
+
+        getBackendPlugins().forEach(PastefyBackendPlugin::setupPassport);
+        passport.use("oauth2", oAuth2Strategy);
+    }
+
+    public void setupServer() {
+        httpRouter.port(config.getInt("http.server.port", 80));
+
+        if (config.has("http.server.cors")) {
+            httpRouter.beforeInterceptor(new CORSPolicy(config.get("http.server.cors")));
+        }
+
+        httpRouter.beforeInterceptor(new MultipartPolicy(config.get("http.server.tmp", null)));
+        httpRouter.responseTransformer(new SerializedResponseTransformer().ignoreStrings());
+
+        oAuth2Strategy.getProviders().forEach((name, authService) -> {
+            System.out.println("ADDED " + name + " as auth provider");
+        });
+
+        httpRouter.exceptionHandler((exchange, throwable) -> {
+            if (throwable instanceof RuntimeException) {
+                if (throwable.getCause() != null)
+                    throwable = throwable.getCause();
+            }
+
+            exchange.status(500);
+
+            if (throwable instanceof HTTPException) {
+                HTTPException httpException = (HTTPException) throwable;
+                exchange.status(httpException.status);
+            }
+
+            return new ExceptionResponse(throwable);
+        });
+        httpRouter.middleware("auth", new AuthMiddleware());
+        httpRouter.middleware("admin", new AdminMiddleware());
+
+
+        httpRouter.middleware("blocked-check", new BlockedMiddleware());
+        httpRouter.middleware("awaiting-access-check", new AwaitingAccessMiddleware());
+
+        httpRouter.middleware("auth-login-required-read", exchange -> {
+            if (loginRequiredForRead && (exchange.attrib("user") == null || !((User) exchange.attrib("user")).roleCheck()))
+                throw new AuthenticationException();
+            return null;
+        });
+        httpRouter.middleware("auth-login-required-create", exchange -> {
+            if (loginRequiredForCreate && (exchange.attrib("user") == null || !((User) exchange.attrib("user")).roleCheck()))
+                throw new AuthenticationException();
+            return null;
+        });
+
+        httpRouter.middleware("public-pastes-endpoint", exchange -> {
+            if (!publicPastesEnabled)
+                throw new FeatureDisabledException();
+            return null;
+        });
+
+        if (getConfig().has("ratelimiter.millis"))
+            httpRouter.middleware("rate-limiter", new RateLimitMiddleware(getConfig().getInt("ratelimiter.millis", 5000), getConfig().getInt("ratelimiter.limit", 5)).createAutoDeadRateLimitsRemover(1000 * 60 * 10));
+        else
+            httpRouter.middleware("rate-limiter", e -> null);
+
+        httpRouter.middleware("image-rate-limiter", new RateLimitMiddleware(5000, 3).createAutoDeadRateLimitsRemover(1000 * 60 * 10));
+
+        httpRouter.beforeInterceptor(exchange -> {
+            exchange.header("Server", "InteraApps-Pastefy");
+
+            exchange.attrib("loggedIn", false);
+            exchange.attrib("user", null);
+            String accessToken = null;
+            if (exchange.header("x-auth-key") != null)
+                accessToken = exchange.header("x-auth-key");
+
+            if (exchange.bearerAuth() != null) {
+                accessToken = exchange.bearerAuth();
+            } else if (exchange.header("Authorization") != null) {
+                if (exchange.header("Authorization").startsWith("Basic ")) {
+                    String authorization = new String(Base64.getDecoder().decode(exchange.header("Authorization").substring(6)));
+                    String[] parts = authorization.split(":");
+                    if (parts.length == 2) {
+                        accessToken = parts[1];
+                    }
+                }
+            }
+
+            if (accessToken != null) {
+                AuthKey authKey = Repo.get(AuthKey.class).where("key", accessToken).first();
+                if (!oAuth2Strategy.getProviders().isEmpty() && authKey != null) {
+                    User user = Repo.get(User.class).get(authKey.userId);
+
+                    if (user != null) {
+                        exchange.attrib("loggedIn", true);
+                        exchange.attrib("user", user);
+                        exchange.attrib("authkey", authKey);
+                    }
+                }
+            }
+
+            return false;
+        });
+
+        List<PastefyPlugin> list = plugins.values().stream().filter(p -> p.config.frontend != null).collect(Collectors.toList());
+        list.forEach(p -> {
+            if (p.config.frontend.folder != null && p.config.frontend.entrypoint != null) {
+                System.out.println("Registered plugin " + p.config.name + " frontend directory");
+                System.out.println("- Public: " + p.getPublicFolder());
+                System.out.println("- Path: " + p.path + "/" + p.config.frontend.folder);
+                httpRouter.staticDirectory(p.getPublicFolder(), p.path + "/" + p.config.frontend.folder);
+            }
+        });
+
+
+        try {
+            homeHTML = FileUtils.readFile(getClass().getClassLoader().getResourceAsStream("static/index.html"));
+
+            StringBuilder registerPlugins = new StringBuilder();
+            list.forEach(p -> {
+                if (p.config.frontend != null && p.config.frontend.folder != null && p.config.frontend.entrypoint != null) {
+                    registerPlugins
+                            .append("{")
+                            .append("\"config\": ")
+                            .append(new Gson().toJson(p.config))
+                            .append(", \"entrypoint\": \"")
+                            .append(p.getPublicFolder())
+                            .append("/")
+                            .append(p.config.frontend.entrypoint)
+                            .append('"')
+                            .append("},\n");
+                }
+            });
+
+            String customHeaders = config.get("pastefy.customheader", "");
+            String customBody = config.get("pastefy.custombody", "");
+
+            homeHTML = homeHTML
+                    .replace("/*PASTEFY_PLUGINS*/", registerPlugins.toString())
+                    .replaceAll("<!--CUSTOM_HEADERS-->", customHeaders)
+                    .replaceAll("<!--CUSTOM_BODY-->", customBody);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+
+        RequestHandler requestHandler = exchange -> {
+            if (homeHTML == null) {
+                throw new NotFoundException();
+            }
+
+            exchange.header("Content-Type", "text/html; charset=UTF-8");
+            exchange.write(homeHTML);
+            return "";
+        };
+
+        httpRouter.controller(HttpController.class, AppController.class.getPackage());
+
+        passport.createRoutes(httpRouter);
+
+        getBackendPlugins().forEach(PastefyBackendPlugin::beforeRoutes);
+
+        httpRouter.get("/assets/{*:path}", e -> {
+            e.header("Cache-Control", "public, max-age=604800, immutable");
+            return null;
+        });
+
+        httpRouter.get("/", requestHandler);
+        httpRouter.staticResourceDirectory("/", "static");
+        httpRouter.get("/assets/{*:path}", e -> {
+            throw new NotFoundException();
+        });
+
+        httpRouter.get("/api/{*:path}", e -> {
+            throw new NotFoundException();
+        });
+
+        httpRouter.get("/{*:path}", requestHandler);
+
+        Timer timer = new Timer();
+
+        timer.schedule(new TimerTask() {
+            public void run() {
+                // Delete expired pastes
+                Repo.get(Paste.class)
+                        .where("expireAt", "<", Timestamp.from(Instant.now()))
+                        .whereNotNull("expireAt")
+                        .all()
+                        .forEach(Paste::delete);
+            }
+        }, 0, 1000 * 60);
+        if (aiEnabled()) {
+            backgroundJobService.start();
+            pasteAIInfoService.start();
+        }
+        getBackendPlugins().forEach(PastefyBackendPlugin::setupServer);
+    }
+
+    public void start() {
+        httpRouter.start();
+        httpRouter.join();
+    }
+
+    public static void main(String[] args) {
+        instance = new Pastefy();
+        int exitCode = new CommandLine(new PastefyCLI()).execute(args);
+        System.exit(exitCode);
+    }
+
+    public Passport getPassport() {
+        return passport;
+    }
+
+    public OAuth2Strategy getOAuth2Strategy() {
+        return oAuth2Strategy;
+    }
+
+    public Config getConfig() {
+        return config;
+    }
+
+    public boolean isLoginRequired() {
+        return loginRequired;
+    }
+
+    public boolean isLoginRequiredForCreate() {
+        return loginRequiredForCreate;
+    }
+
+    public boolean isLoginRequiredForRead() {
+        return loginRequiredForRead;
+    }
+
+
+    public boolean publicPastesEnabled() {
+        return publicPastesEnabled;
+    }
+
+    public PasteAI getPasteAI() {
+        return pasteAI;
+    }
+    public boolean aiEnabled() {
+        return pasteAI != null;
+    }
+
+    public PasteAIInfoService getPasteAIInfoService() {
+        return pasteAIInfoService;
+    }
+
+    public String getHomeHTML() {
+        return homeHTML;
+    }
+
+    public List<PastefyBackendPlugin> getBackendPlugins() {
+        return plugins.values().stream()
+                .filter(p -> p.backendPlugin != null)
+                .map(p -> p.backendPlugin)
+                .collect(Collectors.toList());
+    }
+
+    public ElasticsearchClient getElasticsearchClient() {
+        return elasticsearchClient;
+    }
+
+    public boolean isElasticsearchEnabled() {
+        return elasticsearchClient != null;
+    }
+
+    public MinioClient getMinioClient() {
+        return minioClient;
+    }
+
+    public boolean isMinioEnabled() {
+        return minioClient != null;
+    }
+
+    public String getMinioBucket() {
+        return config.get("minio.bucket");
+    }
+
+    public boolean isIndexAvailable(String index) {
+        return availableIndexes.contains(index);
+    }
+
+    public boolean isDevMode() {
+        return config.get("pastefy.dev", "false").toLowerCase(Locale.ROOT).equals("true");
+    }
+
+    public Jedis getRedisClient() {
+        return redisPool.getResource();
+    }
+    public boolean isRedisEnabled() {
+        return redisPool != null;
+    }
+
+    public AnalyticsService getAnalyticsService() {
+        return analyticsService;
+    }
+
+    public boolean analyticsEnabled() {
+        return analyticsService != null;
+    }
+
+    public ExecutorService getExecutor() {
+        return executor;
+    }
+
+    public void executeAsync(Runnable task) {
+        executor.submit(task);
+    }
+}
