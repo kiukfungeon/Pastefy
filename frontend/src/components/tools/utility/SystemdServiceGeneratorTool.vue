@@ -36,3 +36,42 @@ Restart=${restartPolicy.value}
 RestartSec=5
 
 [Install]
+WantedBy=multi-user.target`)
+</script>
+
+<template>
+  <UtilityShell
+    control-title="systemd Service"
+    control-description="Generate a Linux systemd unit file for app and service deployment."
+    result-title="Generated Unit"
+    result-description="Use this as a starting point for production or self-hosted service management."
+  >
+    <template #controls>
+      <div class="grid gap-3 md:grid-cols-2">
+        <InputText v-model="serviceName" :placeholder="$t('utility.systemdServiceGeneratorTool.serviceName')" fluid />
+        <InputText v-model="description" :placeholder="$t('utility.systemdServiceGeneratorTool.description')" fluid />
+        <InputText v-model="user" :placeholder="$t('utility.systemdServiceGeneratorTool.user')" fluid />
+        <InputText v-model="group" :placeholder="$t('utility.systemdServiceGeneratorTool.group')" fluid />
+        <InputText v-model="workingDir" :placeholder="$t('utility.systemdServiceGeneratorTool.workingDirectory')" fluid />
+        <InputText v-model="restartPolicy" :placeholder="$t('utility.systemdServiceGeneratorTool.restartPolicy')" fluid />
+        <div class="md:col-span-2">
+          <InputText v-model="execStart" :placeholder="$t('utility.systemdServiceGeneratorTool.execStartCommand')" fluid />
+        </div>
+        <div class="md:col-span-2">
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.systemdServiceGeneratorTool.environmentVariables') }}</label>
+          <Textarea v-model="environment" auto-resize rows="8" fluid />
+        </div>
+      </div>
+    </template>
+
+    <template #result>
+      <div class="overflow-hidden rounded-xl border border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900">
+        <Highlighted :contents="serviceFile" :file-name="`${serviceName}.service`" />
+      </div>
+    </template>
+
+    <template #footer>
+      <UtilityResultActions :result="serviceFile" :file-name="`${serviceName}.service`" />
+    </template>
+  </UtilityShell>
+</template>
