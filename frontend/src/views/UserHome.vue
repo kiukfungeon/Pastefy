@@ -102,3 +102,38 @@ useTitle(`Home | Pastefy`)
               class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
             >
               <i :class="`ti ti-${action.icon} text-lg`" />
+            </div>
+            <div>
+              <h3 class="font-semibold">{{ action.title }}</h3>
+              <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+                {{ action.description }}
+              </p>
+            </div>
+          </div>
+        </button>
+      </div>
+    </section>
+
+    <div class="space-y-4">
+      <h2 class="text-2xl font-bold">{{ $t('paste.folders') }}</h2>
+
+      <FolderList route="/api/v2/user/folders" />
+    </div>
+    <ComponentInjection type="user-home-after-folders" />
+    <div>
+      <div class="flex justify-between gap-2">
+        <h2 class="mb-4 text-2xl font-bold">{{ $t('paste.pastes') }}</h2>
+        <div>
+          <ShowSearchButton my-pastes />
+        </div>
+      </div>
+
+      <PasteList
+        @loaded="eventBus.emit('pageLoaded', 'home')"
+        route="/api/v2/user/pastes"
+        :params="{ page_limit: 8, hide_children: 'true' }"
+      />
+    </div>
+    <ComponentInjection type="user-home-after-pastes" />
+  </div>
+</template>
