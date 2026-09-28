@@ -9,3 +9,9 @@ export default {
                 return {
                     params: {
                         operationId,
+                        pageTitle: `${summary} - vitepress-openapi`,
+                    },
+                }
+            })
+    },
+}

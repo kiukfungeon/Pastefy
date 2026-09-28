@@ -25,3 +25,22 @@ const { isLoading: starLoading, execute: toggleStar } = useAsyncState(
       await client.post(`/api/v2/paste/${props.pasteId}/star`)
       props.paste.starred = true
     }
+  },
+  undefined,
+  { immediate: false },
+)
+</script>
+
+<template>
+  <Button
+    v-if="currentUser.user?.logged_in"
+    @click="() => toggleStar()"
+    :severity="severity || 'contrast'"
+    rounded
+    text
+    :icon="`ti ti-star text-xl ${paste.starred ? 'text-yellow-500' : ''}`"
+    v-tooltip="{ value: 'Star', showDelay: 500 }"
+    :loading="starLoading"
+    :aria-label="$t('components.pasteStarButton.star')"
+  />
+</template>
