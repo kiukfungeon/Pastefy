@@ -18,3 +18,23 @@ export function usePinnedTools() {
     if (pinnedToolKeys.value.includes(key)) {
       pinnedToolKeys.value = pinnedToolKeys.value.filter((entry) => entry !== key)
       return
+    }
+
+    pinnedToolKeys.value = [key, ...pinnedToolKeys.value]
+  }
+
+  const pinnedTools = computed(() =>
+    pinnedToolKeys.value
+      .map((key) =>
+        allToolCatalogEntries.find((entry) => getPinnedToolKey(entry.kind, entry.slug) === key),
+      )
+      .filter((entry): entry is ToolCatalogEntry => Boolean(entry)),
+  )
+
+  return {
+    pinnedToolKeys,
+    pinnedTools,
+    isPinned,
+    togglePinned,
+  }
+}

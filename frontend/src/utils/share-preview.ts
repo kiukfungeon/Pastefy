@@ -88,3 +88,34 @@ export function getSharePreviewMeta(type: SharePreviewType) {
       icon: 'file-type-html',
     },
     xml: {
+      label: 'XML View',
+      description: 'A structured XML explorer with searchable tree and formatted source.',
+      icon: 'file-type-xml',
+    },
+    yaml: {
+      label: 'YAML View',
+      description: 'A cleaner config-focused reader for YAML files with quick searching.',
+      icon: 'adjustments-alt',
+    },
+    toml: {
+      label: 'TOML View',
+      description: 'A readable config presentation for TOML-based files and manifests.',
+      icon: 'settings-code',
+    },
+    config: {
+      label: 'Config View',
+      description: 'A focused inspector for ini, properties, and environment-style files.',
+      icon: 'sliders-horizontal',
+    },
+  } as const
+
+  return map[type]
+}
+
+export function toSharePreviewLabel(fileName?: string) {
+  if (!fileName) return 'Untitled'
+  return fileName.replace(
+    /\.(csv|mmd|mermaid|geojson|svg|diff|patch|cast|json|html|htm|xml|xhtml|iml|ya?ml|toml|ini|properties)$/i,
+    '',
+  )
+}
