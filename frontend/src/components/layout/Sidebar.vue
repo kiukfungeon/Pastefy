@@ -70,3 +70,40 @@ const appStore = useAppStore()
     <ComponentInjection type="sidebar-center" />
 
     <footer>
+      <div id="sidenav-bottom" />
+      <ComponentInjection type="sidebar-bottom" />
+
+      <div class="flex w-full items-center justify-between gap-2">
+        <div class="flex items-center">
+          <Button
+            as="a"
+            target="_blank"
+            href="https://github.com/interaapps/pastefy"
+            icon="ti ti-brand-github text-xl"
+            text
+            severity="contrast"
+            :aria-label="$t('components.sidebar.sourceCode')"
+          />
+          <template v-if="appInfo">
+            <Button
+              v-for="(link, label) of appInfo?.appInfo?.custom_footer || {}"
+              :label="label"
+              :key="label"
+              as="a"
+              :href="link"
+              size="small"
+              text
+              severity="contrast"
+            />
+          </template>
+
+          <ComponentInjection type="sidebar-footer-links" />
+        </div>
+        <div class="flex items-center gap-0">
+          <ThemeSwitcher />
+          <LanguageSwitcher />
+        </div>
+      </div>
+    </footer>
+  </div>
+</template>
