@@ -45,3 +45,50 @@ public class ElasticMigrator {
         pastes.put("encrypted", p -> p.boolean_(k -> k));
 
         pastes.put("expireAt", p -> p.date(d -> d));
+        pastes.put("createdAt", p -> p.date(d -> d));
+        pastes.put("updatedAt", p -> p.date(d -> d));
+
+        pastes.put("user", p -> p.object(t ->
+                t
+                .properties("id", f -> f.keyword(c -> c))
+                .properties("type", f -> f.keyword(c -> c))
+                .properties("authId", f -> f.keyword(c -> c))
+                .properties("authProvider", f -> f.keyword(c -> c))
+
+                .properties("avatar", f -> f.text(c -> c))
+
+                .properties("name", f -> f.text(c -> c.fields("keyword", f2 -> f2.keyword(k -> k))))
+                .properties("uniqueName", f -> f.text(c -> c.fields("keyword", f2 -> f2.keyword(k -> k))))
+                .properties("eMail", f -> f.text(c -> c.fields("keyword", f2 -> f2.keyword(k -> k))))
+
+                .properties("createdAt", f -> f.date(c -> c))
+                .properties("updatedAt", f -> f.date(c -> c))
+            )
+        );
+
+        builders.put("pastefy_pastes", pastes);
+    }
+
+    public void createIfNotExists(String index) throws IOException {
+        if (!pastefy.isIndexAvailable(index)) {
+            client.indices().create(c -> c.index(index).mappings(p -> {
+                builders.get(index).forEach(p::properties);
+                return p;
+            }));
+        } else {
+            client.indices().putMapping(c -> {
+                c.index(index);
+
+                builders.get(index).forEach(c::properties);
+
+                return c;
+            });
+        }
+    }
+
+    public void migrateAll() throws IOException {
+        for (String index : pastefy.INDEXES) {
+            createIfNotExists(index);
+        }
+    }
+}
