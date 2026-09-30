@@ -22,3 +22,51 @@
             v-model="testInput"
             fluid
             :placeholder="$t('previews.regexViewer.insertYourTestStringHere')"
+            class="relative z-10 bg-transparent text-transparent caret-neutral-500"
+            style="font-size: 1rem"
+            auto-resize
+            wrap="hard"
+          />
+        </div>
+      </div>
+
+      <p v-if="error" class="mono mt-2 text-sm text-red-500">{{ error }}</p>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import InputText from 'primevue/inputtext'
+import Textarea from 'primevue/textarea'
+import Highlighted from '@/components/Highlighted.vue'
+
+const props = defineProps<{
+  regex: string
+  inEditor?: boolean
+}>()
+
+const flags = ref('g')
+const testInput = ref('')
+
+const error = computed(() => {
+  try {
+    const re = new RegExp(props.regex, flags.value)
+    testInput.value.replace(re, '')
+    return null
+  } catch (e: unknown) {
+    return (e as { message: string }).message || e
+  }
+})
+const highlightedResult = computed(() => {
+  const re = new RegExp(props.regex, flags.value)
+  if (!testInput.value) return ''
+
+  return testInput.value
+    .replace(
+      /[&<>"']/g,
+      (s) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[s]!,
+    )
+    .replace(re, (match) => `<mark class="rounded-sm bg-primary-100">${match}</mark>`)
+})
+</script>
