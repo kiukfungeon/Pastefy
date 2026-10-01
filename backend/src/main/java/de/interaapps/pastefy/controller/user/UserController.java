@@ -79,3 +79,44 @@ public class UserController extends HttpController {
     /**
      * @deprecated This is not implemented anymore
      */
+    @Get("/sharedpastes")
+    @With({"auth", "awaiting-access-check", "blocked-check"})
+    public List<PasteResponse> getSharedPastes(Exchange exchange, @Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
+        if (authKey != null)
+            authKey.checkPermission("sharedpastes:read");
+
+        List<PasteResponse> pastes = new ArrayList<>();
+        int page = 0;
+        if (exchange.getQueryParameters().has("page"))
+            page = Integer.parseInt(exchange.getQueryParameters().get("page").string()) - 1;
+
+        pastes = Repo.get(SharedPaste.class)
+                .where("targetId", user.getId())
+                .limit(10)
+                .offset(page * 10)
+                .order("updated_at", true)
+                .all().stream()
+                .map(sharedPaste -> {
+                    Paste paste = sharedPaste.getPaste();
+                    if (paste == null)
+                        sharedPaste.delete();
+                    return PasteResponse.create(paste, exchange, user, false, false);
+                })
+                .collect(Collectors.toList());
+
+        return pastes;
+    }
+
+    @Get("/starred-pastes")
+    @With({"auth", "awaiting-access-check", "blocked-check"})
+    public List<PasteResponse> getStarredPastes(Exchange exchange, @Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
+        if (authKey != null)
+            authKey.checkPermission("stars:read");
+
+        return PasteService.getAllPastes(exchange, PasteQueryParameters.from(exchange)
+                .setFilter("starredBy", user.getId())
+        );
+    }
+
+
+}
