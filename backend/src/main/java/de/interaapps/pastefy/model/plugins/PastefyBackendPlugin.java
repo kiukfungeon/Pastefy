@@ -8,3 +8,8 @@ public abstract class PastefyBackendPlugin {
 
     public abstract void init();
     public abstract void setupModels();
+    public abstract void setupPassport();
+    public abstract void setupServer();
+    public abstract void beforeRoutes();
+    public void customConfigMapping(Mapping mapping) {}
+}
