@@ -197,3 +197,137 @@ const pinnedTools = computed(() =>
               class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white text-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
             >
               <i :class="`ti ti-${category.icon} text-2xl`" />
+            </div>
+            <div class="min-w-0">
+              <div class="flex items-center gap-2">
+                <h3 class="font-semibold">{{ category.title }}</h3>
+                <span class="text-xs text-neutral-400">
+                  {{ getCategoryCount(category.slug) }}
+                </span>
+              </div>
+              <p class="mt-1 text-sm text-neutral-600 dark:text-neutral-300">
+                {{ category.description }}
+              </p>
+            </div>
+          </div>
+        </router-link>
+      </div>
+    </section>
+
+    <section id="preview-tools" class="flex flex-col gap-4 scroll-mt-24">
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <h2 class="text-2xl font-bold">{{ $t('views.toolIndexView.previewTools') }}</h2>
+          <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            Live editors with the same preview components used across Pastefy.
+          </p>
+        </div>
+        <span
+          class="rounded-full border border-neutral-200 px-3 py-1 text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-300"
+        >
+          {{ filteredPreviewTools.length }} tools
+        </span>
+      </div>
+    </section>
+
+    <section
+      v-for="[category, tools] of groupedTools"
+      :key="category"
+      class="flex flex-col gap-4"
+    >
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <h2 class="text-2xl font-bold">{{ category }}</h2>
+          <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            Purpose-built editors and previews for {{ category.toLowerCase() }} workflows.
+          </p>
+        </div>
+        <span
+          class="rounded-full border border-neutral-200 px-3 py-1 text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-300"
+        >
+          {{ tools.length }} tools
+        </span>
+      </div>
+
+      <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <router-link
+          :to="{ name: 'tool-category', params: { category: category.toLowerCase() } }"
+          class="md:col-span-2 xl:col-span-3 inline-flex items-center gap-2 text-sm text-neutral-500 transition-colors hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-200"
+        >
+          Browse {{ category.toLowerCase() }} category page
+          <i class="ti ti-arrow-right text-base" />
+        </router-link>
+        <ToolCard
+          v-for="tool of tools"
+          :key="tool.slug"
+          :tool="{
+            kind: 'preview',
+            slug: tool.slug,
+            title: tool.title,
+            shortTitle: tool.shortTitle,
+            description: tool.description,
+            icon: tool.icon,
+            category: tool.category,
+            keywords: tool.keywords,
+            meta: tool.fileName,
+            to: { name: 'tool-preview', params: { tool: tool.slug } },
+          }"
+        />
+      </div>
+    </section>
+
+    <section id="conversions" class="flex flex-col gap-4 scroll-mt-24">
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <h2 class="text-2xl font-bold">{{ $t('views.toolIndexView.conversions') }}</h2>
+          <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            Format converters for the most useful structured data and API workflows.
+          </p>
+        </div>
+        <span
+          class="rounded-full border border-neutral-200 px-3 py-1 text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-300"
+        >
+          {{ filteredConversionTools.length }} tools
+        </span>
+      </div>
+
+      <div v-if="filteredConversionTools.length" class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <ToolCard v-for="tool of filteredConversionTools" :key="tool.slug" :tool="tool" />
+      </div>
+
+      <div
+        v-else
+        class="rounded-xl border border-dashed border-neutral-200 p-6 text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-400"
+      >
+        {{ $t('views.toolIndexView.noConversionToolsMatchYourSearchYet') }}
+      </div>
+    </section>
+
+    <section id="utilities" class="flex flex-col gap-4 scroll-mt-24">
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <h2 class="text-2xl font-bold">{{ $t('views.toolIndexView.utilities') }}</h2>
+          <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            Inspectors, generators, and helper tools that are not previews or converters.
+          </p>
+        </div>
+        <span
+          class="rounded-full border border-neutral-200 px-3 py-1 text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-300"
+        >
+          {{ filteredUtilityTools.length }} tools
+        </span>
+      </div>
+
+      <div v-if="filteredUtilityTools.length" class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <ToolCard v-for="tool of filteredUtilityTools" :key="tool.slug" :tool="tool" />
+      </div>
+
+      <div
+        v-else
+        class="rounded-xl border border-dashed border-neutral-200 p-6 text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-400"
+      >
+        {{ $t('views.toolIndexView.noUtilityToolsMatchYourSearchYet') }}
+      </div>
+    </section>
+  </section>
+</template>
