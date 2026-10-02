@@ -12,3 +12,31 @@ export const useCurrentUserStore = defineStore('current-user', () => {
 
   const config = useConfig()
 
+  const userFoldersStore = useUserFoldersStore()
+
+  function logout() {
+    user.value = undefined
+    config.value.apiKey = undefined
+    client.defaults.headers.common.Authorization = undefined
+  }
+
+  function setUser(newUser: User) {
+    user.value = newUser
+  }
+
+  async function fetchUser() {
+    userLoading.value = true
+    try {
+      const user = (await client.get('/api/v2/user')).data
+      authTypes.value = user.auth_types
+      if (user.logged_in) {
+        setUser(user)
+      }
+    } catch {}
+    userLoading.value = false
+
+    userFoldersStore.fetchFolders()
+  }
+
+  return { user, logout, setUser, userLoading, fetchUser, authTypes }
+})
