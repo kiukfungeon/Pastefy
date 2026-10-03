@@ -105,3 +105,111 @@ const localeLoaders: Partial<Record<SupportedLocale, () => Promise<{ default: an
   he: () => import('@/locales/he.json'),
   ja: () => import('@/locales/ja.json'),
   kmr: () => import('@/locales/kmr.json'),
+  hr: () => import('@/locales/hr.json'),
+}
+
+const loadedLocales = new Set<SupportedLocale>(['en'])
+
+const loadLocale = async (locale: SupportedLocale) => {
+  if (loadedLocales.has(locale)) {
+    return
+  }
+
+  const loader = localeLoaders[locale]
+
+  if (!loader) {
+    return
+  }
+
+  const module = await loader()
+
+  i18next.addResourceBundle(locale, 'translation', module.default, true, true)
+
+  loadedLocales.add(locale)
+}
+
+export const resolveBrowserLocale = (): SupportedLocale => {
+  const browserLanguages = typeof navigator === 'undefined' ? [] : navigator.languages
+
+  for (const browserLanguage of browserLanguages) {
+    const normalized = browserLanguage.toLowerCase()
+
+    if (localeAliases[normalized]) {
+      return localeAliases[normalized]
+    }
+
+    const baseLanguage = normalized.split('-')[0]
+
+    if (localeAliases[baseLanguage]) {
+      return localeAliases[baseLanguage]
+    }
+  }
+
+  return 'en'
+}
+
+export const resolveLanguagePreference = (preference?: LanguagePreference): SupportedLocale =>
+  !preference || preference === 'browser' ? resolveBrowserLocale() : preference
+
+const initialPreference = (() => {
+  if (typeof localStorage === 'undefined') {
+    return 'browser'
+  }
+
+  try {
+    const parsed = JSON.parse(localStorage.getItem('config') || '{}') as {
+      language?: LanguagePreference
+    }
+
+    return parsed.language || 'browser'
+  } catch {
+    return 'browser'
+  }
+})()
+
+export const applyDocumentLanguage = (locale = i18next.resolvedLanguage || i18next.language) => {
+  const resolvedLocale = localeAliases[locale.toLowerCase()] || 'en'
+
+  document.documentElement.lang = resolvedLocale
+  document.documentElement.dir = resolvedLocale === 'ar' || resolvedLocale === 'he' ? 'rtl' : 'ltr'
+}
+
+const initialLocale = resolveLanguagePreference(initialPreference)
+
+export const i18nReady = i18next
+  .init({
+    lng: 'en',
+    fallbackLng: 'en',
+    resources: {
+      en: {
+        translation: en,
+      },
+    },
+    interpolation: {
+      escapeValue: false,
+    },
+  })
+  .then(async () => {
+    if (initialLocale !== 'en') {
+      await loadLocale(initialLocale)
+      await i18next.changeLanguage(initialLocale)
+    }
+
+    applyDocumentLanguage()
+  })
+
+export const changeLanguage = async (preference: LanguagePreference) => {
+  const locale = resolveLanguagePreference(preference)
+
+  if (locale !== 'en') {
+    await loadLocale(locale)
+  }
+
+  await i18next.changeLanguage(locale)
+
+  applyDocumentLanguage(locale)
+}
+
+i18next.on('languageChanged', () => applyDocumentLanguage())
+
+export default i18next
