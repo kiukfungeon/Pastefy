@@ -101,3 +101,106 @@ const handleDrop = async (event: DragEvent) => {
     currentPaste.title ||= contents[0].name
     currentPaste.contents = contents[0].content
   }
+}
+</script>
+<template>
+  <div
+    :class="`grid h-full w-full ${
+      isHomeMobile ? 'grid-cols-1' : config.sideBarShown ? 'grid-cols-[340px_1fr]' : 'grid-cols-1'
+    }`"
+    @dragover.prevent
+    @dragenter.prevent
+    @dragleave.prevent
+    @drop="handleDrop"
+  >
+    <Sidebar
+      class="fixed top-0 w-[340px] transition-all ltr:left-0 rtl:right-0"
+      :is-hidden="!(isHomeMobile || config.sideBarShown)"
+      :class="isHomeMobile ? 'w-full' : config.sideBarShown ? 'flex' : 'hidden'"
+    />
+    <div
+      :class="`fixed z-100 flex max-w-full items-center justify-between ${isHomeMobile || !isMobile ? '' : 'bg-white/60 backdrop-blur-xl dark:bg-[#121212]/70'} p-2 pl-1 md:bg-none md:pl-2 ${config.sideBarShown && !isHomeMobile ? 'w-[340px]' : 'w-full'}`"
+    >
+      <Button
+        as="router-link"
+        class="flex md:hidden"
+        :to="{ name: 'home' }"
+        :icon="`ti ti-plus text-xl`"
+        severity="contrast"
+        :disabled="isHomeMobile"
+        text
+        :aria-label="$t('paste.create')"
+      />
+      <Button
+        class="hidden md:flex"
+        @click="config.sideBarShown = !config.sideBarShown"
+        :icon="`ti ti-layout-sidebar text-xl`"
+        severity="contrast"
+        :disabled="isHomeMobile"
+        text
+        v-shortkey="['meta', 'b']"
+        @shortkey="config.sideBarShown = !config.sideBarShown"
+        :aria-label="$t('layout.toggleSidebar')"
+      />
+
+      <router-link
+        v-if="config.sideBarShown || isMobile"
+        :to="{ name: 'home' }"
+        class="transition-all hover:scale-[1.05] active:scale-[0.95]"
+        :aria-label="$t('nav.home')"
+      >
+        <img
+          v-if="appInfo.appInfo?.custom_logo"
+          :src="appInfo.appInfo?.custom_logo"
+          alt="logo"
+          class="h-[2rem]"
+        />
+        <Logo v-else />
+      </router-link>
+      <Button
+        v-if="!currentUserStore.user && currentUserStore.authTypes?.[0]"
+        @click="currentUserStore.authTypes?.length > 1 ? (loginModalVisible = true) : null"
+        :as="currentUserStore.authTypes?.length === 1 ? 'a' : 'button'"
+        :href="`/api/v2/auth/oauth2/${currentUserStore.authTypes[0]}`"
+        icon="ti ti-login text-xl"
+        severity="contrast"
+        text
+        :loading="currentUserStore.userLoading"
+        v-tooltip="{ value: 'Login', showDelay: 500 }"
+        :aria-label="$t('auth.login')"
+      />
+      <button
+        v-else-if="currentUserStore.user"
+        class="mr-1 cursor-pointer"
+        @click="(e) => userMenu?.toggle(e)"
+      >
+        <img
+          class="h-[30px] w-[30px] rounded-full border-1 border-neutral-200 object-cover dark:border-neutral-700"
+          :src="currentUserStore.user.profile_picture"
+          alt="Profile Picture"
+        />
+      </button>
+      <Button v-else class="cursor-default opacity-0" icon="ti ti-login text-xl" text />
+    </div>
+    <div v-if="config.sideBarShown" />
+    <div
+      v-if="!isHomeMobile"
+      class="w-full overflow-auto"
+      :class="route.meta.noSpacing ? '' : 'p-4 pt-18 md:p-8 md:pt-20'"
+    >
+      <ComponentInjection type="main-layout-main-top" />
+      <div id="full-screen-content"></div>
+      <router-view :key="route.path" />
+      <ComponentInjection type="main-layout-main-bottom" />
+    </div>
+  </div>
+  <Popover ref="userMenu" class="w-[14rem]" :pt="{ content: 'p-0' }">
+    <UserMenu @element-clicked="userMenu?.hide()" />
+  </Popover>
+
+  <GlobalSearch />
+
+  <LoginModal v-model:visible="loginModalVisible" />
+
+  <SettingsModal v-model:visible="appStore.settingsModalShown" />
+</template>

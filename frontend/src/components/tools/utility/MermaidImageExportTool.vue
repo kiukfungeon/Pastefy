@@ -69,3 +69,110 @@ const download = async () => {
       },
       width: node.offsetWidth * scale.value,
       height: node.offsetHeight * scale.value,
+    })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.download = `${safeName}.png`
+    link.href = url
+    link.click()
+    setTimeout(() => URL.revokeObjectURL(url), 1000)
+  } finally {
+    isExporting.value = false
+  }
+}
+
+const outputCode = computed(() => source.value)
+
+const copyMermaid = async () => {
+  await navigator.clipboard?.writeText(outputCode.value)
+}
+</script>
+
+<template>
+  <UtilityShell
+    control-title="Export Setup"
+    control-description="Render a Mermaid diagram and export it as PNG or SVG with padding, background, and watermark options."
+    result-title="Export Preview"
+    result-description="Preview the export surface exactly as it will be rendered."
+  >
+    <template #controls>
+      <div class="grid gap-3 md:grid-cols-2">
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('common.filename') }}</label>
+          <InputText v-model="fileName" fluid />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('common.format') }}</label>
+          <Select
+            v-model="format"
+            :options="formatOptions"
+            option-label="label"
+            option-value="value"
+            fluid
+          />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.mermaidImageExportTool.scale') }}</label>
+          <InputNumber v-model="scale" :min="1" :max="4" fluid />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.mermaidImageExportTool.padding') }}</label>
+          <InputNumber v-model="padding" :min="0" :max="120" fluid />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400"
+            >{{ $t('utility.mermaidImageExportTool.background') }}</label
+          >
+          <InputText v-model="background" fluid />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.mermaidImageExportTool.watermark') }}</label>
+          <InputText v-model="watermark" fluid />
+        </div>
+      </div>
+      <div>
+        <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400"
+          >{{ $t('utility.mermaidImageExportTool.mermaidCode') }}</label
+        >
+        <Textarea v-model="source" auto-resize rows="18" fluid />
+      </div>
+    </template>
+    <template #result>
+      <div
+        ref="exportAreaRef"
+        class="overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700"
+        :style="{ padding: `${padding}px`, backgroundColor: background }"
+      >
+        <MermaidViewer :mermaid-code="source" />
+        <div v-if="watermark" class="px-5 pb-2 text-right text-xs font-medium opacity-50">
+          {{ watermark }}
+        </div>
+      </div>
+    </template>
+    <template #footer>
+      <div
+        class="flex flex-wrap items-center justify-between gap-3 border-t border-neutral-200 bg-white px-4 py-3 dark:border-neutral-700 dark:bg-neutral-900"
+      >
+        <div class="text-sm text-neutral-500 dark:text-neutral-400">
+          PNG and SVG export use the current preview surface including padding and watermark.
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <Button
+            @click="download"
+            :loading="isExporting"
+            :label="`download ${format}`"
+            icon="ti ti-download"
+            severity="contrast"
+          />
+          <Button
+            @click="copyMermaid"
+            :label="$t('utility.mermaidImageExportTool.copyMermaid')"
+            icon="ti ti-copy"
+            severity="contrast"
+            outlined
+          />
+        </div>
+      </div>
+    </template>
+  </UtilityShell>
+</template>
