@@ -16,3 +16,12 @@ export function highlight(contents: string, lang?: string, maxLength = 25000): s
     if (lang && hljs.listLanguages().includes(lang)) {
       return hljs.highlight(contents, {
         language: lang,
+      }).value
+    } else if (contents.length < 25000) {
+      // Detecting a language is expensive, so only do it for small files
+      return hljs.highlightAuto(contents).value
+    }
+  }
+
+  return escapeHtml(contents)
+}
