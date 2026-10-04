@@ -56,3 +56,33 @@ const result = computed(() => generatedValues.value.join('\n'))
     <template #controls>
       <label class="text-sm font-medium">{{ $t('utility.secretGeneratorTool.mode') }}</label>
       <Select v-model="mode" :options="modeOptions" option-label="label" option-value="value" />
+      <label class="text-sm font-medium">{{ $t('utility.secretGeneratorTool.count') }}</label>
+      <InputNumber v-model="count" :min="1" :max="25" fluid />
+      <label class="text-sm font-medium">{{ $t('utility.secretGeneratorTool.length') }}</label>
+      <InputNumber v-model="length" :min="8" :max="256" fluid />
+      <div>
+        <Button @click="generateValues()" :label="$t('utility.secretGeneratorTool.generateAgain')" icon="ti ti-refresh" severity="contrast" outlined />
+      </div>
+    </template>
+
+    <template #result>
+      <div class="grid gap-3">
+        <div
+          v-for="(entry, index) of generatedValues"
+          :key="entry"
+          class="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <div class="mb-2 flex items-center justify-between gap-3">
+            <span class="font-medium">Secret {{ index + 1 }}</span>
+            <Button @click="clipboard.copy(entry)" icon="ti ti-copy" severity="contrast" text />
+          </div>
+          <code class="block break-all text-sm">{{ entry }}</code>
+        </div>
+      </div>
+    </template>
+
+    <template #footer>
+      <UtilityResultActions :result="result" file-name="generated-secrets.txt" />
+    </template>
+  </UtilityShell>
+</template>

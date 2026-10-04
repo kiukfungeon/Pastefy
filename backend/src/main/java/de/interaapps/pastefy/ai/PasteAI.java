@@ -128,3 +128,47 @@ public class PasteAI {
                 {
                   "tags": ["string"],
                   "file_name": "string",
+                  "file_extension": "string"
+                }
+                """,
+                "Title: " + paste.getTitle() + "\n\nContent preview:\n" + contents
+        );
+
+        return AbstractElement.fromJson(response).object();
+    }
+
+    public String generateTagDescription(TagListing tagListing) {
+        return provider.generate(
+                """
+                You write short, neutral tag descriptions for Pastefy tag pages.
+
+                Rules:
+                - Max 450 characters.
+                - One sentence only.
+                - No markdown.
+                - No quotes.
+                - Do not overpromise.
+                - Do not mention illegal, exploitative, adult, leaked or harmful use cases.
+                - Describe the topic broadly and safely.
+                - Respond with only the description text.
+
+                Examples:
+                Tag: javascript
+                Description: Public JavaScript snippets, examples and code shared by the Pastefy community.
+
+                Tag: docker
+                Description: Docker-related commands, configuration files and examples shared on Pastefy.
+                """,
+                "Tag: " + tagListing.tag
+        );
+    }
+
+    public String getProviderName() {
+        return provider.getName();
+    }
+
+    public String getModel() {
+        return provider.getModel();
+    }
+
+}
