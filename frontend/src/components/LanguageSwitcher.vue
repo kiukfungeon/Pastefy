@@ -33,3 +33,38 @@ const getCurrentLanguageIcon = (l: string) => {
 </script>
 
 <template>
+  <Select
+    v-model="language"
+    :options="localizedLanguageOptions"
+    option-label="label"
+    option-value="value"
+    size="small"
+    :aria-label="$t('settings.language')"
+    :pt="{ root: 'flex border-0 px-0', label: 'px-1.5 py-1.5', dropdown: 'hidden' }"
+  >
+    <template #value="{ value: option }">
+      <div class="flex items-center gap-1">
+        <img
+          :src="getCurrentLanguageIcon(option)"
+          class="block size-4.5 rounded-full border border-neutral-200 dark:border-neutral-700"
+        />
+      </div>
+    </template>
+    <template #option="{ option }">
+      <span class="flex items-center gap-1">
+        <img
+          :src="
+            option.value === 'browser'
+              ? languageOptions.find((a) => a.value === resolveLanguagePreference())?.icon ||
+                option.icon
+              : option.icon
+          "
+          class="size-4 rounded-full border border-neutral-200 dark:border-neutral-700"
+        />
+        <span>
+          {{ option.label }}
+        </span>
+      </span>
+    </template>
+  </Select>
+</template>
