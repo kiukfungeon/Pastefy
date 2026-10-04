@@ -29,3 +29,24 @@ public class OAuth2Strategy extends Strategy {
             final String callbackUrl = prefixUrl + "/" + name + "/callback";
             httpRouter.get(prefixUrl + "/" + name, e -> {
                 e.redirect(oauth2.redirect(host + callbackUrl));
+                return "";
+            });
+
+            httpRouter.get(callbackUrl, e -> {
+                return httpCallbackHandler.handle(e, oauth2.callback(e.getQueryParameters(), host + callbackUrl), name);
+            });
+        });
+    }
+
+    public Map<String, OAuth2Provider> getProviders() {
+        return providers;
+    }
+
+    public void setHttpCallbackHandler(HttpCallbackHandler httpCallbackHandler) {
+        this.httpCallbackHandler = httpCallbackHandler;
+    }
+
+    public interface HttpCallbackHandler {
+        Object handle(Exchange exchange, OAuth2Callback callback, String provider);
+    }
+}
