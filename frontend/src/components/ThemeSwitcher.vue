@@ -14,3 +14,19 @@ const toggleTheme = () => {
   }
 }
 </script>
+<template>
+  <div>
+    <Button
+      :aria-label="`Toggle theme (current: ${config.theme})`"
+      @click="toggleTheme"
+      :icon="`ti ti-${
+        config.theme === 'light' ? 'sun' : config.theme === 'dark' ? 'moon-stars' : 'sunset'
+      } text-lg`"
+      rounded
+      size="small"
+      severity="contrast"
+      text
+      v-tooltip="`Theme (${config.theme})`"
+    />
+  </div>
+</template>
