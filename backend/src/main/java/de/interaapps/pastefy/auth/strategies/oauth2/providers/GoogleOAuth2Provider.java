@@ -82,3 +82,31 @@ public class GoogleOAuth2Provider implements OAuth2Provider {
         public OAuth2Profile getProfile() {
             Credential credential = new GoogleCredential.Builder()
                     .setTransport(new NetHttpTransport())
+                    .setJsonFactory(GsonFactory.getDefaultInstance())
+                    .setClientSecrets(clientId, secret)
+                    .build().setAccessToken(accessToken);
+
+            Oauth2 oauth2 = new Oauth2.Builder(
+                    new NetHttpTransport(),
+                    GsonFactory.getDefaultInstance(),
+                    credential
+            ).setApplicationName(clientId).build();
+            try {
+                OAuth2Profile profile = new OAuth2Profile();
+                Userinfo userinfo = oauth2.userinfo().get().execute();
+                profile.id = userinfo.getId();
+                profile.name = userinfo.getName();
+                profile.avatar = userinfo.getPicture();
+                profile.mail = userinfo.getEmail();
+                userinfo.forEach((key, val) -> {
+                    profile.set(key, val.toString());
+                });
+                return profile;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+    }
+}

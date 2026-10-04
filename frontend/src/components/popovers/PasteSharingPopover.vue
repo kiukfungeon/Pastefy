@@ -110,3 +110,171 @@ const qrCodeShown = ref(false)
 
 const sharePopover = useTemplateRef<PopoverMethods>('sharePopover')
 
+defineExpose({
+  toggle: (e: Event) => sharePopover.value!.toggle(e),
+  show: (e: Event) => sharePopover.value!.show(e),
+  hide: () => sharePopover.value!.hide(),
+})
+</script>
+
+<template>
+  <Popover ref="sharePopover">
+    <div class="flex w-[16rem] max-w-full flex-col gap-2" v-if="paste">
+      <div class="flex gap-2 rounded-lg border border-neutral-200 p-1 dark:border-neutral-700">
+        <div class="flex w-[7rem] flex-col overflow-hidden rounded-md bg-black text-white">
+          <span class="p-1 px-2 text-[8px]">{{ paste.title }}</span>
+          <div class="flex w-full items-end justify-between">
+            <div class="pb-1 pl-2">
+              <img src="/icons/logo-dark.svg" class="w-[2.6rem]" />
+            </div>
+
+            <div class="mono h-[2rem] w-[3.3rem] rounded-tl-md bg-neutral-700 p-1 text-[6px]">
+              {{ paste.content.substring(0, 100) }}}
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <span class="overflow-hidden text-sm">{{ paste.title }}</span> <br />
+          <span class="text-[10px] opacity-60">{{
+            $t('components.pasteSharingPopover.shareCodeWithPastefy')
+          }}</span>
+        </div>
+      </div>
+      <InputGroup>
+        <InputText
+          size="small"
+          :value="pasteUrl"
+          class="border-r-0 border-gray-200 select-all dark:border-neutral-700"
+          readonly
+        />
+        <CopyButton :contents="pasteUrl" />
+      </InputGroup>
+
+      <div class="flex w-full flex-col">
+        <Button
+          @click="share"
+          severity="contrast"
+          text
+          fluid
+          size="small"
+          class="justify-start"
+          icon="ti ti-share-2 text-lg"
+          :aria-label="$t('common.share')"
+          :label="$t('share.share')"
+        />
+        <Button
+          @click="
+            () => {
+              pasteScreenshotOpened = true
+              sharePopover!.hide()
+            }
+          "
+          severity="contrast"
+          text
+          fluid
+          size="small"
+          class="justify-start"
+          icon="ti ti-camera text-lg"
+          :aria-label="$t('components.pasteSharingPopover.createScreenshot')"
+          :label="$t('share.screenshot')"
+        />
+        <Button
+          @click="
+            () => {
+              pasteEmbedOpened = true
+              sharePopover!.hide()
+            }
+          "
+          severity="contrast"
+          size="small"
+          class="justify-start"
+          text
+          fluid
+          icon="ti ti-code text-lg"
+          :aria-label="$t('components.pasteSharingPopover.embed')"
+          :label="$t('share.embed')"
+        />
+        <Button
+          @click="
+            () => {
+              qrCodeShown = true
+              sharePopover!.hide()
+            }
+          "
+          severity="contrast"
+          size="small"
+          class="justify-start"
+          text
+          fluid
+          icon="ti ti-qrcode text-lg"
+          :label="$t('share.qrCode')"
+        />
+        <Button
+          v-if="canShareAsArticle"
+          as="router-link"
+          :to="{
+            name: 'paste-article',
+            params: { paste: paste.id },
+            query: preferredArticlePart ? { part: preferredArticlePart } : undefined,
+          }"
+          severity="contrast"
+          size="small"
+          class="justify-start"
+          text
+          fluid
+          icon="ti ti-article text-lg"
+          :label="$t('share.articleView')"
+          @click="sharePopover!.hide()"
+        />
+        <Button
+          v-if="canShareAsPresentation"
+          as="router-link"
+          :to="{
+            name: 'paste-presentation',
+            params: { paste: paste.id },
+            query: preferredPresentationPart ? { part: preferredPresentationPart } : undefined,
+          }"
+          severity="contrast"
+          size="small"
+          class="justify-start"
+          text
+          fluid
+          icon="ti ti-presentation text-lg"
+          :label="$t('share.presentationView')"
+          @click="sharePopover!.hide()"
+        />
+      </div>
+
+      <InputGroup v-if="canShareAsArticle">
+        <InputText
+          size="small"
+          :value="articleUrl"
+          class="border-r-0 border-gray-200 select-all dark:border-neutral-700"
+          readonly
+        />
+        <CopyButton :contents="articleUrl" />
+      </InputGroup>
+      <InputGroup v-else-if="canShareAsPresentation">
+        <InputText
+          size="small"
+          :value="presentationUrl"
+          class="border-r-0 border-gray-200 select-all dark:border-neutral-700"
+          readonly
+        />
+        <CopyButton :contents="presentationUrl" />
+      </InputGroup>
+    </div>
+  </Popover>
+
+  <ScreenshotPaste
+    :id="paste?.id"
+    :title="currentFileName"
+    v-if="paste && !asEmbed"
+    :file-name="currentFileName"
+    :content="content!"
+    v-model:visible="pasteScreenshotOpened"
+  />
+  <EmbedPasteModal v-model:visible="pasteEmbedOpened" :paste-id="pasteId" />
+  <QRModal :text="pasteUrl" v-model:visible="qrCodeShown" />
+</template>
