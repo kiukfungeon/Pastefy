@@ -33,3 +33,27 @@ public class AnalyticsController extends HttpController {
         authKey.checkPermission("analytics:read");
         Paste paste = Paste.get(id);
         if (paste == null || (!user.isAdmin() && !Objects.equals(user.getId(), paste.getUserId()))) {
+            throw new PermissionsDeniedException();
+        }
+        AnalyticsQuery query = AnalyticsQuery.from(exchange);
+        query.filters.put("paste_key", paste.getKey());
+        return query(query);
+    }
+
+    @Get("/user")
+    public AnalyticsResponse user(Exchange exchange, @Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
+        authKey.checkPermission("analytics:read");
+        AnalyticsQuery query = AnalyticsQuery.from(exchange);
+        query.filters.put("paste_user_id", user.getId());
+        return query(query);
+    }
+
+    private AnalyticsResponse query(Exchange exchange) {
+        return query(AnalyticsQuery.from(exchange));
+    }
+
+    private AnalyticsResponse query(AnalyticsQuery query) {
+        if (!Pastefy.getInstance().analyticsEnabled()) throw new FeatureDisabledException();
+        return Pastefy.getInstance().getAnalyticsService().query(query);
+    }
+}
