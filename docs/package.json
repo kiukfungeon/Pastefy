@@ -7,3 +7,6 @@
   },
   "dependencies": {
     "vitepress": "^1.6.4",
+    "vitepress-openapi": "^0.1.9"
+  }
+}
