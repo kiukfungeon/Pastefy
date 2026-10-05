@@ -22,3 +22,15 @@ public class TagsController extends HttpController {
 
         query.order("pasteCount", true);
 
+        RequestHelper.pagination(query, exchange);
+        query.search(exchange.query("search"));
+        RequestHelper.queryFilter(query, exchange.getQueryParameters());
+
+        return query.all();
+    }
+
+    @Get("/{tag}")
+    public TagListing getUser(@Path("tag") String tag) {
+        return TagListing.getOrCreate(tag);
+    }
+}
