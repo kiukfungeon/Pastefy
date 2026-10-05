@@ -30,3 +30,35 @@ public class PasteAIInfo extends Model {
     @Column(size = 1000)
     public String description;
 
+    @Column
+    public AbstractArray tagsJson;
+
+    @Column
+    public AbstractArray warningsJson;
+
+    @Column
+    public boolean dangerous = false;
+
+    @Column
+    public int maxSeverity = 0;
+
+    @Column(size = 255)
+    public String suggestedFilename;
+
+    @Column
+    public Timestamp generatedAt;
+
+    @Column
+    public Timestamp createdAt;
+
+    @Column
+    public Timestamp updatedAt;
+
+    public AbstractArray getTags() {
+        return tagsJson;
+    }
+
+    public AbstractArray getWarnings() {
+        return warningsJson;
+    }
+}
