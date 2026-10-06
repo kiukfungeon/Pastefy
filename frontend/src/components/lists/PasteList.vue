@@ -41,3 +41,47 @@ const {
         page_limit: resolvedPageLimit.value,
         page: page.value,
         shorten_content: 'true',
+        ...(props.params || {}),
+      },
+    })
+  ).data as Paste[]
+  emit('loaded')
+  return res
+}, undefined)
+
+watch(
+  () =>
+    JSON.stringify({
+      route: 'route' in props ? props.route : undefined,
+      params: 'route' in props ? props.params || {} : {},
+      pageLimit: resolvedPageLimit.value,
+    }),
+  () => {
+    page.value = 1
+    load()
+  },
+)
+</script>
+
+<template>
+  <ErrorContainer v-if="error" :error="error as any" />
+  <LoadingContainer v-else-if="isLoading" />
+  <section v-else-if="pastes" class="mx-auto w-full max-w-[1200px] space-y-5">
+    <div v-if="pastes.length" class="flex flex-col gap-4">
+      <PasteCard v-for="paste of pastes" :paste :key="paste.id" />
+    </div>
+    <div
+      v-else
+      class="rounded-2xl border border-dashed border-neutral-300 bg-white/70 p-8 text-center text-sm text-neutral-500 dark:border-neutral-700 dark:bg-neutral-900/40 dark:text-neutral-400"
+    >
+      {{ props.emptyMessage || $t('paste.empty') }}
+    </div>
+
+    <Pagination
+      v-if="'route' in props && props.route"
+      v-model:page="page"
+      :loading="isLoading"
+      @update:page="load"
+    />
+  </section>
+</template>

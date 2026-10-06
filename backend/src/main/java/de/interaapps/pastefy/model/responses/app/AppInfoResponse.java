@@ -32,3 +32,20 @@ public class AppInfoResponse {
         aiEnabled = pastefy.aiEnabled();
         analyticsEnabled = pastefy.analyticsEnabled();
 
+        encryptionIsDefault = config.get("pastefy.encryption.default", "false").toLowerCase(Locale.ROOT).equals("true");
+
+        loginRequiredForRead = pastefy.isLoginRequiredForRead();
+        loginRequiredForCreate = pastefy.isLoginRequiredForCreate();
+
+        publicPastesEnabled = pastefy.publicPastesEnabled();
+
+        String footerString = config.get("pastefy.info.custom.footer", "");
+        customFooter = new HashMap<>();
+        for (String str : footerString.split(",")) {
+            if (str.contains("=")) {
+                String[] split = str.split("=");
+                customFooter.put(split[0], split[1]);
+            }
+        }
+    }
+}
