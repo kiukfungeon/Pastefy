@@ -15,3 +15,12 @@ public class OAuth2Profile extends AbstractObject {
     public String getName() {
         return name;
     }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+}
