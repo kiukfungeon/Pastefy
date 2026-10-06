@@ -164,3 +164,86 @@ await client.createPaste({
             outlined
             fluid
             class="max-w-[10rem]"
+          />
+        </div>
+
+        <div class="mb-3 flex flex-col gap-3 md:grid md:grid-cols-[3fr_1.4fr]">
+          <div
+            class="grid h-full gap-3 rounded-xl border border-neutral-200 bg-neutral-100 p-3 md:grid-cols-3 dark:border-neutral-700 dark:bg-neutral-800"
+          >
+            <router-link
+              :to="{ name: 'tool-home', hash: '#preview-tools' }"
+              class="rounded-xl border border-neutral-200 bg-white p-4 transition-all hover:-translate-y-0.5 hover:border-neutral-300 hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:border-neutral-600 dark:hover:bg-neutral-950"
+            >
+              <div class="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
+                <i class="ti ti-code-dots" />
+                {{ $t('common.preview') }}
+              </div>
+              <h3 class="mt-3 font-semibold">{{ $t('views.homeView.richFileViews') }}</h3>
+              <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-300">
+                {{ $t('views.homeView.richFileViewsDescription') }}
+              </p>
+            </router-link>
+
+            <router-link
+              :to="{ name: 'tool-home', hash: '#conversions' }"
+              class="rounded-xl border border-neutral-200 bg-white p-4 transition-all hover:-translate-y-0.5 hover:border-neutral-300 hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:border-neutral-600 dark:hover:bg-neutral-950"
+            >
+              <div class="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
+                <i class="ti ti-arrows-exchange" />
+                {{ $t('views.homeView.convert') }}
+              </div>
+              <h3 class="mt-3 font-semibold">{{ $t('views.homeView.formatTransforms') }}</h3>
+              <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-300">
+                {{ $t('views.homeView.formatTransformsDescription') }}
+              </p>
+            </router-link>
+
+            <router-link
+              :to="{ name: 'tool-home', hash: '#utilities' }"
+              class="rounded-xl border border-neutral-200 bg-white p-4 transition-all hover:-translate-y-0.5 hover:border-neutral-300 hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:border-neutral-600 dark:hover:bg-neutral-950"
+            >
+              <div class="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
+                <i class="ti ti-sparkles" />
+                {{ $t('views.homeView.utilities') }}
+              </div>
+              <h3 class="mt-3 font-semibold">{{ $t('views.homeView.smallDevHelpers') }}</h3>
+              <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-300">
+                {{ $t('views.homeView.utilitiesDescription') }}
+              </p>
+            </router-link>
+          </div>
+
+          <div
+            class="flex h-full flex-col justify-between overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-800"
+          >
+            <div class="flex h-full flex-col gap-3 p-4">
+              <div class="flex items-center gap-2 text-neutral-500 dark:text-neutral-400">
+                <i class="ti ti-tool text-lg" />
+                <span class="text-sm font-medium">{{ $t('views.homeView.tools') }}</span>
+              </div>
+
+              <div>
+                <h2 class="text-xl font-bold">{{ $t('views.homeView.previewConvertAndInspect') }}</h2>
+                <p class="mt-1">
+                  {{ $t('views.homeView.toolsDescription') }}
+                </p>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 p-4 pt-0">
+              <Button
+                as="router-link"
+                :to="{ name: 'tool-home' }"
+                :label="$t('views.homeView.openTools')"
+                icon="ti ti-arrow-up-right"
+                severity="contrast"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <LoginModal v-model:visible="loginModalVisible" />
+</template>
