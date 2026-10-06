@@ -124,3 +124,130 @@ public abstract class ListQueryTransformer<K extends Model, T, E> {
                     }
                 }
             } else {
+                if (!value.isObject()) {
+                    value = new AbstractObject().set("$eq", value);
+                }
+                value.object().forEach((k, v) -> {
+                    ormFieldFilter(query, k, key, v, isOrFilter);
+                });
+            }
+        });
+        return query;
+    }
+
+
+
+    public BoolQuery.Builder buildElasticQueryBool(Exchange exchange, ListQueryParameters params, AbstractObject filters, BoolQuery.Builder builder) {
+        filters.forEach((key, value) -> {
+            if (key.equals("$and") || key.equals("$or")) {
+                value = AbstractDataHelper.ifArrayConvertToArray(value);
+                if (!value.isArray())
+                    value = new AbstractArray().add(value);
+
+                if (key.equals("$and")) {
+                    value.array()
+                        .forEach(o -> builder
+                            .must(must -> must
+                                .bool(b -> buildElasticQueryBool(exchange, params, o.object(), b))
+                            )
+                        );
+                } else { // $or
+                    value.array()
+                            .forEach(o -> builder
+                                    .should(must -> must
+                                            .bool(b -> buildElasticQueryBool(exchange, params, o.object(), b))
+                                    ).minimumShouldMatch("1")
+                            );
+                }
+            } else {
+                if (!value.isObject()) {
+                    value = new AbstractObject().set("$eq", value);
+                }
+                value.object().forEach((k, v) -> {
+                    if (k.equals("$eq")) {
+                        builder.must(m -> m.term(t -> t.field(key).value(v.string())));
+                    } else if (k.equals("$ne")) {
+                        builder.mustNot(m -> m.term(t -> t.field(key).value(v.string())));
+                    } else if (k.equals("$null")) {
+                        builder.mustNot(m -> m.exists(e -> e.field(key)));
+                    } else if (k.equals("$notNull")) {
+                        builder.must(m -> m.exists(e -> e.field(key)));
+                    } else if (k.equals("$gt")) {
+                        builder.must(m -> m.range(r -> r.term(g -> g.field(key).gt(v.string()))));
+                    } else if (k.equals("$gte")) {
+                        builder.must(m -> m.range(r -> r.term(g -> g.field(key).gte(v.string()))));
+                    } else if (k.equals("$lt")) {
+                        builder.must(m -> m.range(r -> r.term(g -> g.field(key).lt(v.string()))));
+                    } else if (k.equals("$lte")) {
+                        builder.must(m -> m.range(r -> r.term(g -> g.field(key).lte(v.string()))));
+                    }
+                });
+            }
+        });
+        return builder;
+    }
+
+    public ObjectBuilder<BoolQuery> buildElasticSearchQuery(Exchange exchange, ListQueryParameters params, BoolQuery.Builder builder) {
+        if (params.search != null && !params.search.trim().isEmpty()) {
+            builder.must(m -> m.multiMatch(mm ->
+                mm.query(params.search)
+                    .fields(getSearchableFields())
+                    .fuzziness("2")
+                    .prefixLength(0)
+                    .maxExpansions(30)
+                    .minimumShouldMatch("1")
+            ));
+        }
+
+        if (params.filters != null && params.filters.size() > 0) {
+            // System.out.println(repo.getInfo().getFilterable());
+            builder.filter(f -> f.bool(b -> buildElasticQueryBool(exchange, params, new AbstractObject().set("$and", params.filters), b)));
+        }
+        return builder;
+    }
+
+
+    public List<T> get(Exchange exchange, ListQueryParameters params) {
+        if (Pastefy.getInstance().isElasticsearchEnabled()) {
+            try {
+                List<E> collect = Pastefy.getInstance()
+                        .getElasticsearchClient()
+                        .search(s -> {
+                            s.index(elasticIndexName)
+                                    .query(b -> b.bool(bool -> buildElasticSearchQuery(exchange, params, bool)))
+                                    .size(params.pageLimit)
+                                    .from(params.pageLimit * (params.page - 1));
+
+                            if (params.sort != null) {
+                                s.sort(sort -> {
+                                    for (String string : params.sort.split(",")) {
+                                        sort.field(f -> f.field(string.replace("+", "")).order(string.contains("+") ? SortOrder.Asc : SortOrder.Desc));
+                                    }
+                                    return sort;
+                                });
+                            }
+
+                            // System.out.println(s.build().toString());
+                            return s;
+                        }
+                        , elasticClass).hits().hits().stream().map(Hit::source).collect(Collectors.toList());
+                return createElasticResponse(exchange, params, collect);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return createResponse(exchange, params, buildORMQuery(params)
+                .limit(params.pageLimit)
+                .offset(params.pageLimit * (params.page - 1))
+                .get());
+    }
+
+    public abstract List<T> createResponse(Exchange exchange, ListQueryParameters params, List<K> list);
+
+    public abstract List<T> createElasticResponse(Exchange exchange, ListQueryParameters params, List<E> list);
+
+    public List<String> getSearchableFields() {
+        return repo.getInfo().getSearchable();
+    }
+}

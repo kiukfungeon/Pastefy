@@ -35,3 +35,40 @@ const state = computed(() => {
     variant,
     nil: value === '00000000-0000-0000-0000-000000000000',
     error: undefined,
+  }
+})
+
+const result = computed(() => ('error' in state.value && state.value.error ? '' : JSON.stringify(state.value, null, 2)))
+</script>
+
+<template>
+  <UtilityShell>
+    <template #controls>
+      <label class="text-sm font-medium">UUID</label>
+      <InputText v-model="input" fluid />
+    </template>
+
+    <template #result>
+      <Message v-if="'error' in state && state.error" severity="error">{{ state.error }}</Message>
+      <div v-else class="grid gap-3">
+        <div
+          v-for="entry of [
+            ['UUID', 'value' in state ? state.value : ''],
+            ['Version', 'version' in state ? state.version : ''],
+            ['Variant', 'variant' in state ? state.variant : ''],
+            ['Nil UUID', 'nil' in state ? String(state.nil) : ''],
+          ]"
+          :key="entry[0]"
+          class="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <div class="font-medium">{{ entry[0] }}</div>
+          <code class="mt-2 block break-all text-sm">{{ entry[1] }}</code>
+        </div>
+      </div>
+    </template>
+
+    <template #footer>
+      <UtilityResultActions :result="result" file-name="uuid-inspection.json" />
+    </template>
+  </UtilityShell>
+</template>
