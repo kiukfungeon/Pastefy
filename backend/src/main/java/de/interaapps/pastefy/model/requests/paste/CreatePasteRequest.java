@@ -14,3 +14,14 @@ public class CreatePasteRequest {
     public String folder;
 
     public String expireAt;
+
+    public String forkedFrom;
+
+    public List<String> tags = null;
+
+    public Paste.Visibility visibility = Paste.Visibility.UNLISTED;
+
+    public Paste.Type type = Paste.Type.PASTE;
+
+    public boolean ai = false;
+}
