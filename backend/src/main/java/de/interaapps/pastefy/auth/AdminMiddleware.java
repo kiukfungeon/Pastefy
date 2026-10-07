@@ -8,3 +8,14 @@ import org.javawebstack.http.router.handler.RequestHandler;
 public class AdminMiddleware implements RequestHandler {
     public Object handle(Exchange exchange) {
 
+        new AuthMiddleware().handle(exchange);
+
+        User user = exchange.attrib("user");
+
+        if (user.type != User.Type.ADMIN) {
+            throw new PermissionsDeniedException();
+        }
+
+        return null;
+    }
+}
