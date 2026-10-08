@@ -10,3 +10,16 @@ import picocli.CommandLine;
         subcommands = {
             AutoMigrateCommand.class,
             StartServerCommand.class,
+            AutoMigrateElasticCommand.class,
+            SyncToElasticCommand.class,
+            SyncToMinioCommand.class,
+            TestingCommand.class,
+            MoveSmallFilesToDBCommand.class
+        }
+)
+public class PastefyCLI implements Runnable {
+    @Override
+    public void run() {
+        CommandLine.usage(this, System.out);
+    }
+}

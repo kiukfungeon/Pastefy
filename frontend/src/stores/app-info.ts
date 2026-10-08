@@ -6,3 +6,20 @@ export type Config = {
   custom_logo?: string
   custom_footer?: Record<string, string>
   login_required_for_read?: boolean
+  login_required_for_create?: boolean
+  encryption_is_default?: boolean
+  public_pastes_enabled?: boolean
+  custom_name?: string
+  ai_enabled: boolean
+  analytics_enabled: boolean
+}
+
+export const useAppInfoStore = defineStore('app-info', () => {
+  const appInfo = ref<undefined | Config>(undefined)
+
+  async function fetchAppInfo() {
+    appInfo.value = (await client.get('/api/v2/app/info')).data
+  }
+
+  return { appInfo, fetchAppInfo }
+})
