@@ -119,3 +119,125 @@ const submitRoot = (content: string) => {
   return submit({ content })
 }
 
+const submitLine = (content: string, lineTo?: number) => {
+  page.value = 1
+  return submit({
+    content,
+    line_from: selectedLine.value,
+    line_to: lineTo,
+  })
+}
+
+const submitReply = (parentId: number, content: string) => submit({ content, parent_id: parentId })
+
+const openLineComment = async (event: Event, line: number, target: HTMLElement) => {
+  if (!props.enableLineComments) return
+  selectedLine.value = line
+  lineCommentPopover.value?.show(event, target)
+  await loadLineComments()
+}
+
+const openDialog = () => {
+  dialogVisible.value = true
+  loadComments()
+}
+
+watch(page, () => loadComments())
+defineExpose({ openDialog, openLineComment })
+</script>
+
+<template>
+  <Drawer
+    v-model:visible="dialogVisible"
+    modal
+    :header="$t('comments.title')"
+    class="w-[32rem] max-w-full"
+    position="right"
+    :pt="{ content: 'p-0' }"
+  >
+    <div class="px-6 pt-0 pb-1">
+      <p v-if="!currentUser.user" class="text-sm text-neutral-500">
+        {{ $t('comments.loginRequired') }}
+      </p>
+      <PasteCommentForm
+        v-else
+        :key="`root-${formKey}`"
+        :loading="isSubmitting"
+        @submit="submitRoot"
+      />
+    </div>
+    <Divider />
+
+    <div class="px-6 py-1">
+      <ErrorContainer v-if="submitError" class="mt-3" :error="submitError as any" />
+      <LoadingContainer v-if="isLoading" class="mt-4" />
+      <div v-else-if="comments?.length" class="mt-4 flex max-h-[60vh] flex-col gap-4 overflow-auto">
+        <PasteCommentItem
+          v-for="comment of comments"
+          :key="comment.id"
+          :comment
+          :can-delete
+          :can-reply="!!currentUser.user"
+          :submitting="isSubmitting"
+          :current-user-id="currentUser.user?.id"
+          :paste-contents
+          :paste-file-name
+          @reply="submitReply"
+          @delete="(commentId) => deleteComment(0, commentId)"
+        />
+        <Pagination
+          v-model:page="page"
+          :loading="isLoading"
+          :next-disabled="comments.length < pageLimit"
+        />
+      </div>
+      <ErrorContainer v-else-if="error" class="mt-3" :error="error as any" />
+      <p v-else class="mt-3 text-sm text-neutral-500">{{ $t('comments.empty') }}</p>
+    </div>
+  </Drawer>
+
+  <Popover
+    ref="lineCommentPopover"
+    @hide="selectedLine = undefined"
+    class="max-w-full"
+    :pt="{ content: 'p-0' }"
+  >
+    <div class="w-[32rem] max-w-full">
+      <div class="p-4 pb-1">
+        <PasteCommentForm
+          v-if="currentUser.user"
+          :key="`line-${formKey}-${selectedLine}`"
+          :line-from="selectedLine"
+          :loading="isSubmitting"
+          @submit="submitLine"
+        />
+        <p v-else class="text-sm text-neutral-500">{{ $t('comments.loginRequired') }}</p>
+      </div>
+
+      <Divider />
+      <div class="p-4 pt-0">
+        <ErrorContainer v-if="lineCommentsError" class="mt-3" :error="lineCommentsError as any" />
+        <LoadingContainer v-else-if="lineCommentsLoading" class="mt-3" />
+        <div
+          v-else-if="lineComments.length"
+          class="mt-4 flex max-h-[24rem] flex-col gap-4 overflow-auto"
+        >
+          <PasteCommentItem
+            v-for="comment of lineComments"
+            :key="comment.id"
+            :comment
+            :can-delete
+            :can-reply="!!currentUser.user"
+            :submitting="isSubmitting"
+            :current-user-id="currentUser.user?.id"
+            :paste-contents
+            :paste-file-name
+            @reply="submitReply"
+            @delete="(commentId) => deleteComment(0, commentId)"
+          />
+        </div>
+        <p v-else class="mt-3 text-sm text-neutral-500">{{ $t('comments.emptyForLine') }}</p>
+      </div>
+    </div>
+  </Popover>
+</template>
