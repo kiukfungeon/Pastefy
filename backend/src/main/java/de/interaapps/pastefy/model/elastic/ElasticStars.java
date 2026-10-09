@@ -29,3 +29,34 @@ public class ElasticStars {
                     .update(objectObjectUpdateRequest, ElasticPaste.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void removeStarCount(Paste paste, User user) {
+        if (!Pastefy.getInstance().isElasticsearchEnabled()) return;
+        UpdateRequest<Object, Object> objectObjectUpdateRequest = UpdateRequest.of(q -> q
+                .index("pastefy_pastes")
+                .id(String.valueOf(paste.getId()))
+                .script(s ->
+                        s.source(sr -> sr
+                                .scriptString("if (ctx._source.starredBy != null) { " +
+                                        "int idx = ctx._source.starredBy.indexOf(params.userId);" +
+                                        "if (idx != -1) {" +
+                                        "    ctx._source.starredBy.remove(idx);" +
+                                        "}" +
+                                        "} " +
+                                        "ctx._source.starCount = params.starCount;")
+                        )
+                        .params("userId", JsonData.of(user.id))
+                        .params("starCount", JsonData.of(paste.getStarCounts()))
+                )
+        );
+
+        try {
+            Pastefy.getInstance().getElasticsearchClient()
+                    .update(objectObjectUpdateRequest, ElasticPaste.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
