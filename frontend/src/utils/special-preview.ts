@@ -46,3 +46,27 @@ export function resolveSpecialPreviewType(
     (name.includes('workflow') || name.includes('action')) &&
     /\bon\s*:/i.test(source) &&
     /\bjobs\s*:/i.test(source)
+  ) {
+    return 'github-actions'
+  }
+
+  if (
+    type === 'yaml' &&
+    /\bhosts\s*:/i.test(source) &&
+    (/\btasks\s*:/i.test(source) || /\broles\s*:/i.test(source))
+  ) {
+    return 'ansible'
+  }
+
+  if (
+    ((type === 'yaml' || type === 'json') &&
+      /\bgroups\s*:/i.test(source) &&
+      /\brules\s*:/i.test(source) &&
+      /\bexpr\s*:/i.test(source)) ||
+    (type === 'json' && /"panels"\s*:/.test(source) && /"title"\s*:/.test(source))
+  ) {
+    return 'monitoring-rules'
+  }
+
+  return undefined
+}
