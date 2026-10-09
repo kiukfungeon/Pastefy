@@ -51,3 +51,56 @@ public class FolderController extends HttpController {
 
         return response;
     }
+
+    @Get
+    public List<FolderResponse> getFolders(Exchange exchange, @Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
+        if (authKey != null)
+            authKey.checkPermission("folders:read");
+
+        Query<Folder> query = Repo.get(Folder.class).query();
+
+        RequestHelper.userIdPastesFilter(user, query, exchange);
+        RequestHelper.pagination(query, exchange);
+        query.search(exchange.query("search"));
+        RequestHelper.queryFilter(query, exchange.getQueryParameters());
+
+        return query.order("created_at", true).all().stream().map(f -> new FolderResponse(f, false, false, false, false)).collect(Collectors.toList());
+    }
+
+    @Get("/{id}")
+    @With({"auth-login-required-read", "awaiting-access-check", "blocked-check"})
+    public FolderResponse getFolder(Exchange exchange, @Path("id") String id, @Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
+        if (authKey != null)
+            authKey.checkPermission("folders:read");
+
+        Folder folder = Repo.get(Folder.class).where("key", id).first();
+
+        if (folder == null) {
+            throw new NotFoundException();
+        }
+
+        return new FolderResponse(folder, true, !exchange.getQueryParameters().has("hide_children"), true, user != null && user.id.equals(folder.userId));
+    }
+
+    @Delete("/{id}")
+    @With({"auth", "awaiting-access-check", "blocked-check"})
+    public ActionResponse delete(Exchange exchange, @Path("id") String id, @Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
+        if (authKey != null) {
+            authKey.checkPermission("folders:delete");
+        }
+
+        ActionResponse response = new ActionResponse();
+        Folder folder = Repo.get(Folder.class).where("key", id).first();
+
+        if (folder == null) {
+            throw new NotFoundException();
+        }
+
+        if (folder.getUserId().equals(user.getId()) || user.type == User.Type.ADMIN) {
+            folder.delete();
+            response.success = true;
+        }
+
+        return response;
+    }
+}

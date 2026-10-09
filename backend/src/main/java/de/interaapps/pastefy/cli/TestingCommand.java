@@ -11,3 +11,10 @@ import java.util.concurrent.Callable;
     mixinStandardHelpOptions = true,
     description = "Automatically migrate the database to the latest version"
 )
+public class TestingCommand implements Callable<Integer> {
+    @Override
+    public Integer call() throws Exception {
+        PasteService.getAllPastes(null);
+        return 0;
+    }
+}
