@@ -22,3 +22,28 @@ export function useSEO(input: SEOInput) {
         Object.entries(attributes).forEach(([key, value]) => tag!.setAttribute(key, value))
         document.head.appendChild(tag)
       }
+      return tag
+    }
+
+    ensureMeta('meta[name="description"]', { name: 'description' }).setAttribute(
+      'content',
+      resolvedDescription.value,
+    )
+    ensureMeta('meta[property="og:title"]', { property: 'og:title' }).setAttribute(
+      'content',
+      resolvedTitle.value,
+    )
+    ensureMeta('meta[property="og:description"]', { property: 'og:description' }).setAttribute(
+      'content',
+      resolvedDescription.value,
+    )
+    ensureMeta('meta[name="twitter:title"]', { name: 'twitter:title' }).setAttribute(
+      'content',
+      resolvedTitle.value,
+    )
+    ensureMeta('meta[name="twitter:description"]', { name: 'twitter:description' }).setAttribute(
+      'content',
+      resolvedDescription.value,
+    )
+  })
+}

@@ -79,3 +79,84 @@ const diagram = computed(() => {
               from: tableName,
               to: sanitizeEntityName(fkInline[1]),
               fromField: columnName,
+              toField: fkInline[2].replace(/["`]/g, ''),
+            })
+          }
+
+          if (/^(CONSTRAINT|PRIMARY KEY|FOREIGN KEY|UNIQUE|KEY)\b/i.test(line)) {
+            const fkConstraint = line.match(/FOREIGN\s+KEY\s*\(([^)]+)\)\s+REFERENCES\s+([^\s(]+)\s*\(([^)]+)\)/i)
+            if (fkConstraint) {
+              relations.push({
+                from: tableName,
+                to: sanitizeEntityName(fkConstraint[2]),
+                fromField: fkConstraint[1].replace(/["`]/g, ''),
+                toField: fkConstraint[3].replace(/["`]/g, ''),
+              })
+            }
+            return
+          }
+
+          const columnMatch = line.match(/^["`]?([a-zA-Z0-9_]+)["`]?\s+(.+)$/i)
+          if (!columnMatch) return
+
+          const typeSegment = columnMatch[2]
+            .replace(/\bREFERENCES\b[\s\S]*$/i, '')
+            .trim()
+          const typeMatch = typeSegment.match(
+            /^(.*?)(?=\s+(?:NOT\s+NULL|NULL|DEFAULT|PRIMARY\s+KEY|REFERENCES|CHECK|UNIQUE|CONSTRAINT|COLLATE|COMMENT|GENERATED|AUTO_INCREMENT)\b|$)/i,
+          )
+          const sqlType = (typeMatch?.[1] || typeSegment).trim()
+
+          columns.push({
+            name: columnMatch[1],
+            type: sqlType.replace(/\s+/g, ' '),
+            primaryKey: /\bPRIMARY\s+KEY\b/i.test(line),
+          })
+        })
+
+      tables.set(tableName, columns)
+    }
+
+    const lines = ['erDiagram']
+    tables.forEach((columns, table) => {
+      lines.push(`  ${table} {`)
+      columns.forEach((column) => {
+        lines.push(
+          `    ${includeTypes.value ? sanitizeTypeForMermaid(column.type) : 'field'} ${column.name}${column.primaryKey ? ' PK' : ''}`,
+        )
+      })
+      lines.push('  }')
+    })
+    relations.forEach((relation) => {
+      lines.push(`  ${relation.to} ||--o{ ${relation.from} : "${relation.toField} -> ${relation.fromField}"`)
+    })
+
+    return lines.join('\n')
+  } catch (error) {
+    return `%% ${(error as Error).message || 'Could not parse the SQL schema.'}`
+  }
+})
+</script>
+
+<template>
+  <UtilityShell
+    control-title="SQL Schema"
+    control-description="Parse CREATE TABLE statements into Mermaid ER diagrams with tables, fields, and foreign keys."
+    result-title="ER Diagram"
+    result-description="Generated Mermaid ER diagram from the SQL schema."
+  >
+    <template #controls>
+      <label class="flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-3 py-2 dark:border-neutral-700 dark:bg-neutral-900">
+        <Checkbox v-model="includeTypes" binary />
+        <span class="text-sm">{{ $t('utility.sqlToMermaidErTool.showSqlFieldTypes') }}</span>
+      </label>
+      <div>
+        <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.sqlToMermaidErTool.sqlSchema') }}</label>
+        <Textarea v-model="source" auto-resize rows="20" fluid />
+      </div>
+    </template>
+    <template #result>
+      <MermaidToolResult :code="diagram" file-name="schema-er.mmd" />
+    </template>
+  </UtilityShell>
+</template>

@@ -16,3 +16,10 @@ public class AnalyticsResponse {
         public long visits;
         public long uniqueVisitors;
     }
+
+    public static class BreakdownPoint {
+        public String value;
+        public long visits;
+        public long uniqueVisitors;
+    }
+}
