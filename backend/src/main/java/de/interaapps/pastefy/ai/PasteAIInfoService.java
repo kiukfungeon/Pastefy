@@ -129,3 +129,69 @@ public class PasteAIInfoService {
                 .max()
                 .orElse(0);
         info.suggestedFilename = optionalTruncated(generated.string("suggested_filename", ""), 255);
+        info.generatedAt = Timestamp.from(Instant.now());
+        info.save();
+    }
+
+    private AbstractArray sanitizeTags(AbstractArray source) {
+        AbstractArray tags = new AbstractArray();
+        Set<String> addedTags = new HashSet<>();
+        source.stream()
+                .filter(AbstractElement::isString)
+                .map(AbstractElement::string)
+                .map(String::trim)
+                .map(tag -> tag.toLowerCase(Locale.ROOT))
+                .filter(VALID_TAG_PATTERN.asPredicate())
+                .filter(addedTags::add)
+                .limit(8)
+                .forEach(tags::add);
+        return tags;
+    }
+
+    private AbstractArray sanitizeWarnings(AbstractArray source) {
+        AbstractArray warnings = new AbstractArray();
+        source.stream()
+                .filter(AbstractElement::isObject)
+                .map(AbstractElement::object)
+                .limit(10)
+                .forEach(warning -> {
+                    String description = truncate(warning.string("description", "").trim(), 300);
+                    if (description.isEmpty()) return;
+
+                    int severity = Math.max(1, Math.min(10, warning.number("severity", 1).intValue()));
+                    warnings.add(new AbstractObject()
+                            .set("description", description)
+                            .set("severity", severity));
+                });
+        return warnings;
+    }
+
+    private boolean isEligible(Paste paste) {
+        return paste != null
+                && paste.isPublic()
+                && !paste.isEncrypted()
+                && paste.getEngagementScore() >= getEngagementThreshold();
+    }
+
+    private boolean isCurrent(PasteAIInfo info, int sourceVersion) {
+        return info != null
+                && info.sourcePasteVersion == sourceVersion
+                && info.promptVersion == PROMPT_VERSION
+                && Objects.equals(info.provider, pastefy.getPasteAI().getProviderName())
+                && Objects.equals(info.model, pastefy.getPasteAI().getModel());
+    }
+
+    private int getEngagementThreshold() {
+        return Math.max(1, pastefy.getConfig().getInt("ai.engagement.threshold", 100));
+    }
+
+    private String optionalTruncated(String value, int maxLength) {
+        String trimmed = value.trim();
+        return trimmed.isEmpty() ? null : truncate(trimmed, maxLength);
+    }
+
+    private String truncate(String value, int maxLength) {
+        if (value.length() <= maxLength) return value;
+        return value.substring(0, maxLength);
+    }
+}
