@@ -46,3 +46,51 @@ public class ListQueryParameters {
             filters = params.get("filter").object();
             filters.forEach((key, value) -> filters.set(key, AbstractDataHelper.ifArrayConvertToArray(value)));
             filters = new AbstractObject().set("$and", filters);
+        }
+    }
+
+    public ListQueryParameters setFilter(String key, AbstractElement value) {
+        filters.set(key, value);
+        return this;
+    }
+    public ListQueryParameters setFilter(String key, String value) {
+        filters.set(key, value);
+        return this;
+    }
+    public <T extends Enum> ListQueryParameters setFilter(String key, T value) {
+        return setFilter(key, value.name());
+    }
+
+    public ListQueryParameters setSearch(String search) {
+        this.search = search;
+        return this;
+    }
+
+    public ListQueryParameters setPage(int page) {
+        this.page = page;
+        return this;
+    }
+
+    public ListQueryParameters setPageLimit(int pageLimit) {
+        this.pageLimit = pageLimit;
+        return this;
+    }
+
+    public ListQueryParameters setSort(String sort) {
+        this.sort = sort;
+        return this;
+    }
+
+    public ListQueryParameters guarded(Exchange exchange) {
+        return this;
+    }
+
+    public static String fromDate(long time) {
+        if (Pastefy.getInstance().isElasticsearchEnabled()) {
+            return String.valueOf(time);
+        }
+        Date date = new Date();
+        date.setTime(time);
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+    }
+}
