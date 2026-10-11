@@ -45,3 +45,27 @@ public class SyncToMinioCommand implements Callable<Integer> {
             executor.submit(() -> {
                 System.out.println("iteration " + (finalI + 1) + "/" + iterations);
                 Repo.get(Paste.class).query()
+                        .where("storageType", Paste.StorageType.DATABASE)
+                        .orWhereNull("storageType")
+                        .limit(size)
+                        .offset(finalI * size)
+                        .all()
+                        .forEach(p -> {
+                            MinioPaste.store(p);
+                        });
+                for (int i1 = 0; i1 < size; i1++) {
+                    syncedCount.incrementAndGet();
+                }
+                System.out.println("iteration " + (finalI + 1) + "/" + iterations + " done ("+syncedCount.get()+"/"+ (iterations * size) + ")");
+            });
+        }
+
+
+
+        executor.shutdown();
+        executor.awaitTermination(1, TimeUnit.HOURS);
+        System.out.println("done");
+
+        return 0;
+    }
+}
