@@ -36,3 +36,42 @@ const {
           class="w-[21rem] max-w-full rounded-md border border-neutral-200 object-cover md:h-[7rem] md:w-[14rem] dark:border-neutral-700"
         />
         <div v-else />
+        <div class="flex flex-col items-center gap-2 pl-2 text-center md:items-start md:text-left">
+          <h1 class="flex items-center gap-2 text-xl font-bold">
+            <span>{{ tag.display_name || tag.tag }}</span>
+            <i v-if="'icon' in tag" :class="`ti ti-${tag.icon} text-md`" />
+          </h1>
+
+          <div class="flex flex-col gap-1 text-sm font-bold">
+            <p class="max-w-[40rem] text-balance opacity-70" v-if="'description' in tag">
+              {{ tag.description }}
+            </p>
+            <span class="opacity-50"> Pastes: {{ tag.paste_count }} </span>
+            <a
+              v-if="'website' in tag && tag.website"
+              :href="tag.website"
+              target="_blank"
+              class="text-primary-500"
+            >
+              {{ tag.website }}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-5">
+        <div>
+          <h2 class="mb-3 text-2xl font-bold">{{ $t('paste.trending') }}</h2>
+          <PasteList
+            route="/api/v2/public-pastes/trending"
+            :params="{ filter_tags: tag.tag, shorten_content: 'true', trending: 'true' }"
+          />
+        </div>
+        <div>
+          <h2 class="mb-3 text-2xl font-bold">{{ $t('views.tagView.publicPastes') }}</h2>
+          <PasteList route="/api/v2/public-pastes/latest" :params="{ filter_tags: tag.tag }" />
+        </div>
+      </div>
+    </div>
+  </main>
+</template>
