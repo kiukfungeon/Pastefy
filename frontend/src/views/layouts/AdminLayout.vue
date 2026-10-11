@@ -24,3 +24,29 @@ const appInfo = useAppInfoStore()
           size="small"
           outlined
           severity="contrast"
+        />
+        <Button
+          as="router-link"
+          :to="{ name: 'admin-pastes' }"
+          :label="$t('paste.pastes')"
+          size="small"
+          outlined
+          severity="contrast"
+        />
+        <Button
+          v-if="appInfo.appInfo?.analytics_enabled"
+          as="router-link"
+          :to="{ name: 'admin-analytics' }"
+          label="Analytics"
+          size="small"
+          outlined
+          severity="contrast"
+        />
+      </div>
+
+      <div>
+        <router-view />
+      </div>
+    </div>
+  </div>
+</template>

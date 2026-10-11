@@ -169,3 +169,174 @@ export const toolCategoryDefinitions: ToolCategoryDefinition[] = [
     icon: 'shield-lock',
     scope: 'mixed',
     eyebrow: 'Security',
+    description: 'Inspect tokens, generate secrets, and work with security-sensitive text locally in the browser.',
+    seoTitle: 'Pastefy Security Tools',
+    seoDescription:
+      'Use Pastefy security tools to inspect JWTs, generate passwords and secrets, and handle sensitive data locally.',
+  },
+  {
+    slug: 'terminal',
+    title: 'Terminal Tools',
+    icon: 'terminal-2',
+    scope: 'preview',
+    eyebrow: 'Terminal',
+    description: 'Preview terminal sessions and terminal-shaped share content with cleaner rendering.',
+    seoTitle: 'Pastefy Terminal Tools',
+    seoDescription:
+      'Use Pastefy terminal tools to preview terminal recordings and terminal-style developer content before sharing.',
+  },
+  {
+    slug: 'convert',
+    title: 'Conversion Tools',
+    icon: 'arrows-exchange',
+    scope: 'conversion',
+    eyebrow: 'Convert',
+    description: 'Convert between common developer formats like JSON, YAML, CSV, .env, HTTP, and cURL.',
+    seoTitle: 'Pastefy Conversion Tools',
+    seoDescription:
+      'Use Pastefy conversion tools to convert JSON, YAML, CSV, .env, HTTP, cURL, and other developer formats.',
+  },
+  {
+    slug: 'inspect',
+    title: 'Inspect Tools',
+    icon: 'search',
+    scope: 'utility',
+    eyebrow: 'Inspect',
+    description: 'Analyze, compare, and inspect text, diffs, identifiers, and structured input quickly.',
+    seoTitle: 'Pastefy Inspect Tools',
+    seoDescription:
+      'Use Pastefy inspect tools to analyze diffs, UUIDs, query strings, number bases, and text-heavy developer data.',
+  },
+  {
+    slug: 'generate',
+    title: 'Generate Tools',
+    icon: 'sparkles',
+    scope: 'utility',
+    eyebrow: 'Generate',
+    description: 'Generate slugs, placeholder content, colors, values, and other useful developer-ready output.',
+    seoTitle: 'Pastefy Generate Tools',
+    seoDescription:
+      'Use Pastefy generate tools to create slugs, sample content, colors, secrets, and other useful developer output.',
+  },
+  {
+    slug: 'encode',
+    title: 'Encoding Tools',
+    icon: 'binary',
+    scope: 'utility',
+    eyebrow: 'Encode',
+    description: 'Encode and decode URL, Base64, HTML entity, JSON string, and regex-friendly content.',
+    seoTitle: 'Pastefy Encoding Tools',
+    seoDescription:
+      'Use Pastefy encoding tools for Base64, URL encoding, HTML entities, JSON string escaping, and regex escaping.',
+  },
+  {
+    slug: 'time',
+    title: 'Time Tools',
+    icon: 'clock-hour-4',
+    scope: 'utility',
+    eyebrow: 'Time',
+    description: 'Convert timestamps and reason about schedules with lightweight browser-first tools.',
+    seoTitle: 'Pastefy Time Tools',
+    seoDescription:
+      'Use Pastefy time tools to convert timestamps and inspect scheduling data in a simple browser-based workspace.',
+  },
+  {
+    slug: 'visualize',
+    title: 'Visualization Tools',
+    icon: 'chart-bar',
+    scope: 'utility',
+    eyebrow: 'Visualize',
+    description: 'Turn developer data into diagrams, charts, class views, ER models, and Mermaid exports.',
+    seoTitle: 'Pastefy Visualization Tools',
+    seoDescription:
+      'Use Pastefy visualization tools to turn SQL, JSON, YAML, CSV, Markdown, and infra files into Mermaid diagrams and charts.',
+  },
+]
+
+export const previewCatalogEntries: ToolCatalogEntry[] = previewTools.map((tool) => ({
+  kind: 'preview',
+  slug: tool.slug,
+  title: tool.title,
+  shortTitle: tool.shortTitle,
+  description: tool.description,
+  icon: tool.icon,
+  category: tool.category,
+  keywords: tool.keywords,
+  meta: tool.fileName,
+  to: { name: 'tool-preview', params: { tool: tool.slug } },
+}))
+
+export const conversionCatalogEntries: ToolCatalogEntry[] = conversionTools.map((tool) => ({
+  kind: 'conversion',
+  slug: tool.slug,
+  title: tool.title,
+  shortTitle: tool.shortTitle,
+  description: tool.description,
+  icon: tool.icon,
+  category: tool.category,
+  keywords: tool.keywords,
+  meta: `${tool.sourceFileName} -> ${tool.targetFileName}`,
+  to: { name: 'tool-conversion', params: { tool: tool.slug } },
+}))
+
+export const utilityCatalogEntries: ToolCatalogEntry[] = utilityTools.map((tool) => ({
+  kind: 'utility',
+  slug: tool.slug,
+  title: tool.title,
+  shortTitle: tool.shortTitle,
+  description: tool.description,
+  icon: tool.icon,
+  category: tool.category,
+  keywords: tool.keywords,
+  meta: tool.category,
+  to: { name: 'tool-utility', params: { tool: tool.slug } },
+}))
+
+export const allToolCatalogEntries: ToolCatalogEntry[] = [
+  ...previewCatalogEntries,
+  ...conversionCatalogEntries,
+  ...utilityCatalogEntries,
+]
+
+export const categorySlugByName = {
+  Docs: 'docs',
+  Data: 'data',
+  Visual: 'visual',
+  Mermaid: 'mermaid',
+  API: 'api',
+  Infra: 'infra',
+  Operations: 'operations',
+  Server: 'server',
+  Deploy: 'deploy',
+  Automation: 'automation',
+  Security: 'security',
+  Terminal: 'terminal',
+  Convert: 'convert',
+  Inspect: 'inspect',
+  Generate: 'generate',
+  Encode: 'encode',
+  Time: 'time',
+  Visualize: 'visualize',
+} as const satisfies Record<string, ToolCategorySlug>
+
+export const toolCategoryNameBySlug = Object.fromEntries(
+  Object.entries(categorySlugByName).map(([name, slug]) => [slug, name]),
+) as Record<ToolCategorySlug, string>
+
+export const findToolCategory = (slug?: string) =>
+  toolCategoryDefinitions.find((category) => category.slug === slug)
+
+export const getCategoryEntries = (slug: ToolCategorySlug) => {
+  if (slug === 'mermaid') {
+    return allToolCatalogEntries.filter((entry) => {
+      const haystack = `${entry.slug} ${entry.title} ${entry.description} ${entry.keywords.join(' ')}`
+        .toLowerCase()
+      return haystack.includes('mermaid')
+    })
+  }
+
+  const categoryName = toolCategoryNameBySlug[slug]
+  return allToolCatalogEntries.filter((entry) => entry.category === categoryName)
+}
+
+export const getCategoryCount = (slug: ToolCategorySlug) => getCategoryEntries(slug).length
