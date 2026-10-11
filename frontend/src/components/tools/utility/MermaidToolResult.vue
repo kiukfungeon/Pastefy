@@ -25,3 +25,10 @@ withDefaults(
       </div>
     </div>
 
+    <div class="overflow-hidden rounded-xl border border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900">
+      <Highlighted :contents="code || `%% ${placeholder}`" :file-name="fileName" />
+    </div>
+  </div>
+
+  <UtilityResultActions :result="code" :file-name="fileName" />
+</template>
