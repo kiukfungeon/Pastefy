@@ -98,3 +98,53 @@ const countryFlag = (value: string) =>
           :class="
             active === dimension.value
               ? 'font-semibold text-neutral-950 after:absolute after:right-0 after:bottom-0 after:left-0 after:h-0.5 after:bg-neutral-950 dark:text-white dark:after:bg-white'
+              : ''
+          "
+          @click="$emit('update:active', dimension.value)"
+        >
+          {{ dimension.label }}
+        </button>
+      </nav>
+      <span class="mb-4 ml-3 flex items-center gap-1 text-xs font-semibold text-neutral-500">
+        <i :class="icon" />
+        VISITS
+      </span>
+    </header>
+
+    <div class="relative flex min-h-[15rem] flex-col gap-2 p-4">
+      <div
+        v-if="loading"
+        class="absolute inset-0 z-10 flex items-center justify-center bg-white/70 dark:bg-neutral-900/70"
+      >
+        <ProgressSpinner class="h-7 w-7" stroke-width="5" />
+      </div>
+      <p v-if="!rows.length && !loading" class="m-auto text-sm text-neutral-500">
+        No data for this selection.
+      </p>
+      <div
+        v-for="row of rows"
+        :key="row.value"
+        class="relative flex min-h-10 items-center justify-between overflow-hidden rounded-lg px-3 text-sm"
+      >
+        <span
+          class="absolute inset-y-0 left-0"
+          :style="{
+            width: `${Math.max(5, (row.visits / maxVisits) * 100)}%`,
+            backgroundColor: rowColor,
+          }"
+        />
+        <span class="relative z-1 flex min-w-0 items-center gap-2 truncate">
+          <img
+            v-if="countryFlag(row.value)"
+            :src="countryFlag(row.value)"
+            :alt="`${row.value.toUpperCase()} flag`"
+            class="h-5 w-5 shrink-0 rounded-full rounded-xs object-cover"
+          />
+          <i v-else :class="icon" class="shrink-0" />
+          <span class="truncate">{{ displayValue(row.value) }}</span>
+        </span>
+        <strong class="relative z-1 ml-3 font-semibold">{{ row.visits }}</strong>
+      </div>
+    </div>
+  </section>
+</template>
