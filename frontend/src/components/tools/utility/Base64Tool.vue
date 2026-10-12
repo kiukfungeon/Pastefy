@@ -59,3 +59,65 @@ const state = computed(() => {
       encoded: '',
       base64url: '',
       decoded: '',
+      error: 'Input is not valid Base64 or Base64Url.',
+    }
+  }
+})
+
+const result = computed(() =>
+  mode.value === 'encode'
+    ? JSON.stringify({ base64: state.value.encoded, base64url: state.value.base64url }, null, 2)
+    : state.value.decoded,
+)
+</script>
+
+<template>
+  <UtilityShell>
+    <template #controls>
+      <label class="text-sm font-medium">{{ $t('utility.base64Tool.mode') }}</label>
+      <Select v-model="mode" :options="modeOptions" option-label="label" option-value="value" />
+      <label class="text-sm font-medium">{{ $t('utility.base64Tool.input') }}</label>
+      <Textarea v-model="input" auto-resize rows="10" fluid />
+    </template>
+
+    <template #result>
+      <Message v-if="state.error" severity="error">{{ state.error }}</Message>
+      <div v-else class="grid gap-3">
+        <div
+          v-if="mode === 'encode'"
+          class="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <div class="mb-2 flex items-center justify-between gap-3">
+            <span class="font-medium">{{ $t('utility.base64Tool.base64') }}</span>
+            <Button @click="clipboard.copy(state.encoded)" icon="ti ti-copy" severity="contrast" text />
+          </div>
+          <code class="block break-all text-sm">{{ state.encoded }}</code>
+        </div>
+        <div
+          v-if="mode === 'encode'"
+          class="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <div class="mb-2 flex items-center justify-between gap-3">
+            <span class="font-medium">{{ $t('utility.base64Tool.base64Url') }}</span>
+            <Button @click="clipboard.copy(state.base64url)" icon="ti ti-copy" severity="contrast" text />
+          </div>
+          <code class="block break-all text-sm">{{ state.base64url }}</code>
+        </div>
+        <div
+          v-if="mode === 'decode'"
+          class="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <div class="mb-2 flex items-center justify-between gap-3">
+            <span class="font-medium">{{ $t('utility.base64Tool.decoded') }}</span>
+            <Button @click="clipboard.copy(state.decoded)" icon="ti ti-copy" severity="contrast" text />
+          </div>
+          <code class="block break-all whitespace-pre-wrap text-sm">{{ state.decoded }}</code>
+        </div>
+      </div>
+    </template>
+
+    <template #footer>
+      <UtilityResultActions :result="result" :file-name="mode === 'encode' ? 'base64-output.json' : 'decoded.txt'" />
+    </template>
+  </UtilityShell>
+</template>

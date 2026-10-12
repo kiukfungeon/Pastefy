@@ -257,3 +257,68 @@ const exportResult = computed(() => JSON.stringify(filteredRows.value, null, 2))
                   {{ $t('utility.accessLogInspectorBase.noParsedRequestsMatchTheCurrentFilters') }}
                 </div>
               </div>
+            </div>
+
+            <div class="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
+              <h3 class="font-semibold">{{ $t('utility.accessLogInspectorBase.topUserAgents') }}</h3>
+              <div class="mt-3 space-y-2">
+                <div
+                  v-for="[agent, count] of topUserAgents"
+                  :key="agent"
+                  class="flex items-center justify-between gap-3 rounded-lg bg-neutral-100 px-3 py-2 text-sm dark:bg-neutral-800"
+                >
+                  <span class="truncate">{{ agent }}</span>
+                  <span class="text-neutral-500 dark:text-neutral-400">{{ count }}</span>
+                </div>
+                <div v-if="!topUserAgents.length" class="text-sm text-neutral-500 dark:text-neutral-400">
+                  {{ $t('utility.accessLogInspectorBase.noParsedRequestsMatchTheCurrentFilters') }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
+            <h3 class="font-semibold">{{ $t('utility.accessLogInspectorBase.requestTable') }}</h3>
+            <div class="mt-3 overflow-auto">
+              <table class="min-w-full text-left text-sm">
+                <thead class="text-neutral-500 dark:text-neutral-400">
+                  <tr>
+                    <th class="px-2 py-2 font-medium">{{ $t('utility.accessLogInspectorBase.status') }}</th>
+                    <th class="px-2 py-2 font-medium">{{ $t('utility.accessLogInspectorBase.method') }}</th>
+                    <th class="px-2 py-2 font-medium">{{ $t('utility.accessLogInspectorBase.path') }}</th>
+                    <th class="px-2 py-2 font-medium">IP</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="row of filteredRows.slice(0, 40)"
+                    :key="`${row.time}-${row.ip}-${row.path}`"
+                    class="border-t border-neutral-200 dark:border-neutral-700"
+                  >
+                    <td class="px-2 py-2">
+                      <span class="flex items-center gap-2">
+                        <span class="h-2.5 w-2.5 rounded-full" :class="statusDotClass(row.status)" />
+                        <span>{{ row.status }}</span>
+                      </span>
+                    </td>
+                    <td class="px-2 py-2">{{ row.method }}</td>
+                    <td class="max-w-[18rem] truncate px-2 py-2">{{ row.path }}</td>
+                    <td class="px-2 py-2">{{ row.ip }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="overflow-hidden rounded-xl border border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900">
+          <Highlighted :contents="exportResult" file-name="access-log.json" />
+        </div>
+      </div>
+    </template>
+
+    <template #footer>
+      <UtilityResultActions :result="exportResult" file-name="access-log.json" />
+    </template>
+  </UtilityShell>
+</template>
