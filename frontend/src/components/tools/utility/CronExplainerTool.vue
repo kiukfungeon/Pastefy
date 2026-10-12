@@ -32,3 +32,71 @@ const applySample = (value: string) => {
 const cronFields = computed(() => cronInput.value.trim().split(/\s+/).filter(Boolean))
 const cronLabels = ['minute', 'hour', 'day of month', 'month', 'day of week']
 
+const describeCronField = (value: string, label: string) => {
+  if (value === '*') return `every ${label}`
+  if (value.startsWith('*/')) return `every ${value.slice(2)} ${label}${value.slice(2) === '1' ? '' : 's'}`
+  if (value.includes(',')) return `${label}: ${value.split(',').join(', ')}`
+  if (value.includes('-')) return `${label}: ${value}`
+  return `${label}: ${value}`
+}
+
+const cronState = computed(() => {
+  if (cronFields.value.length !== 5) {
+    return { error: 'Cron explainer currently expects a standard 5-part cron expression.' }
+  }
+  return {
+    parts: cronFields.value.map((value, index) => ({
+      label: cronLabels[index],
+      value,
+      description: describeCronField(value, cronLabels[index]),
+    })),
+    error: undefined,
+  }
+})
+
+const result = computed(() => {
+  if (!('parts' in cronState.value) || !cronState.value.parts) return ''
+  return cronState.value.parts.map((part) => `${part.label}: ${part.value} (${part.description})`).join('\n')
+})
+</script>
+
+<template>
+  <UtilityShell>
+    <template #controls>
+      <label class="text-sm font-medium">{{ $t('utility.cronExplainerTool.samples') }}</label>
+      <Select
+        :model-value="selectedSample"
+        :options="samples"
+        option-label="label"
+        option-value="value"
+        @update:model-value="applySample"
+      />
+      <label class="text-sm font-medium">{{ $t('utility.cronExplainerTool.cronExpression') }}</label>
+      <InputText v-model="cronInput" fluid />
+      <Message severity="secondary" size="small" variant="simple">
+        Uses the common 5-field cron format: minute hour day-of-month month day-of-week.
+      </Message>
+    </template>
+
+    <template #result>
+      <Message v-if="'error' in cronState && cronState.error" severity="error">
+        {{ cronState.error }}
+      </Message>
+      <div v-else class="grid gap-3">
+        <div
+          v-for="part of ('parts' in cronState ? cronState.parts : [])"
+          :key="part.label"
+          class="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <div class="font-medium capitalize">{{ part.label }}</div>
+          <div class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">{{ part.value }}</div>
+          <p class="mt-2 text-sm">{{ part.description }}</p>
+        </div>
+      </div>
+    </template>
+
+    <template #footer>
+      <UtilityResultActions :result="result" file-name="cron-explainer.txt" />
+    </template>
+  </UtilityShell>
+</template>
