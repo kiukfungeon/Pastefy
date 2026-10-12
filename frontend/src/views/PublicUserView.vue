@@ -66,3 +66,37 @@ const {
             size="small"
             outlined
             severity="contrast"
+            class="mr-2"
+          />
+          <Button
+            v-if="currentUserStore.user?.type === 'ADMIN'"
+            as="router-link"
+            :to="{
+              name: 'admin-pastes',
+              query: {
+                userId: user.id,
+                userName: user.display_name,
+                page: '1',
+              },
+            }"
+            icon="ti ti-shield-search"
+            :label="$t('views.publicUserView.seeAllPastesInAdmin')"
+            size="small"
+            outlined
+            severity="contrast"
+          />
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <h2 class="text-2xl font-bold">{{ $t('views.publicUserView.publicPastes') }}</h2>
+        <PasteList
+          route="/api/v2/public-pastes/latest"
+          :params="{ 'filter[userId]': user.id }"
+          :page-limit="10"
+          empty-message="This user has no public pastes yet."
+        />
+      </div>
+    </div>
+  </main>
+</template>
