@@ -340,3 +340,118 @@ onMounted(() => renderQRCode())
             >
               <span
                 class="block h-8 w-8 rounded-full border border-neutral-300"
+                :style="{ backgroundColor: darkColor }"
+              />
+              <div>
+                <p class="text-sm font-medium">{{ $t('modals.qrModal.foregroundPreview') }}</p>
+                <p class="text-xs opacity-60">{{ $t('modals.qrModal.qrModulesAndScanPattern') }}</p>
+              </div>
+            </div>
+            <FloatLabel>
+              <InputText v-model="lightColor" fluid :disabled="!showBackground" />
+              <label>{{ $t('modals.qrModal.backgroundColor') }}</label>
+            </FloatLabel>
+            <div
+              class="flex items-center gap-3 rounded-xl border border-neutral-200 p-3 dark:border-neutral-700"
+            >
+              <span
+                class="block h-8 w-8 rounded-full border border-neutral-300"
+                :style="{ backgroundColor: showBackground ? lightColor : 'transparent' }"
+              />
+              <div>
+                <p class="text-sm font-medium">{{ $t('modals.qrModal.backgroundPreview') }}</p>
+                <p class="text-xs opacity-60">
+                  {{ showBackground ? 'Card and QR background color' : 'Transparent background' }}
+                </p>
+              </div>
+            </div>
+            <div class="grid gap-3">
+              <label
+                class="flex items-center justify-between gap-3 rounded-xl border border-neutral-200 p-3 dark:border-neutral-700"
+              >
+                <span class="text-sm font-medium">{{ $t('modals.qrModal.showBackground') }}</span>
+                <Checkbox v-model="showBackground" binary />
+              </label>
+              <label
+                class="flex items-center justify-between gap-3 rounded-xl border border-neutral-200 p-3 dark:border-neutral-700"
+              >
+                <span class="text-sm font-medium">{{ $t('modals.qrModal.includeQuietZone') }}</span>
+                <Checkbox v-model="includeQuietZone" binary />
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <section
+          class="rounded-2xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <h3 class="mb-8 text-sm font-semibold tracking-[0.2em] uppercase opacity-60">{{ $t('modals.qrModal.logo') }}</h3>
+          <div class="space-y-7">
+            <label
+              class="flex cursor-pointer items-center justify-center rounded-xl border border-dashed border-neutral-300 px-4 py-5 text-sm font-medium text-neutral-600 transition hover:border-neutral-400 hover:bg-neutral-50 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800"
+            >
+              <input type="file" accept="image/*" class="hidden" @change="updateLogo" />
+              {{ logoDataUrl ? 'Replace logo' : 'Upload logo' }}
+            </label>
+            <div v-if="logoDataUrl" class="flex justify-end">
+              <Button
+                size="small"
+                text
+                severity="danger"
+                icon="ti ti-trash"
+                :label="$t('modals.qrModal.removeLogo')"
+                @click="clearLogo"
+              />
+            </div>
+            <FloatLabel>
+              <InputNumber v-model="logoSize" :min="10" :max="35" suffix="%" fluid />
+              <label>{{ $t('modals.qrModal.logoSize') }}</label>
+            </FloatLabel>
+            <FloatLabel>
+              <InputNumber v-model="logoPadding" :min="0" :max="32" fluid />
+              <label>{{ $t('modals.qrModal.logoPadding') }}</label>
+            </FloatLabel>
+            <label
+              class="flex items-center justify-between gap-3 rounded-xl border border-neutral-200 p-3 dark:border-neutral-700"
+            >
+              <span class="text-sm font-medium">{{ $t('modals.qrModal.logoBackgroundPlate') }}</span>
+              <Checkbox v-model="logoBackground" binary />
+            </label>
+          </div>
+        </section>
+
+        <section
+          class="rounded-2xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <h3 class="mb-3 text-sm font-semibold tracking-[0.2em] uppercase opacity-60">{{ $t('common.content') }}</h3>
+          <p
+            class="rounded-xl border border-dashed border-neutral-300 p-3 text-sm break-all text-neutral-600 dark:border-neutral-700 dark:text-neutral-300"
+          >
+            {{ text }}
+          </p>
+        </section>
+      </div>
+    </div>
+
+    <template #footer>
+      <div
+        class="flex w-full flex-col gap-3 border-t border-neutral-200 pt-5 md:flex-row md:items-center md:justify-between dark:border-neutral-700"
+      >
+        <span class="text-sm text-neutral-500 dark:text-neutral-400">
+          Export as {{ downloadExtension }} at {{ Math.max(180, width) }}px.
+        </span>
+        <div class="flex flex-wrap justify-end gap-2">
+          <Button
+            v-if="canCopyImage && exportFormat !== 'image/svg+xml'"
+            :label="$t('common.copyImage')"
+            icon="ti ti-copy"
+            severity="contrast"
+            outlined
+            @click="copyImage"
+          />
+          <Button :label="$t('common.download')" icon="ti ti-download" @click="download" />
+        </div>
+      </div>
+    </template>
+  </Dialog>
+</template>
