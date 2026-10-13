@@ -63,3 +63,25 @@ const fileNameReplacements = {
   Vagrantfile: 'ruby',
   Podfile: 'ruby',
   'Podfile.lock': 'ruby',
+  Jenkinsfile: 'groovy',
+  Pipfile: 'toml',
+  'Pipfile.lock': 'toml',
+  'Cargo.lock': 'toml',
+  'go.mod': 'go',
+  'go.sum': 'go',
+  'build.gradle': 'groovy',
+  'build.gradle.kts': 'kotlin',
+  'settings.gradle': 'groovy',
+  'settings.gradle.kts': 'kotlin',
+  gradlew: 'shell',
+  'yarn.lock': 'yaml',
+  '.env': 'properties',
+} as Record<string, string>
+
+export function findFromFileName(fileName?: string): string | undefined {
+  if (!fileName) return undefined
+  if (fileName in fileNameReplacements) return fileNameReplacements[fileName]
+
+  const ext = fileName.split('.').pop()!
+  return LANG_REPLACEMENTS[ext] ?? ext
+}
