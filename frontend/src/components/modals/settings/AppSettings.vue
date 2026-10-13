@@ -18,3 +18,35 @@ const config = useConfig()
     <Divider />
 
     <div class="flex items-center justify-between gap-2">
+      <label for="theme" class="text-sm">{{ $t('settings.theme') }}</label>
+      <ThemeSwitcher />
+    </div>
+    <Divider />
+    <div class="flex items-center justify-between gap-2">
+      <label for="language" class="text-sm">{{ $t('settings.language') }}</label>
+      <LanguageSwitcher id="language" />
+    </div>
+    <Divider />
+    <div class="flex items-center justify-between gap-2">
+      <label for="default-visibility" class="text-sm">{{ $t('settings.defaultVisibility') }}</label>
+      <Select
+        :options="['UNLISTED', 'PUBLIC', 'PRIVATE']"
+        v-model="config.defaultVisibility"
+        size="small"
+      >
+        <template #value="{ value: option }">
+          <div class="flex items-center gap-1">
+            <PasteVisibilityIcon :visibility="option" class="text-lg" />
+            <span>{{ $t(`paste.visibility.${option.toLowerCase()}`) }}</span>
+          </div>
+        </template>
+        <template #option="{ option }">
+          <div class="flex items-center gap-1">
+            <PasteVisibilityIcon :visibility="option" class="text-lg" />
+            <span>{{ $t(`paste.visibility.${option.toLowerCase()}`) }}</span>
+          </div>
+        </template>
+      </Select>
+    </div>
+  </div>
+</template>
