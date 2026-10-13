@@ -340,3 +340,346 @@ const parseCurl = (source: string): ParsedHttpRequest => {
 
   if (!url) {
     throw new Error('Could not find a URL in the cURL command.')
+  }
+
+  return {
+    method,
+    url,
+    headers,
+    body: bodyParts.join('\n'),
+  }
+}
+
+const toCurl = (request: ParsedHttpRequest) => {
+  const segments = ['curl', '-X', request.method.toUpperCase(), shellQuote(request.url)]
+
+  Object.entries(request.headers).forEach(([key, value]) => {
+    segments.push('-H', shellQuote(`${key}: ${value}`))
+  })
+
+  if (request.body) {
+    segments.push('-d', shellQuote(request.body))
+  }
+
+  return segments.join(' ')
+}
+
+const toHttp = (request: ParsedHttpRequest) => {
+  const headerLines = Object.entries(request.headers).map(([key, value]) => `${key}: ${value}`)
+  return [ `${request.method.toUpperCase()} ${request.url}`, ...headerLines, '', request.body ]
+    .join('\n')
+    .trim()
+}
+
+export const conversionTools: ConversionToolDefinition[] = [
+  {
+    slug: 'json-to-yaml',
+    title: 'Convert JSON to YAML',
+    shortTitle: 'JSON -> YAML',
+    description: 'Turn API payloads or config objects into clean YAML for infra and docs workflows.',
+    icon: 'arrows-exchange',
+    sourceFileName: 'payload.json',
+    sourceType: 'json',
+    targetFileName: 'payload.yaml',
+    targetType: 'yaml',
+    category: 'Convert',
+    keywords: ['json', 'yaml', 'config', 'conversion'],
+    example: `{
+  "service": "pastefy",
+  "environment": "production",
+  "features": {
+    "readerMode": true,
+    "presentationMode": true
+  }
+}`,
+  },
+  {
+    slug: 'yaml-to-json',
+    title: 'Convert YAML to JSON',
+    shortTitle: 'YAML -> JSON',
+    description: 'Turn deployment and config-style YAML into machine-friendly JSON.',
+    icon: 'arrows-exchange',
+    sourceFileName: 'docker-compose.yml',
+    sourceType: 'yaml',
+    targetFileName: 'docker-compose.json',
+    targetType: 'json',
+    category: 'Convert',
+    keywords: ['yaml', 'json', 'compose', 'config'],
+    example: `services:
+  web:
+    image: pastefy/web:latest
+    ports:
+      - "8080:8080"
+  redis:
+    image: redis:7`,
+  },
+  {
+    slug: 'json-to-env',
+    title: 'Convert JSON to .env',
+    shortTitle: 'JSON -> .env',
+    description: 'Flatten JSON configuration into environment variables for apps and deployments.',
+    icon: 'binary-tree-2',
+    sourceFileName: 'config.json',
+    sourceType: 'json',
+    targetFileName: '.env',
+    targetType: 'properties',
+    category: 'Convert',
+    keywords: ['json', 'env', 'environment variables'],
+    example: `{
+  "app": {
+    "name": "Pastefy",
+    "env": "production"
+  },
+  "db": {
+    "host": "postgres",
+    "port": 5432
+  }
+}`,
+  },
+  {
+    slug: 'env-to-json',
+    title: 'Convert .env to JSON',
+    shortTitle: '.env -> JSON',
+    description: 'Turn environment variables into JSON for API payloads, docs, or quick inspection.',
+    icon: 'binary-tree-2',
+    sourceFileName: '.env',
+    sourceType: 'properties',
+    targetFileName: 'config.json',
+    targetType: 'json',
+    category: 'Convert',
+    keywords: ['env', 'json', 'properties'],
+    example: `APP_NAME=Pastefy
+APP_ENV=production
+DB_HOST=postgres
+DB_PORT=5432`,
+  },
+  {
+    slug: 'csv-to-json',
+    title: 'Convert CSV to JSON',
+    shortTitle: 'CSV -> JSON',
+    description: 'Turn tabular CSV data into JSON arrays you can feed into APIs or tooling.',
+    icon: 'table-export',
+    sourceFileName: 'report.csv',
+    sourceType: 'csv',
+    targetFileName: 'report.json',
+    targetType: 'json',
+    category: 'Convert',
+    keywords: ['csv', 'json', 'table'],
+    example: `name,role,team
+Ada,admin,platform
+Linus,user,backend`,
+  },
+  {
+    slug: 'json-to-csv',
+    title: 'Convert JSON to CSV',
+    shortTitle: 'JSON -> CSV',
+    description: 'Turn JSON arrays into flat CSV output for spreadsheets and exports.',
+    icon: 'table-export',
+    sourceFileName: 'report.json',
+    sourceType: 'json',
+    targetFileName: 'report.csv',
+    targetType: 'csv',
+    category: 'Convert',
+    keywords: ['json', 'csv', 'spreadsheet'],
+    example: `[
+  { "name": "Ada", "role": "admin", "team": "platform" },
+  { "name": "Linus", "role": "user", "team": "backend" }
+]`,
+  },
+  {
+    slug: 'http-to-curl',
+    title: 'Convert HTTP to cURL',
+    shortTitle: 'HTTP -> cURL',
+    description: 'Turn raw HTTP request files into cURL commands you can run in a shell.',
+    icon: 'api',
+    sourceFileName: 'request.http',
+    sourceType: 'http',
+    targetFileName: 'request.sh',
+    targetType: 'http',
+    category: 'Convert',
+    keywords: ['http', 'curl', 'api'],
+    example: `POST https://api.pastefy.app/api/v2/paste
+Authorization: Bearer demo-token
+Content-Type: application/json
+
+{
+  "title": "hello.txt",
+  "content": "Hello World"
+}`,
+  },
+  {
+    slug: 'curl-to-http',
+    title: 'Convert cURL to HTTP',
+    shortTitle: 'cURL -> HTTP',
+    description: 'Turn cURL commands into clean HTTP request files for docs and API tooling.',
+    icon: 'api',
+    sourceFileName: 'request.sh',
+    sourceType: 'http',
+    targetFileName: 'request.http',
+    targetType: 'http',
+    category: 'Convert',
+    keywords: ['curl', 'http', 'request'],
+    example: `curl -X POST 'https://api.pastefy.app/api/v2/paste' -H 'Authorization: Bearer demo-token' -H 'Content-Type: application/json' -d '{"title":"hello.txt","content":"Hello World"}'`,
+  },
+  {
+    slug: 'yaml-to-env',
+    title: 'Convert YAML to .env',
+    shortTitle: 'YAML -> .env',
+    description: 'Flatten simple YAML configuration into environment variables for deployment use.',
+    icon: 'binary-tree-2',
+    sourceFileName: 'config.yaml',
+    sourceType: 'yaml',
+    targetFileName: '.env',
+    targetType: 'properties',
+    category: 'Convert',
+    keywords: ['yaml', 'env', 'config'],
+    example: `app:
+  name: Pastefy
+  env: production
+db:
+  host: postgres
+  port: 5432`,
+  },
+  {
+    slug: 'env-to-yaml',
+    title: 'Convert .env to YAML',
+    shortTitle: '.env -> YAML',
+    description: 'Turn environment variables into YAML for docs and human-readable config snapshots.',
+    icon: 'binary-tree-2',
+    sourceFileName: '.env',
+    sourceType: 'properties',
+    targetFileName: 'config.yaml',
+    targetType: 'yaml',
+    category: 'Convert',
+    keywords: ['env', 'yaml', 'config'],
+    example: `APP_NAME=Pastefy
+APP_ENV=production
+DB_HOST=postgres
+DB_PORT=5432`,
+  },
+  {
+    slug: 'csv-to-markdown',
+    title: 'Convert CSV to Markdown Table',
+    shortTitle: 'CSV -> Markdown',
+    description: 'Turn CSV exports into Markdown tables for docs, READMEs, and issues.',
+    icon: 'table-export',
+    sourceFileName: 'report.csv',
+    sourceType: 'csv',
+    targetFileName: 'table.md',
+    targetType: 'markdown',
+    category: 'Convert',
+    keywords: ['csv', 'markdown', 'table', 'docs'],
+    example: `name,role,team
+Ada,admin,platform
+Linus,user,backend`,
+  },
+  {
+    slug: 'json-to-markdown',
+    title: 'Convert JSON to Markdown Table',
+    shortTitle: 'JSON -> Markdown',
+    description: 'Turn arrays of JSON objects into clean Markdown tables.',
+    icon: 'table-export',
+    sourceFileName: 'report.json',
+    sourceType: 'json',
+    targetFileName: 'table.md',
+    targetType: 'markdown',
+    category: 'Convert',
+    keywords: ['json', 'markdown', 'table', 'docs'],
+    example: `[
+  { "name": "Ada", "role": "admin", "team": "platform" },
+  { "name": "Linus", "role": "user", "team": "backend" }
+]`,
+  },
+  {
+    slug: 'http-to-json',
+    title: 'Convert HTTP to JSON',
+    shortTitle: 'HTTP -> JSON',
+    description: 'Turn raw HTTP request files into JSON objects for tooling and inspection.',
+    icon: 'api',
+    sourceFileName: 'request.http',
+    sourceType: 'http',
+    targetFileName: 'request.json',
+    targetType: 'json',
+    category: 'Convert',
+    keywords: ['http', 'json', 'request'],
+    example: `POST https://api.pastefy.app/api/v2/paste
+Authorization: Bearer demo-token
+Content-Type: application/json
+
+{
+  "title": "hello.txt",
+  "content": "Hello World"
+}`,
+  },
+  {
+    slug: 'curl-to-json',
+    title: 'Convert cURL to JSON',
+    shortTitle: 'cURL -> JSON',
+    description: 'Turn cURL commands into JSON request objects for downstream processing.',
+    icon: 'api',
+    sourceFileName: 'request.sh',
+    sourceType: 'http',
+    targetFileName: 'request.json',
+    targetType: 'json',
+    category: 'Convert',
+    keywords: ['curl', 'json', 'request'],
+    example: `curl -X POST 'https://api.pastefy.app/api/v2/paste' -H 'Authorization: Bearer demo-token' -H 'Content-Type: application/json' -d '{"title":"hello.txt","content":"Hello World"}'`,
+  },
+]
+
+export function findConversionTool(slug?: string) {
+  return conversionTools.find((tool) => tool.slug === slug)
+}
+
+export function runConversion(tool: ConversionToolDefinition, source: string): ConversionResult {
+  switch (tool.slug) {
+    case 'json-to-yaml':
+      return { output: toYaml(JSON.parse(source)) }
+    case 'yaml-to-json':
+      return { output: JSON.stringify(parseYamlDocument(source), null, 2) }
+    case 'json-to-env':
+      return { output: toEnv(JSON.parse(source)) }
+    case 'env-to-json':
+      return { output: JSON.stringify(parseEnv(source), null, 2) }
+    case 'csv-to-json': {
+      const rows = parseCsv(source)
+      if (rows.length === 0) return { output: '[]' }
+      const [header, ...records] = rows
+      const output = records.map((row) =>
+        Object.fromEntries(header.map((key, index) => [key, row[index] ?? ''])),
+      )
+      return { output: JSON.stringify(output, null, 2) }
+    }
+    case 'json-to-csv':
+      return { output: toCsv(JSON.parse(source)) }
+    case 'http-to-curl':
+      return { output: toCurl(parseHttpRequest(source)) }
+    case 'curl-to-http':
+      return { output: toHttp(parseCurl(source)) }
+    case 'yaml-to-env':
+      return { output: toEnv(parseYamlDocument(source)) }
+    case 'env-to-yaml':
+      return { output: toYaml(parseEnv(source)) }
+    case 'csv-to-markdown': {
+      const rows = parseCsv(source)
+      if (rows.length === 0) return { output: '' }
+      const [header, ...records] = rows
+      return { output: toMarkdownTable(header, records) }
+    }
+    case 'json-to-markdown': {
+      const parsed = JSON.parse(source)
+      if (!Array.isArray(parsed) || parsed.length === 0) {
+        throw new Error('JSON to Markdown expects a non-empty array of objects.')
+      }
+      const headers = Array.from(new Set(parsed.flatMap((entry) => Object.keys(entry || {}))))
+      const rows = parsed.map((entry) => headers.map((header) => String(entry?.[header] ?? '')))
+      return { output: toMarkdownTable(headers, rows) }
+    }
+    case 'http-to-json':
+      return { output: JSON.stringify(parseHttpRequest(source), null, 2) }
+    case 'curl-to-json':
+      return { output: JSON.stringify(parseCurl(source), null, 2) }
+    default:
+      throw new Error('Unsupported conversion tool.')
+  }
+}
