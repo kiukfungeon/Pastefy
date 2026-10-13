@@ -205,3 +205,72 @@ watch(search, (value) => {
           option-label="label"
           option-value="value"
           fluid
+        />
+        <div class="flex flex-wrap gap-2">
+          <Button
+            v-if="viewMode === 'tree'"
+            icon="ti ti-fold-down"
+            :label="$t('previews.yamlViewer.expandAll')"
+            size="small"
+            severity="contrast"
+            outlined
+            @click="expandAll"
+          />
+          <Button
+            v-if="viewMode === 'tree'"
+            icon="ti ti-fold-up"
+            :label="$t('previews.yamlViewer.collapse')"
+            size="small"
+            severity="contrast"
+            outlined
+            @click="collapseAll"
+          />
+          <Button
+            icon="ti ti-copy"
+            :label="$t('common.copy')"
+            size="small"
+            severity="contrast"
+            outlined
+            @click="clipboard.copy(yaml)"
+          />
+          <Button
+            icon="ti ti-download"
+            :label="$t('common.export')"
+            size="small"
+            severity="contrast"
+            outlined
+            @click="exportYaml"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div v-if="viewMode === 'tree'" class="max-h-[42rem] overflow-auto px-2 py-3">
+      <div v-if="parsedTree.children.length === 0" class="p-4 text-sm opacity-60">{{ $t('previews.yamlViewer.noYamlNodesFound') }}</div>
+      <YAMLTreeNode
+        v-for="node in parsedTree.children"
+        :key="node.path"
+        :node="node"
+        :search="search"
+        :is-expanded="isExpanded"
+        :set-expanded="setExpanded"
+      />
+    </div>
+
+    <Highlighted
+      v-else-if="viewMode === 'pretty'"
+      class="max-h-[42rem] overflow-auto"
+      file-name="config.yaml"
+      :contents="yaml"
+      show-copy-button
+    />
+
+    <Highlighted
+      v-else
+      class="max-h-[42rem] overflow-auto"
+      file-name="config.yaml"
+      :contents="yaml"
+      show-copy-button
+    />
+  </div>
+</template>
