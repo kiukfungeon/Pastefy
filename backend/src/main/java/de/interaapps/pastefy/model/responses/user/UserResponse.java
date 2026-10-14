@@ -25,3 +25,12 @@ public class UserResponse {
         name = user.getUniqueName();
         displayName = user.getName();
         authType = user.getAuthProvider().getName();
+        // color = user.getFavouriteColor();
+        color = "#f52966";
+        profilePicture = user.getAvatar();
+        id = user.getId();
+        loggedIn = true;
+
+        type = user.type == null ? User.Type.USER : user.type;
+    }
+}

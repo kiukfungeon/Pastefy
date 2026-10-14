@@ -27,3 +27,18 @@ const buttonLabel = computed(() => (pinned.value ? 'pinned' : 'pin tool'))
 const toggle = () => {
   pinnedTools.togglePinned(props.kind, props.slug)
 }
+</script>
+
+<template>
+  <Button
+    @click.stop.prevent="toggle"
+    :label="label ? buttonLabel : undefined"
+    icon="ti ti-pin"
+    severity="contrast"
+    :text="text"
+    :outlined="outlined && !pinned"
+    :size="size"
+    :class="pinned ? '!bg-neutral-900 !text-white dark:!bg-neutral-100 dark:!text-neutral-900' : ''"
+    :aria-label="buttonLabel"
+  />
+</template>
