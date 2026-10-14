@@ -179,3 +179,64 @@ watch(search, (value) => {
           />
           <Button
             v-if="viewMode === 'tree'"
+            icon="ti ti-fold-up"
+            :label="$t('previews.xmlViewer.collapse')"
+            size="small"
+            severity="contrast"
+            outlined
+            @click="collapseAll"
+          />
+          <Button
+            icon="ti ti-copy"
+            :label="$t('previews.xmlViewer.copyPretty')"
+            size="small"
+            severity="contrast"
+            outlined
+            @click="clipboard.copy(prettyXml)"
+          />
+          <Button
+            icon="ti ti-download"
+            :label="$t('common.export')"
+            size="small"
+            severity="contrast"
+            outlined
+            @click="exportXml(viewMode === 'raw' ? 'raw' : 'pretty')"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div
+      v-if="parserResult.error"
+      class="p-4 font-[JetBrains_Mono_Variable] text-[0.92rem] leading-7 whitespace-pre-wrap text-red-700 dark:text-red-300"
+    >
+      {{ parserResult.error }}
+    </div>
+
+    <div v-else-if="viewMode === 'tree'" class="max-h-[42rem] overflow-auto px-2 py-3">
+      <XMLTreeNode
+        v-if="rootNode"
+        :node="rootNode"
+        :search="search"
+        :is-expanded="isExpanded"
+        :set-expanded="setExpanded"
+      />
+    </div>
+
+    <Highlighted
+      v-else-if="viewMode === 'pretty'"
+      class="max-h-[42rem] overflow-auto"
+      file-name="document.xml"
+      :contents="prettyXml"
+      show-copy-button
+    />
+
+    <Highlighted
+      v-else
+      class="max-h-[42rem] overflow-auto"
+      file-name="document.xml"
+      :contents="props.xml"
+      show-copy-button
+    />
+  </div>
+</template>

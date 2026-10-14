@@ -50,3 +50,16 @@ public class AnalyticsQuery {
             if (value != null && !value.isBlank()) {
                 query.filters.put(filter, value.trim());
             }
+        });
+        return query;
+    }
+
+    private static Instant parseInstant(String value, Instant fallback) {
+        if (value == null || value.isBlank()) return fallback;
+        try {
+            return Instant.parse(value);
+        } catch (RuntimeException ignored) {
+            return fallback;
+        }
+    }
+}
