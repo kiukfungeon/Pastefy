@@ -31,3 +31,37 @@ const result = computed(() =>
       entries: entries.value.map(([key, value]) => ({ key, value })),
       grouped: grouped.value,
       rebuilt: rebuilt.value,
+    },
+    null,
+    2,
+  ),
+)
+</script>
+
+<template>
+  <UtilityShell>
+    <template #controls>
+      <label class="text-sm font-medium">{{ $t('utility.queryStringTool.queryString') }}</label>
+      <Textarea v-model="input" auto-resize rows="8" fluid />
+    </template>
+
+    <template #result>
+      <div class="mb-4 rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
+        <div class="mb-2 flex items-center justify-between gap-3">
+          <span class="font-medium">{{ $t('utility.queryStringTool.rebuilt') }}</span>
+          <Button @click="clipboard.copy(rebuilt)" icon="ti ti-copy" severity="contrast" text />
+        </div>
+        <code class="block break-all text-sm">{{ rebuilt }}</code>
+      </div>
+
+      <div class="overflow-hidden rounded-xl border border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900">
+        <div class="border-b border-neutral-200 px-4 py-2 text-sm font-medium dark:border-neutral-700">{{ $t('utility.queryStringTool.parsed') }}</div>
+        <Highlighted :contents="JSON.stringify(grouped, null, 2)" file-name="query.json" />
+      </div>
+    </template>
+
+    <template #footer>
+      <UtilityResultActions :result="result" file-name="query-params.json" />
+    </template>
+  </UtilityShell>
+</template>
