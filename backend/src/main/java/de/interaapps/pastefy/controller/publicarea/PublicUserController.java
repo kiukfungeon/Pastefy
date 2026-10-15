@@ -12,3 +12,10 @@ import org.javawebstack.http.router.router.annotation.verbs.Get;
 @With("public-pastes-endpoint")
 @PathPrefix("/api/v2/public/user")
 public class PublicUserController extends HttpController {
+    @Get("/{name}")
+    public PublicUserResponse getUser(@Path("name") String name) {
+        User user = User.getByName(name);
+        if (user == null) throw new NotFoundException();
+        return new PublicUserResponse(user);
+    }
+}
