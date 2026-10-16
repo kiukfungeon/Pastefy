@@ -5,3 +5,11 @@ export const useComponentInjectionStore = defineStore('component-injections', ()
   const injections = shallowRef<Record<string, Component[]>>({})
 
   function registerInjection(name: string, component: Component) {
+    if (!injections.value[name]) {
+      injections.value[name] = []
+    }
+    injections.value[name] = [...injections.value[name], component]
+  }
+
+  return { injections, registerInjection }
+})
