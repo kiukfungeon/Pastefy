@@ -33,3 +33,39 @@
 
   .petrel-code-editor::-webkit-scrollbar {
     width: 20px;
+    height: 20px;
+    background: #00000022;
+    border-radius: 20px;
+    border: 7px solid transparent;
+    background-clip: padding-box;
+  }
+
+  .petrel-code-editor::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, .3);
+    border-radius: 20px;
+    border: 7px solid transparent;
+    background-clip: padding-box;
+  }
+
+  .petrel-code-editor .petrel-code-editor-autocompletion {
+    @apply bg-neutral-800 border-r border-neutral-500;
+    border-radius: 10px;
+    backdrop-filter: blur(7px);
+
+    max-height: 150px;
+    overflow: auto;
+
+    margin-top: 10px;
+  }
+
+  .petrel-code-editor .petrel-code-editor-autocompletion a {
+    padding: 4px 6px;
+    margin: 5px;
+    border-radius: 6px;
+    font-size: 16px;
+  }
+
+  .petrel-code-editor .petrel-code-editor-autocompletion a:hover {
+    background: #FFFFFF21;
+  }
+}

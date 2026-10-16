@@ -114,3 +114,236 @@ const buildCaddySite = (host: string) => {
   const target = `${upstreamHost.value}:${upstreamPort.value}`
   const reverseProxy = mode.value === 'reverse-proxy'
   const autoHttpsDirective = enableTls.value
+    ? tlsMode.value === 'auto'
+      ? `\n  tls ${tlsEmail.value}`
+      : `\n  tls ${certPath.value} ${keyPath.value}`
+    : '\n  auto_https disable'
+
+  const proxyHeaders = reverseProxy && forwardClientIp.value
+    ? `\n    header_up X-Real-IP {remote_host}\n    header_up ${forwardedIpHeader.value} {remote_host}\n    header_up X-Forwarded-Proto {scheme}`
+    : ''
+
+  return `${host} {${enableCompression.value ? '\n  encode zstd gzip' : ''}${autoHttpsDirective}
+  log {
+    output file ${accessLogPath.value}
+  }${reverseProxy
+    ? `\n  reverse_proxy ${target} {${proxyHeaders}\n  }`
+    : `\n  root * ${rootPath.value}\n  ${enableSpaFallback.value ? 'try_files {path} /index.html' : ''}\n  file_server`}${caddyHeaderLines.value.length ? `\n\n  header {\n${caddyHeaderLines.value.join('\n')}\n  }` : ''}${enableBasicAuth.value ? `\n\n  basic_auth {\n    ${basicAuthUser.value} ${basicAuthPasswordHash.value}\n  }` : ''}\n}`
+}
+
+const buildNginxServer = (host: string) => {
+  const target = `${upstreamHost.value}:${upstreamPort.value}`
+  const proxyForwarding = forwardClientIp.value
+    ? `\n    proxy_set_header X-Real-IP $remote_addr;\n    proxy_set_header ${forwardedIpHeader.value} $proxy_add_x_forwarded_for;\n    proxy_set_header X-Forwarded-Proto $scheme;`
+    : ''
+
+  return `server {
+  listen ${enableTls.value ? '443 ssl http2' : '80'};
+  server_name ${host};
+  ${enableTls.value ? `ssl_certificate ${tlsMode.value === 'manual' ? certPath.value : `/etc/letsencrypt/live/${host}/fullchain.pem`};
+  ssl_certificate_key ${tlsMode.value === 'manual' ? keyPath.value : `/etc/letsencrypt/live/${host}/privkey.pem`};` : ''}
+  access_log ${accessLogPath.value};
+  error_log ${errorLogPath.value};
+  ${enableCompression.value ? 'gzip on;' : ''}${nginxHeaderLines.value.length ? `\n${nginxHeaderLines.value.join('\n')}` : ''}${trustedProxies.value.length ? `\n${trustedProxies.value.map((entry) => `  set_real_ip_from ${entry};`).join('\n')}\n  real_ip_header ${forwardedIpHeader.value};` : ''}${enableBasicAuth.value ? `\n  auth_basic "Restricted";\n  auth_basic_user_file /etc/nginx/.htpasswd;` : ''}${mode.value === 'reverse-proxy'
+    ? `\n\n  location / {\n    proxy_pass http://${target};\n    proxy_set_header Host $host;${proxyForwarding}\n  }`
+    : `\n\n  root ${rootPath.value};\n  index index.html;\n  location / {\n    ${enableSpaFallback.value ? 'try_files $uri $uri/ /index.html;' : 'try_files $uri $uri/ =404;'}\n  }${enableStaticCaching.value ? `\n  location ~* \\.(css|js|png|jpg|jpeg|gif|svg|ico|woff2?)$ {\n    expires 7d;\n    add_header Cache-Control "public, immutable";\n  }` : ''}`}
+}`
+}
+
+const buildApacheVirtualHost = (host: string, tls: boolean) => {
+  const target = `${upstreamHost.value}:${upstreamPort.value}`
+  const body = mode.value === 'reverse-proxy'
+    ? `ProxyPreserveHost On
+  ProxyPass / http://${target}/
+  ProxyPassReverse / http://${target}/`
+    : `DocumentRoot ${rootPath.value}
+  <Directory ${rootPath.value}>
+    AllowOverride All
+    Require all granted
+    ${enableSpaFallback.value ? 'FallbackResource /index.html' : ''}
+  </Directory>`
+
+  const forwardedHeaders = forwardClientIp.value
+    ? `\n  RequestHeader set X-Real-IP expr=%{REMOTE_ADDR}\n  RequestHeader set ${forwardedIpHeader.value} expr=%{REMOTE_ADDR}\n  RequestHeader set X-Forwarded-Proto expr=%{REQUEST_SCHEME}`
+    : ''
+
+  return `<VirtualHost *:${tls ? '443' : '80'}>
+  ServerName ${host}${tls
+    ? `
+  SSLEngine on
+  SSLCertificateFile ${tlsMode.value === 'manual' ? certPath.value : `/etc/letsencrypt/live/${host}/fullchain.pem`}
+  SSLCertificateKeyFile ${tlsMode.value === 'manual' ? keyPath.value : `/etc/letsencrypt/live/${host}/privkey.pem`}`
+    : ''}
+  ErrorLog ${errorLogPath.value}
+  CustomLog ${accessLogPath.value} combined
+  ${body}${enableCompression.value ? '\n  AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript application/json' : ''}${apacheHeaderLines.value.length ? `\n${apacheHeaderLines.value.join('\n')}` : ''}${forwardedHeaders}${trustedProxies.value.length ? `\n  RemoteIPHeader ${forwardedIpHeader.value}\n${trustedProxies.value.map((entry) => `  RemoteIPTrustedProxy ${entry}`).join('\n')}` : ''}${enableBasicAuth.value ? `
+  <Location />
+    AuthType Basic
+    AuthName "Restricted"
+    AuthUserFile /etc/apache2/.htpasswd
+    Require valid-user
+  </Location>` : ''}
+</VirtualHost>`
+}
+
+const config = computed(() => {
+  if (props.server === 'caddy') {
+    const redirectBlock = enableWwwRedirect.value
+      ? `www.${primaryHost.value} {\n  redir ${enableTls.value ? `https://${primaryHost.value}` : `http://${primaryHost.value}`}{uri} permanent\n}`
+      : ''
+
+    return [redirectBlock, ...hosts.value.map(buildCaddySite)].filter(Boolean).join('\n\n')
+  }
+
+  if (props.server === 'nginx') {
+    const redirectBlocks = [
+      enableWwwRedirect.value
+        ? `server {\n  listen 80;\n  server_name www.${primaryHost.value};\n  return 301 ${enableTls.value ? 'https' : 'http'}://${primaryHost.value}$request_uri;\n}`
+        : '',
+      ...(enableTls.value
+        ? hosts.value.map(
+            (host) =>
+              `server {\n  listen 80;\n  server_name ${host};\n  return 301 https://${host}$request_uri;\n}`,
+          )
+        : []),
+    ].filter(Boolean)
+
+    return [...redirectBlocks, ...hosts.value.map(buildNginxServer)].join('\n\n')
+  }
+
+  const blocks = [
+    enableWwwRedirect.value
+      ? `<VirtualHost *:80>
+  ServerName www.${primaryHost.value}
+  Redirect permanent / ${enableTls.value ? `https://${primaryHost.value}/` : `http://${primaryHost.value}/`}
+</VirtualHost>`
+      : '',
+    ...(!enableTls.value
+      ? hosts.value.map((host) => buildApacheVirtualHost(host, false))
+      : hosts.value.flatMap((host) => [
+          `<VirtualHost *:80>
+  ServerName ${host}
+  Redirect permanent / https://${host}/
+</VirtualHost>`,
+          buildApacheVirtualHost(host, true),
+        ])),
+  ].filter(Boolean)
+
+  return blocks.join('\n\n')
+})
+
+const resultFileName = computed(() => (props.server === 'caddy' ? 'Caddyfile' : 'site.conf'))
+</script>
+
+<template>
+  <UtilityShell
+    :control-title="`${props.server.toUpperCase()} Config`"
+    control-description="Define one or multiple hosts, TLS, proxy or static mode, forwarding headers, auth, and deployment-friendly server settings."
+    result-title="Generated Config"
+    result-description="A ready-to-edit multi-site config for web servers and reverse proxies."
+    fill-height
+  >
+    <template #controls>
+      <div class="grid gap-3 md:grid-cols-2">
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.webServerConfigGeneratorBase.siteMode') }}</label>
+          <Select v-model="mode" :options="modeOptions" option-label="label" option-value="value" fluid />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.webServerConfigGeneratorBase.tlsMode') }}</label>
+          <Select v-model="tlsMode" :options="tlsModeOptions" option-label="label" option-value="value" fluid :disabled="!enableTls" />
+        </div>
+        <div v-if="enableTls && tlsMode === 'auto' && props.server === 'caddy'">
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.webServerConfigGeneratorBase.letsEncryptEmail') }}</label>
+          <InputText v-model="tlsEmail" fluid />
+        </div>
+        <div v-if="enableTls && tlsMode === 'manual'">
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.webServerConfigGeneratorBase.certificatePath') }}</label>
+          <InputText v-model="certPath" fluid />
+        </div>
+        <div v-if="enableTls && tlsMode === 'manual'">
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.webServerConfigGeneratorBase.keyPath') }}</label>
+          <InputText v-model="keyPath" fluid />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.webServerConfigGeneratorBase.accessLogPath') }}</label>
+          <InputText v-model="accessLogPath" fluid />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.webServerConfigGeneratorBase.errorLogPath') }}</label>
+          <InputText v-model="errorLogPath" fluid />
+        </div>
+        <div v-if="mode === 'static-site'">
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.webServerConfigGeneratorBase.rootPath') }}</label>
+          <InputText v-model="rootPath" fluid />
+        </div>
+        <div v-else>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.webServerConfigGeneratorBase.upstreamHost') }}</label>
+          <InputText v-model="upstreamHost" fluid />
+        </div>
+        <div v-if="mode === 'reverse-proxy'">
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.webServerConfigGeneratorBase.upstreamPort') }}</label>
+          <InputText v-model="upstreamPort" fluid />
+        </div>
+        <div v-if="mode === 'reverse-proxy'">
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.webServerConfigGeneratorBase.forwardedIpHeader') }}</label>
+          <InputText v-model="forwardedIpHeader" fluid />
+        </div>
+      </div>
+
+      <StringListField
+        v-model="hostEntries"
+        :label="$t('utility.webServerConfigGeneratorBase.hostnamesSiteEntries')"
+        placeholder="example.com"
+        :add-label="$t('utility.webServerConfigGeneratorBase.addHost')"
+      />
+
+      <div class="grid gap-3 md:grid-cols-2">
+        <GeneratorToggleField v-model="enableTls" :label="$t('utility.webServerConfigGeneratorBase.enableTlsHttps')" />
+        <GeneratorToggleField v-model="enableWwwRedirect" :label="$t('utility.webServerConfigGeneratorBase.redirectWwwToPrimaryDomain')" />
+        <GeneratorToggleField v-model="enableCompression" :label="$t('utility.webServerConfigGeneratorBase.enableCompression')" />
+        <GeneratorToggleField v-model="enableSecurityHeaders" :label="$t('utility.webServerConfigGeneratorBase.addBasicSecurityHeaders')" />
+        <GeneratorToggleField v-model="enableHsts" :label="$t('utility.webServerConfigGeneratorBase.enableHsts')" />
+        <GeneratorToggleField v-model="enableBasicAuth" :label="$t('utility.webServerConfigGeneratorBase.protectWithBasicAuth')" />
+        <GeneratorToggleField v-model="enableStaticCaching" :label="$t('utility.webServerConfigGeneratorBase.cacheStaticAssets')" />
+        <GeneratorToggleField v-if="mode === 'static-site'" v-model="enableSpaFallback" :label="$t('utility.webServerConfigGeneratorBase.enableSpaFallback')" />
+        <GeneratorToggleField v-if="mode === 'reverse-proxy'" v-model="forwardClientIp" :label="$t('utility.webServerConfigGeneratorBase.forwardClientIpHeaders')" />
+      </div>
+
+      <div v-if="enableBasicAuth" class="grid gap-3 md:grid-cols-2">
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.webServerConfigGeneratorBase.basicAuthUser') }}</label>
+          <InputText v-model="basicAuthUser" fluid />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.webServerConfigGeneratorBase.passwordHashPlaceholder') }}</label>
+          <InputText v-model="basicAuthPasswordHash" fluid />
+        </div>
+      </div>
+
+      <KeyValueListField
+        v-model="extraHeaderEntries"
+        :label="$t('utility.webServerConfigGeneratorBase.extraHeaders')"
+        :key-placeholder="$t('utility.webServerConfigGeneratorBase.xRobotsTag')"
+        :value-placeholder="$t('utility.webServerConfigGeneratorBase.noindex')"
+      />
+      <StringListField
+        v-if="props.server !== 'caddy'"
+        v-model="trustedProxyEntries"
+        :label="$t('utility.webServerConfigGeneratorBase.trustedProxyIpsCidrs')"
+        placeholder="10.0.0.0/8"
+        :add-label="$t('utility.webServerConfigGeneratorBase.addProxy')"
+      />
+    </template>
+
+    <template #result>
+      <div class="overflow-hidden rounded-xl border border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900">
+        <Highlighted :contents="config" :file-name="resultFileName" />
+      </div>
+    </template>
+
+    <template #footer>
+      <UtilityResultActions :result="config" :file-name="resultFileName" />
+    </template>
+  </UtilityShell>
+</template>
