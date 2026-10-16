@@ -8,3 +8,8 @@ public class PastefyPluginConfig {
     public FrontendConfig frontend;
     public Boolean listed = true;
 
+    public class FrontendConfig {
+        public String folder;
+        public String entrypoint;
+    }
+}
