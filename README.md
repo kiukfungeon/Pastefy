@@ -127,3 +127,36 @@ You can find the docs of the Pastefy-Rest-APi here: [Docs](https://docs.pastefy.
 
 
 ## Administration
+If you want to give yourself the admin role, you have to log into your MySQL server and set `type` on your account to `ADMIN` in the `pastefy_users` table.
+
+You'll find the admin panel under `https://YOUR_URL/admin`
+
+
+## Extra Features
+
+Read more here [Docs](https://docs.pastefy.app/features/index.html)
+
+### Upload via Curl
+```bash
+curl -F f=@file.txt pastefy.app
+```
+### Asciinema support
+
+configure: `nano ~/.config/asciinema/config`
+```
+[api]
+url = https://pastefy.app
+```
+
+Using asciinema
+```bash
+asciinema rec test.cast
+# ...
+asciinema upload test.cast
+
+# Authenticate via Pastefy
+# Pastefy will request you to set the install-id via `echo YOUR_PASTEFY_API_KEY > ~/.config/asciinema/install-id`
+asciinema auth
+
+asciinema upload test.cast
+```
