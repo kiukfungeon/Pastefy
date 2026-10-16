@@ -53,3 +53,58 @@ export default {
     },
   },
   components: {
+    inputtext: {
+      colorScheme: {
+        light: {
+          shadow: 'none',
+          background: 'transparent',
+          border: {
+            color: '{neutral.400}',
+          },
+        },
+        dark: {
+          border: {
+            color: '{neutral.600}',
+          },
+        },
+      },
+    },
+    select: {
+      colorScheme: {
+        light: {
+          shadow: 'none',
+          background: 'transparent',
+          border: {
+            color: '{neutral.400}',
+          },
+        },
+        dark: {
+          border: {
+            color: '{neutral.600}',
+          },
+        },
+      },
+    },
+    tabs: {
+      tab: {
+        padding: '12px 12px',
+      },
+    },
+    treeselect: {
+      colorScheme: {
+        light: {
+          shadow: 'none',
+          background: 'transparent',
+          border: {
+            color: '{neutral.400}',
+          },
+          dark: {
+            border: {
+              color: '{neutral.600}',
+            },
+          },
+        },
+      },
+    },
+  },
+} as Preset

@@ -28,3 +28,24 @@ public class StatsResponse {
         Pastefy instance = Pastefy.getInstance();
         StatsResponse response = new StatsResponse();
 
+        response.createdPastes = Repo.get(Paste.class).count();
+        response.loggedInPastes = Repo.get(Paste.class).query().whereNotNull("userId").count();
+        response.userCount = Repo.get(User.class).query().count();
+        response.tagCount = Repo.get(TagListing.class).query().count();
+        response.folderCount = Repo.get(Folder.class).query().count();
+
+        response.s3Pastes = Repo.get(Paste.class).query().where("storageType", Paste.StorageType.S3).count();
+
+        if (instance.isElasticsearchEnabled()) {
+            try {
+                response.indexedPastes = instance.getElasticsearchClient()
+                        .count(r -> r.index("pastefy_pastes"))
+                        .count();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return response;
+    }
+}
