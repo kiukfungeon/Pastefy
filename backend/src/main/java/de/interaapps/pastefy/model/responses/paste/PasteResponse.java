@@ -63,3 +63,68 @@ public class PasteResponse {
             user = new PublicUserResponse(paste.user);
         }
     }
+    public PasteResponse(Paste paste, User currentUser, boolean fetchStar, boolean fetchUser) {
+        if (paste == null) {
+            return;
+        }
+        id = paste.getKey();
+        rawURL = Pastefy.getInstance().getConfig().get("server.name", "http://localhost") + "/" + id + "/raw";
+        title = paste.getTitle();
+        content = paste.getContent();
+        createdAt = paste.createdAt.toString();
+
+        if (paste.expireAt != null)
+            expireAt = paste.expireAt.toString();
+
+        encrypted = paste.isEncrypted();
+        userId = paste.getUserId();
+        forkedFrom = paste.getForkedFrom();
+        visibility = paste.getVisibility();
+        if (paste.getFolderId() != null)
+            folder = paste.getFolderId();
+        type = paste.getType();
+        exists = true;
+
+        tags = paste.getTags();
+
+        if (fetchUser && paste.getUserId() != null) {
+            User pasteUser = paste.getUser();
+            if (pasteUser != null) {
+                user = new PublicUserResponse(pasteUser);
+            }
+        }
+
+        if (currentUser != null && fetchStar) {
+            starred = currentUser.hasStarred(paste);
+        }
+    }
+
+    public PasteResponse shortenContent() {
+        if (content.length() > 303)
+            content = content.substring(0, 300) + "...";
+        return this;
+    }
+
+    public static PasteResponse create(Paste paste, Exchange exchange, User currentUser, boolean fetchStar, boolean fetchUser) {
+        PasteResponse pasteResponse = new PasteResponse(paste, currentUser, fetchStar, fetchUser);
+        if (exchange != null) {
+            if ("true".equalsIgnoreCase(exchange.query("shorten_content", "false"))) {
+                pasteResponse.shortenContent();
+            }
+            if ("true".equalsIgnoreCase(exchange.query("with_ai_analysis", "false"))) {
+                PasteAIInfo aiInfo = paste.getAiInfo();
+                System.out.println(aiInfo);
+                if (aiInfo != null) {
+                    pasteResponse.aiInfo = new PasteAiInfoResponse(paste.getAiInfo());
+                }
+            }
+        }
+        return pasteResponse;
+    }
+    public static PasteResponse create(Paste paste, Exchange exchange, User currentUser, boolean fetchStar) {
+        return create(paste, exchange, currentUser, fetchStar, true);
+    }
+    public static PasteResponse create(Paste paste, Exchange exchange, User currentUser) {
+        return create(paste, exchange, currentUser, true);
+    }
+}
