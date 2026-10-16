@@ -44,3 +44,27 @@ const stats = computed(() => {
         </div>
         <div class="flex flex-wrap gap-2">
           <Tag :value="`${stats.resources} resources`" severity="contrast" />
+          <Tag :value="`${stats.modules} modules`" severity="contrast" />
+          <Tag :value="`${stats.variables} variables`" severity="contrast" />
+          <Tag :value="`${stats.providers} providers`" severity="contrast" />
+        </div>
+      </div>
+
+      <div v-if="blocks.length" class="flex flex-wrap gap-2">
+        <Tag
+          v-for="block in blocks.slice(0, 24)"
+          :key="`${block.kind}-${block.name}`"
+          :value="`${block.kind}: ${block.name}`"
+          severity="secondary"
+        />
+      </div>
+    </div>
+
+    <Highlighted
+      class="max-h-[42rem] overflow-auto"
+      :file-name="fileName || 'main.tf'"
+      :contents="hcl"
+      show-copy-button
+    />
+  </div>
+</template>

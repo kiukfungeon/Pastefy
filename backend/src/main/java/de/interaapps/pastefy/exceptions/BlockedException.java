@@ -8,3 +8,6 @@ public class BlockedException extends HTTPException {
     }
 
     public BlockedException() {
+        this("Blocked");
+    }
+}

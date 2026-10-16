@@ -48,3 +48,53 @@ public class PasteComment extends Model {
 
     public void setPaste(String paste) {
         this.paste = paste;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public User getUser() {
+        return User.get(userId);
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+
+    public Integer getLineFrom() {
+        return lineFrom;
+    }
+
+    public void setLineFrom(Integer lineFrom) {
+        this.lineFrom = lineFrom;
+    }
+
+    public Integer getLineTo() {
+        return lineTo;
+    }
+
+    public void setLineTo(Integer lineTo) {
+        this.lineTo = lineTo;
+    }
+
+    public static PasteComment get(int id) {
+        return Repo.get(PasteComment.class).where("id", id).first();
+    }
+}
