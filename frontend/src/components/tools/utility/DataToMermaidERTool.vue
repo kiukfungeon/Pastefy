@@ -40,3 +40,46 @@ const formatOptions = [
 ]
 
 const diagram = computed(() => {
+  try {
+    const parsed = parseStructuredData(source.value, inputFormat.value)
+    return toMermaidERDiagram(inferSchemaGraph(parsed, rootEntity.value), {
+      includeTypes: includeTypes.value,
+    })
+  } catch (error) {
+    return `%% ${(error as Error).message || 'Could not infer an ER diagram.'}`
+  }
+})
+</script>
+
+<template>
+  <UtilityShell
+    control-title="Schema Input"
+    control-description="Infer entities and relationships from JSON, YAML, or CSV schema-like data."
+    result-title="ER Diagram"
+    result-description="Generated Mermaid ER diagram based on inferred entities and relationships."
+  >
+    <template #controls>
+      <div class="grid gap-3 md:grid-cols-2">
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidErTool.inputFormat') }}</label>
+          <Select v-model="inputFormat" :options="formatOptions" option-label="label" option-value="value" fluid />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidErTool.rootEntityName') }}</label>
+          <InputText v-model="rootEntity" fluid />
+        </div>
+        <label class="flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-3 py-2 dark:border-neutral-700 dark:bg-neutral-900">
+          <Checkbox v-model="includeTypes" binary />
+          <span class="text-sm">{{ $t('utility.dataToMermaidErTool.showInferredFieldTypes') }}</span>
+        </label>
+      </div>
+      <div>
+        <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidErTool.schemaLikeData') }}</label>
+        <Textarea v-model="source" auto-resize rows="18" fluid />
+      </div>
+    </template>
+    <template #result>
+      <MermaidToolResult :code="diagram" file-name="er-diagram.mmd" />
+    </template>
+  </UtilityShell>
+</template>

@@ -11,3 +11,10 @@ public class PasteStar extends Model {
     private int id;
 
     @Column(size = 8)
+    @Filterable
+    public String paste;
+
+    @Column(size = 8)
+    @Filterable
+    public String userId;
+}
