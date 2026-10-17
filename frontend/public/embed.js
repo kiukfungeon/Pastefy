@@ -9,3 +9,11 @@ export function embedPastefy(parentEl, pasteId, settings = {}, origin = 'https:/
     iframe.onload = () => {
       window.addEventListener('message', (e) => {
         if (e.data && 'height' in e.data) {
+          iframe.style.height = `${e.data.height}px; border-radius: 11px; border: none;`
+        }
+      })
+    }
+  }
+
+  parentEl.appendChild(iframe)
+}
