@@ -15,3 +15,21 @@ const maxCols = computed(() => {
   <div class="overflow-hidden text-sm">
     <div class="m-[-1px] overflow-auto">
       <table>
+        <tr v-for="(row, index) in output" :key="index">
+          <td
+            v-for="cell in row"
+            :key="cell"
+            class="border border-neutral-200 p-1 px-2 whitespace-pre select-all dark:border-neutral-700"
+          >
+            {{ cell }}
+          </td>
+          <td
+            v-for="i in maxCols - row.length"
+            :key="i"
+            class="border border-neutral-200 p-1 px-2 whitespace-pre dark:border-neutral-700"
+          />
+        </tr>
+      </table>
+    </div>
+  </div>
+</template>
