@@ -20,3 +20,19 @@ export function useConfig() {
       sideBarShown: window.innerWidth > 1024,
       theme: 'system',
       animations: !prefersReducedMotion.matches,
+      defaultVisibility: 'UNLISTED',
+      language: 'browser',
+    },
+    localStorage,
+    {
+      mergeDefaults: true,
+    },
+  )
+}
+
+if (localStorage['session']) localStorage['session'] = undefined
+
+window.onresize = () => {
+  const config = useConfig()
+  config.value.sideBarShown = window.innerWidth > 1024
+}
