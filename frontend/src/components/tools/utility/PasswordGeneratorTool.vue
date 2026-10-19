@@ -61,3 +61,66 @@ watch(
 )
 
 const result = computed(() => generatedPasswords.value.join('\n'))
+</script>
+
+<template>
+  <UtilityShell>
+    <template #controls>
+      <label class="text-sm font-medium">{{ $t('utility.passwordGeneratorTool.count') }}</label>
+      <InputNumber v-model="count" :min="1" :max="25" fluid />
+      <label class="text-sm font-medium">{{ $t('utility.passwordGeneratorTool.length') }}</label>
+      <InputNumber v-model="length" :min="8" :max="128" fluid />
+
+      <label class="flex items-center gap-2 text-sm">
+        <Checkbox v-model="includeUppercase" binary />
+        {{ $t('utility.passwordGeneratorTool.uppercaseLetters') }}
+      </label>
+      <label class="flex items-center gap-2 text-sm">
+        <Checkbox v-model="includeLowercase" binary />
+        {{ $t('utility.passwordGeneratorTool.lowercaseLetters') }}
+      </label>
+      <label class="flex items-center gap-2 text-sm">
+        <Checkbox v-model="includeNumbers" binary />
+        {{ $t('utility.passwordGeneratorTool.numbers') }}
+      </label>
+      <label class="flex items-center gap-2 text-sm">
+        <Checkbox v-model="includeSymbols" binary />
+        {{ $t('utility.passwordGeneratorTool.symbols') }}
+      </label>
+      <label class="flex items-center gap-2 text-sm">
+        <Checkbox v-model="excludeAmbiguous" binary />
+        {{ $t('utility.passwordGeneratorTool.excludeAmbiguousCharacters') }}
+      </label>
+
+      <div>
+        <Button @click="generatePasswords()" :label="$t('utility.passwordGeneratorTool.generateAgain')" icon="ti ti-refresh" severity="contrast" outlined />
+      </div>
+    </template>
+
+    <template #result>
+      <Message
+        v-if="!generatedPasswords.length"
+        severity="warn"
+      >
+        Select at least one character group to generate passwords.
+      </Message>
+      <div v-else class="grid gap-3">
+        <div
+          v-for="(entry, index) of generatedPasswords"
+          :key="entry"
+          class="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <div class="mb-2 flex items-center justify-between gap-3">
+            <span class="font-medium">Password {{ index + 1 }}</span>
+            <Button @click="clipboard.copy(entry)" icon="ti ti-copy" severity="contrast" text />
+          </div>
+          <code class="block break-all text-sm">{{ entry }}</code>
+        </div>
+      </div>
+    </template>
+
+    <template #footer>
+      <UtilityResultActions :result="result" file-name="generated-passwords.txt" />
+    </template>
+  </UtilityShell>
+</template>
