@@ -8,3 +8,8 @@ const page = defineModel<number>('page', {
 const search = defineModel<string>('search')
 </script>
 <template>
+  <div class="flex justify-end gap-2">
+    <InputText v-model="search" fluid />
+    <Button icon="ti ti-filter" />
+  </div>
+</template>
