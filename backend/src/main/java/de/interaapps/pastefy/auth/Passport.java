@@ -18,3 +18,24 @@ public class Passport {
         this.prefixUrl = prefixUrl;
     }
 
+    public Passport use(String name, Strategy strategy) {
+        strategy.setPassport(this);
+        strategies.put(name, strategy);
+        return this;
+    }
+
+    public Strategy get(String name) {
+        return strategies.get(name);
+    }
+
+    public Passport createRoutes(HTTPRouter router) {
+        strategies.forEach((name, strategy) -> {
+            strategy.createRoutes(prefixUrl + "/" + name, router);
+        });
+        return this;
+    }
+
+    public String getPrefixUrl() {
+        return prefixUrl;
+    }
+}

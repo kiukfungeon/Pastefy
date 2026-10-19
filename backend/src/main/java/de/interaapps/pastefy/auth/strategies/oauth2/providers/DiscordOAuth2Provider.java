@@ -57,3 +57,33 @@ public class DiscordOAuth2Provider implements OAuth2Provider {
         }
 
         public HTTPClient createApiClient() {
+            return new HTTPClient("https://discord.com/").bearer(accessToken);
+        }
+
+        public OAuth2Profile getProfile() {
+            OAuth2Profile profile = new OAuth2Profile();
+
+            AbstractObject data = createApiClient().get("/api/users/@me")
+                    .bearer(accessToken)
+                    .header("User-Agent", "JWSPassportClient/1")
+                    .data().object();
+
+            if (data.has("id")) {
+                profile.id = data.get("id").string();
+
+                if (data.has("avatar"))
+                    profile.avatar = "https://cdn.discordapp.com/avatars/" + profile.id + "/" + data.get("avatar").string() + ".png";
+            }
+
+            if (data.has("username"))
+                profile.name = data.get("username").string();
+
+            if (data.has("email"))
+                profile.mail = data.get("email").string();
+
+            data.forEach(profile::set);
+
+            return profile;
+        }
+    }
+}
