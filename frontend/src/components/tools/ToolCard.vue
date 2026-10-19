@@ -35,3 +35,16 @@ defineProps<{
         </div>
       </div>
       <p class="text-sm text-neutral-600 dark:text-neutral-300">{{ tool.description }}</p>
+    </div>
+
+    <div class="mt-5 flex flex-wrap gap-2">
+      <span
+        v-for="keyword of tool.keywords.slice(0, 3)"
+        :key="keyword"
+        class="rounded-full bg-neutral-100 px-2.5 py-1 text-xs text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300"
+      >
+        {{ keyword }}
+      </span>
+    </div>
+  </router-link>
+</template>

@@ -272,3 +272,825 @@ const parseCsv = (raw: string) => {
     if (char === ',' && !inQuotes) {
       pushCell()
       continue
+    }
+
+    if ((char === '\n' || char === '\r') && !inQuotes) {
+      if (char === '\r' && next === '\n') i += 1
+      pushRow()
+      continue
+    }
+
+    current += char
+  }
+
+  if (current !== '' || row.length > 0) pushRow()
+  return rows
+}
+
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  value !== null && typeof value === 'object' && !Array.isArray(value)
+
+const normalizePrimitive = (value: unknown) => {
+  if (value === null || value === undefined) return null
+  if (typeof value === 'number' || typeof value === 'boolean' || typeof value === 'string') {
+    return value
+  }
+  return JSON.stringify(value)
+}
+
+const flattenRecord = (
+  value: unknown,
+  prefix = '',
+  output: FlatRow = {},
+): FlatRow => {
+  if (Array.isArray(value)) {
+    output[prefix || 'value'] = value.every((entry) => !isRecord(entry))
+      ? value.map((entry) => normalizePrimitive(entry)).join(', ')
+      : JSON.stringify(value)
+    return output
+  }
+
+  if (!isRecord(value)) {
+    output[prefix || 'value'] = normalizePrimitive(value)
+    return output
+  }
+
+  Object.entries(value).forEach(([key, entry]) => {
+    const nextKey = prefix ? `${prefix}.${key}` : key
+    if (isRecord(entry)) {
+      flattenRecord(entry, nextKey, output)
+      return
+    }
+
+    if (Array.isArray(entry)) {
+      output[nextKey] = entry.every((item) => !isRecord(item))
+        ? entry.map((item) => normalizePrimitive(item)).join(', ')
+        : JSON.stringify(entry)
+      return
+    }
+
+    output[nextKey] = normalizePrimitive(entry)
+  })
+
+  return output
+}
+
+const normalizeToRows = (value: unknown): FlatRow[] => {
+  if (Array.isArray(value)) {
+    if (!value.length) return []
+    return value.map((entry, index) =>
+      isRecord(entry)
+        ? flattenRecord(entry)
+        : {
+            index: index + 1,
+            value: normalizePrimitive(entry),
+          },
+    )
+  }
+
+  if (isRecord(value)) {
+    const entries = Object.entries(value)
+    const arrayEntries = entries.filter(([, entry]) => Array.isArray(entry))
+
+    if (arrayEntries.length === 1) {
+      return normalizeToRows(arrayEntries[0][1])
+    }
+
+    if (entries.length && entries.every(([, entry]) => isRecord(entry))) {
+      return entries.map(([key, entry]) => ({
+        key,
+        ...flattenRecord(entry),
+      }))
+    }
+
+    return [flattenRecord(value)]
+  }
+
+  return [{ value: normalizePrimitive(value) }]
+}
+
+const parseInput = (raw: string, format: InputFormat): ParsedState => {
+  const resolvedFormat = format === 'auto' ? detectFormat(raw) : format
+
+  try {
+    if (resolvedFormat === 'json') {
+      return {
+        format: 'json',
+        rows: normalizeToRows(JSON.parse(raw)),
+      }
+    }
+
+    if (resolvedFormat === 'yaml') {
+      return {
+        format: 'yaml',
+        rows: normalizeToRows(parseYamlDocument(raw)),
+      }
+    }
+
+    const csvRows = parseCsv(raw)
+    if (!csvRows.length) {
+      return {
+        format: 'csv',
+        rows: [],
+      }
+    }
+
+    const [headers, ...body] = csvRows
+    return {
+      format: 'csv',
+      rows: body.map((row) =>
+        headers.reduce<FlatRow>((acc, header, index) => {
+          acc[header] = row[index] ?? ''
+          return acc
+        }, {}),
+      ),
+    }
+  } catch (error) {
+    return {
+      format: resolvedFormat,
+      rows: [],
+      error: error instanceof Error ? error.message : 'Could not parse this input.',
+    }
+  }
+}
+
+const toNumber = (value: unknown) => {
+  if (typeof value === 'number' && Number.isFinite(value)) return value
+  if (typeof value === 'string' && value.trim() !== '' && Number.isFinite(Number(value))) {
+    return Number(value)
+  }
+  return undefined
+}
+
+const normalizeMermaidText = (value: unknown, fallback = '(empty)') => {
+  const normalized = String(value ?? '')
+    .replace(/\r?\n|\r/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+
+  return normalized || fallback
+}
+
+const escapeMermaidLabel = (value: unknown, fallback = '(empty)') =>
+  JSON.stringify(normalizeMermaidText(value, fallback))
+
+const escapeMermaidComment = (value: unknown, fallback = 'Series') =>
+  normalizeMermaidText(value, fallback).replace(/[%[\]{}]/g, '')
+
+const parsedState = computed(() => parseInput(source.value, inputFormat.value))
+const selectedPreset = computed(
+  () => examplePresets.find((preset) => preset.id === selectedPresetId.value) || null,
+)
+
+const fieldOptions = computed<FieldOption[]>(() => {
+  const fields = new Map<string, { numericCount: number; sample: string; total: number }>()
+
+  parsedState.value.rows.forEach((row) => {
+    Object.entries(row).forEach(([key, value]) => {
+      const entry = fields.get(key) || { numericCount: 0, sample: '', total: 0 }
+      entry.total += 1
+      if (!entry.sample && value !== null && value !== undefined && String(value) !== '') {
+        entry.sample = String(value)
+      }
+      if (toNumber(value) !== undefined) entry.numericCount += 1
+      fields.set(key, entry)
+    })
+  })
+
+  return Array.from(fields.entries())
+    .map(([key, value]) => ({
+      label: key,
+      value: key,
+      numeric: value.numericCount > 0,
+      sample: value.sample,
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label))
+})
+
+const numericFieldOptions = computed(() => fieldOptions.value.filter((field) => field.numeric))
+const dimensionFieldOptions = computed(() => fieldOptions.value)
+
+watch(
+  fieldOptions,
+  (fields) => {
+    const available = new Set(fields.map((field) => field.value))
+    const firstDimension =
+      fields.find((field) => !field.numeric)?.value || fields[0]?.value || ''
+    const firstNumeric = numericFieldOptions.value[0]?.value || ''
+
+    const nextCategoryFields = categoryFields.value.filter((field) => available.has(field))
+    if (!nextCategoryFields.length && firstDimension) {
+      categoryFields.value = [firstDimension]
+    } else if (nextCategoryFields.length !== categoryFields.value.length) {
+      categoryFields.value = nextCategoryFields
+    }
+
+    const nextSplitFields = splitFields.value.filter((field) => available.has(field))
+    if (nextSplitFields.length !== splitFields.value.length) {
+      splitFields.value = nextSplitFields
+    }
+
+    const filteredValues = valueFields.value.filter((value) => available.has(value))
+    if (!filteredValues.length && firstNumeric) {
+      valueFields.value = [firstNumeric]
+    } else if (filteredValues.length !== valueFields.value.length) {
+      valueFields.value = filteredValues
+    }
+  },
+  { immediate: true },
+)
+
+const buildLabelFromFields = (
+  row: FlatRow,
+  fields: string[],
+  fallback: string,
+) => {
+  if (!fields.length) return fallback
+  return normalizeMermaidText(
+    fields
+      .map((field) => normalizeMermaidText(row[field], emptyLabelText.value || '(empty)'))
+      .join(labelSeparator.value || ' / '),
+    fallback,
+  )
+}
+
+const seriesConfig = computed(() => {
+  const warnings: string[] = []
+
+  if (!categoryFields.value.length) {
+    return {
+      warnings: ['Choose a category field to build a chart.'],
+      categories: [] as string[],
+      series: [] as { name: string; values: number[] }[],
+    }
+  }
+
+  const chartNeedsSingleSeries =
+    chartType.value === 'pie' || chartType.value === 'bar' || chartType.value === 'line'
+  const effectiveValueFields =
+    aggregation.value === 'count'
+      ? ['__count__']
+      : splitFields.value.length
+        ? valueFields.value.slice(0, 1)
+        : valueFields.value
+
+  if (splitFields.value.length && valueFields.value.length > 1) {
+    warnings.push('Split-by uses the first selected numeric field to keep Mermaid output readable.')
+  }
+
+  if (maxSeries.value < 1) {
+    warnings.push('Set the max series value to at least 1.')
+  }
+
+  if (!effectiveValueFields.length) {
+    return {
+      warnings: ['Choose at least one numeric field or switch the aggregation to count.'],
+      categories: [] as string[],
+      series: [] as { name: string; values: number[] }[],
+    }
+  }
+
+  const buckets = new Map<string, Map<string, number[]>>()
+  const categoryOrder: string[] = []
+
+  parsedState.value.rows.forEach((row) => {
+    const category = buildLabelFromFields(
+      row,
+      categoryFields.value,
+      emptyLabelText.value || '(empty)',
+    )
+    if (!buckets.has(category)) {
+      buckets.set(category, new Map())
+      categoryOrder.push(category)
+    }
+
+    if (splitFields.value.length) {
+      const seriesName = buildLabelFromFields(
+        row,
+        splitFields.value,
+        emptyLabelText.value || '(empty)',
+      )
+      const metricKey = effectiveValueFields[0]
+      const metricValue = metricKey === '__count__' ? 1 : toNumber(row[metricKey])
+      if (metricValue === undefined) return
+      const group = buckets.get(category)!
+      const values = group.get(seriesName) || []
+      values.push(metricValue)
+      group.set(seriesName, values)
+      return
+    }
+
+    effectiveValueFields.forEach((field) => {
+      const seriesName = field === '__count__' ? 'Count' : normalizeMermaidText(field, 'Value')
+      const metricValue = field === '__count__' ? 1 : toNumber(row[field])
+      if (metricValue === undefined) return
+      const group = buckets.get(category)!
+      const values = group.get(seriesName) || []
+      values.push(metricValue)
+      group.set(seriesName, values)
+    })
+  })
+
+  const aggregateValues = (values: number[]) => {
+    if (!values.length) return 0
+    if (aggregation.value === 'avg') return values.reduce((sum, entry) => sum + entry, 0) / values.length
+    if (aggregation.value === 'min') return Math.min(...values)
+    if (aggregation.value === 'max') return Math.max(...values)
+    return values.reduce((sum, entry) => sum + entry, 0)
+  }
+
+  const seriesNames = Array.from(
+    new Set(
+      Array.from(buckets.values()).flatMap((group) => Array.from(group.keys())),
+    ),
+  )
+
+  let categories = categoryOrder.map((label) => ({
+    label,
+    total: Array.from(buckets.get(label)?.values() || []).reduce(
+      (sum, values) => sum + aggregateValues(values),
+      0,
+    ),
+  }))
+
+  if (hideZeroCategories.value) {
+    categories = categories.filter((entry) => entry.total !== 0)
+  }
+
+  if (sortMode.value === 'label-asc') {
+    categories = [...categories].sort((a, b) => a.label.localeCompare(b.label))
+  } else if (sortMode.value === 'label-desc') {
+    categories = [...categories].sort((a, b) => b.label.localeCompare(a.label))
+  } else if (sortMode.value === 'value-desc') {
+    categories = [...categories].sort((a, b) => b.total - a.total)
+  } else if (sortMode.value === 'value-asc') {
+    categories = [...categories].sort((a, b) => a.total - b.total)
+  }
+
+  let cappedCategories = limit.value > 0 ? categories.slice(0, limit.value) : categories
+  const hiddenCategories = limit.value > 0 ? categories.slice(limit.value) : []
+
+  if (includeEverythingElse.value && hiddenCategories.length) {
+    cappedCategories = [
+      ...cappedCategories,
+      {
+        label: normalizeMermaidText(everythingElseLabel.value, 'Everything else'),
+        total: hiddenCategories.reduce((sum, entry) => sum + entry.total, 0),
+      },
+    ]
+  }
+
+  const categoryLabels = cappedCategories.map((entry) => entry.label)
+
+  let series = seriesNames.map((name) => ({
+    name,
+    values: categoryLabels.map((label) => {
+      if (
+        includeEverythingElse.value &&
+        hiddenCategories.length &&
+        label === normalizeMermaidText(everythingElseLabel.value, 'Everything else')
+      ) {
+        return hiddenCategories.reduce(
+          (sum, hiddenCategory) => sum + aggregateValues(buckets.get(hiddenCategory.label)?.get(name) || []),
+          0,
+        )
+      }
+
+      return aggregateValues(buckets.get(label)?.get(name) || [])
+    }),
+  }))
+
+  if (hideZeroSeries.value) {
+    series = series.filter((entry) => entry.values.some((value) => value !== 0))
+  }
+
+  if (maxSeries.value > 0 && series.length > maxSeries.value) {
+    warnings.push(`Series were limited to the first ${maxSeries.value} entries.`)
+    series = series.slice(0, maxSeries.value)
+  }
+
+  if (chartNeedsSingleSeries && series.length > 1) {
+    warnings.push('This chart type uses the first available series. Switch to grouped bars or multi-line to compare more.')
+    series = series.slice(0, 1)
+  }
+
+  if (chartType.value === 'combo' && series.length > 2) {
+    warnings.push('Combo mode uses the first two series: one bar and one line.')
+    series = series.slice(0, 2)
+  }
+
+  if (chartType.value === 'pie' && series.length > 1) {
+    warnings.push('Pie charts use the first series only.')
+    series = series.slice(0, 1)
+  }
+
+  return {
+    warnings,
+    categories: categoryLabels,
+    series,
+  }
+})
+
+const yAxisRange = computed(() => {
+  const allValues = seriesConfig.value.series.flatMap((entry) => entry.values)
+  const precision = Math.max(0, decimalPlaces.value)
+
+  if (!allValues.length) {
+    return { min: 0, max: 1, warning: undefined as string | undefined, precision }
+  }
+
+  if (yAxisMode.value === 'manual') {
+    const min = Number(yAxisMin.value)
+    const max = Number(yAxisMax.value)
+    if (!Number.isFinite(min) || !Number.isFinite(max)) {
+      return { min: 0, max: 1, warning: 'Manual axis values must be valid numbers.', precision }
+    }
+    if (min === max) {
+      return { min, max: min + 1, warning: 'Y axis max must differ from min. Auto-adjusted by 1.', precision }
+    }
+    if (min > max) {
+      return { min: max, max: min, warning: 'Y axis min was greater than max, so both values were swapped.', precision }
+    }
+    return { min, max, warning: undefined as string | undefined, precision }
+  }
+
+  const rawMin = Math.min(0, ...allValues)
+  const rawMax = Math.max(0, ...allValues)
+  const span = rawMax - rawMin || 1
+  const padding = span * 0.1
+  return {
+    min: Number((rawMin - padding).toFixed(precision)),
+    max: Number((rawMax + padding).toFixed(precision)),
+    warning: undefined as string | undefined,
+    precision,
+  }
+})
+
+const mermaidCode = computed(() => {
+  if (parsedState.value.error) return ''
+  if (!parsedState.value.rows.length) return ''
+  if (!seriesConfig.value.categories.length || !seriesConfig.value.series.length) return ''
+  const precision = Math.max(0, decimalPlaces.value)
+
+  if (chartType.value === 'pie') {
+    const series = seriesConfig.value.series[0]
+    return [
+      `pie${pieShowData.value ? ' showData' : ''}`,
+      ...(chartTitle.value.trim() ? [`  title ${escapeMermaidLabel(chartTitle.value.trim())}`] : []),
+      ...seriesConfig.value.categories.map((label, index) => {
+        const value = Number(series.values[index].toFixed(precision))
+        return `  ${escapeMermaidLabel(label)} : ${value}`
+      }),
+    ].join('\n')
+  }
+
+  const lines = [
+    'xychart-beta',
+    ...(chartTitle.value.trim() ? [`  title ${escapeMermaidLabel(chartTitle.value.trim())}`] : []),
+    `  x-axis ${escapeMermaidLabel(categoryFields.value.join(' / '), 'Category')} [${seriesConfig.value.categories.map((label) => escapeMermaidLabel(label)).join(', ')}]`,
+    `  y-axis ${escapeMermaidLabel(yAxisLabel.value.trim() || 'Value', 'Value')} ${yAxisRange.value.min} --> ${yAxisRange.value.max}`,
+  ]
+
+  if (chartType.value === 'combo') {
+    const [first, second = first] = seriesConfig.value.series
+    if (includeSeriesComments.value) {
+      lines.push(`  %% ${escapeMermaidComment(first.name, 'Bar series')}`)
+    }
+    lines.push(`  bar [${first.values.map((value) => Number(value.toFixed(precision))).join(', ')}]`)
+    if (includeSeriesComments.value) {
+      lines.push(`  %% ${escapeMermaidComment(second.name, 'Line series')}`)
+    }
+    lines.push(`  line [${second.values.map((value) => Number(value.toFixed(precision))).join(', ')}]`)
+    return lines.join('\n')
+  }
+
+  const renderer =
+    chartType.value === 'line' || chartType.value === 'multi-line' ? 'line' : 'bar'
+
+  seriesConfig.value.series.forEach((series) => {
+    if (includeSeriesComments.value) {
+      lines.push(`  %% ${escapeMermaidComment(series.name)}`)
+    }
+    lines.push(`  ${renderer} [${series.values.map((value) => Number(value.toFixed(precision))).join(', ')}]`)
+  })
+
+  return lines.join('\n')
+})
+
+const stats = computed(() => ({
+  rows: parsedState.value.rows.length,
+  fields: fieldOptions.value.length,
+  series: seriesConfig.value.series.length,
+  format: parsedState.value.format.toUpperCase(),
+}))
+
+const applyPreset = (preset: ExamplePreset) => {
+  inputFormat.value = preset.format
+  source.value = preset.source
+  chartType.value = preset.chartType
+  chartTitle.value = preset.title
+  yAxisLabel.value = preset.yAxisLabel || 'Value'
+  categoryFields.value = [...preset.categoryFields]
+  splitFields.value = [...(preset.splitFields || [])]
+  valueFields.value = [...(preset.valueFields || [])]
+  aggregation.value = preset.aggregation || 'sum'
+}
+</script>
+
+<template>
+  <UtilityShell
+    control-title="Dataset"
+    control-description="Paste JSON, YAML, or CSV, pick a chart type, and generate Mermaid charts from structured data."
+    result-title="Mermaid Chart"
+    result-description="Live Mermaid output, chart diagnostics, and reusable Mermaid code."
+  >
+    <template #controls>
+      <div class="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto]">
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidTool.examplePreset') }}</label>
+          <Select
+            v-model="selectedPresetId"
+            :options="examplePresets"
+            option-label="label"
+            option-value="id"
+            :placeholder="$t('utility.dataToMermaidTool.chooseAChartPreset')"
+            fluid
+          />
+          <p v-if="selectedPreset" class="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
+            {{ selectedPreset.description }}
+          </p>
+        </div>
+        <div class="flex items-end">
+          <Button
+            @click="selectedPreset && applyPreset(selectedPreset)"
+            :disabled="!selectedPreset"
+            :label="$t('utility.dataToMermaidTool.loadPreset')"
+            icon="ti ti-wand"
+            severity="contrast"
+            outlined
+          />
+        </div>
+      </div>
+
+      <div class="grid gap-3 md:grid-cols-2">
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidTool.inputFormat') }}</label>
+          <Select
+            v-model="inputFormat"
+            :options="formatOptions"
+            option-label="label"
+            option-value="value"
+            fluid
+          />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidTool.chartType') }}</label>
+          <Select
+            v-model="chartType"
+            :options="chartTypeOptions"
+            option-label="label"
+            option-value="value"
+            fluid
+          />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidTool.chartTitle') }}</label>
+          <InputText v-model="chartTitle" fluid :placeholder="$t('utility.dataToMermaidTool.revenueByMonth')" />
+        </div>
+
+        <div v-if="chartType !== 'pie'">
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidTool.yAxisLabel') }}</label>
+          <InputText v-model="yAxisLabel" fluid :placeholder="$t('utility.dataToMermaidTool.value')" />
+        </div>
+      </div>
+
+      <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidTool.decimals') }}</label>
+          <InputNumber v-model="decimalPlaces" :min="0" :max="6" fluid />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidTool.yAxisRange') }}</label>
+          <Select
+            v-model="yAxisMode"
+            :options="yAxisModeOptions"
+            option-label="label"
+            option-value="value"
+            fluid
+          />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidTool.emptyLabel') }}</label>
+          <InputText v-model="emptyLabelText" fluid placeholder="(empty)" />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidTool.fieldSeparator') }}</label>
+          <InputText v-model="labelSeparator" fluid placeholder=" / " />
+        </div>
+      </div>
+
+      <div v-if="chartType !== 'pie' && yAxisMode === 'manual'" class="grid gap-3 md:grid-cols-2">
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidTool.yAxisMin') }}</label>
+          <InputNumber v-model="yAxisMin" fluid />
+        </div>
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidTool.yAxisMax') }}</label>
+          <InputNumber v-model="yAxisMax" fluid />
+        </div>
+      </div>
+
+      <div>
+        <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidTool.sourceData') }}</label>
+        <Textarea v-model="source" auto-resize rows="18" fluid />
+      </div>
+
+      <div class="grid gap-3 md:grid-cols-2">
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidTool.categoryGroupFields') }}</label>
+          <MultiSelect
+            v-model="categoryFields"
+            :options="dimensionFieldOptions"
+            option-label="label"
+            option-value="value"
+            display="chip"
+            fluid
+            :placeholder="$t('utility.dataToMermaidTool.selectOneOrMoreFields')"
+          />
+        </div>
+
+        <div v-if="chartType !== 'pie'">
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidTool.splitIntoSeriesByFields') }}</label>
+          <MultiSelect
+            v-model="splitFields"
+            :options="dimensionFieldOptions"
+            option-label="label"
+            option-value="value"
+            display="chip"
+            fluid
+            :placeholder="$t('utility.dataToMermaidTool.optionalSeriesGrouping')"
+          />
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidTool.numericFieldsToVisualize') }}</label>
+          <MultiSelect
+            v-model="valueFields"
+            :options="numericFieldOptions"
+            option-label="label"
+            option-value="value"
+            display="chip"
+            fluid
+            :placeholder="$t('utility.dataToMermaidTool.pickOneOrMoreNumericFields')"
+          />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidTool.aggregation') }}</label>
+          <Select
+            v-model="aggregation"
+            :options="aggregationOptions"
+            option-label="label"
+            option-value="value"
+            fluid
+          />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidTool.sortGroups') }}</label>
+          <Select
+            v-model="sortMode"
+            :options="sortOptions"
+            option-label="label"
+            option-value="value"
+            fluid
+          />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidTool.maxGroups') }}</label>
+          <InputNumber v-model="limit" :min="1" :max="100" fluid />
+        </div>
+
+        <label
+          class="flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-3 py-2 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <Checkbox v-model="includeEverythingElse" binary />
+          <span class="text-sm">{{ $t('utility.dataToMermaidTool.groupHiddenEntriesIntoEverythingElse') }}</span>
+        </label>
+
+        <div v-if="includeEverythingElse">
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidTool.everythingElseLabel') }}</label>
+          <InputText v-model="everythingElseLabel" fluid :placeholder="$t('utility.dataToMermaidTool.everythingElse')" />
+        </div>
+
+        <div>
+          <label class="mb-1 block text-sm text-neutral-500 dark:text-neutral-400">{{ $t('utility.dataToMermaidTool.maxSeries') }}</label>
+          <InputNumber v-model="maxSeries" :min="1" :max="50" fluid />
+        </div>
+
+        <label
+          class="flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-3 py-2 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <Checkbox v-model="includeSeriesComments" binary />
+          <span class="text-sm">{{ $t('utility.dataToMermaidTool.includeSeriesCommentsInMermaidCode') }}</span>
+        </label>
+
+        <label
+          class="flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-3 py-2 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <Checkbox v-model="hideZeroSeries" binary />
+          <span class="text-sm">{{ $t('utility.dataToMermaidTool.hideZeroOnlySeries') }}</span>
+        </label>
+
+        <label
+          class="flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-3 py-2 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <Checkbox v-model="hideZeroCategories" binary />
+          <span class="text-sm">{{ $t('utility.dataToMermaidTool.hideZeroOnlyGroups') }}</span>
+        </label>
+
+        <label
+          v-if="chartType === 'pie'"
+          class="flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-3 py-2 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <Checkbox v-model="pieShowData" binary />
+          <span class="text-sm">{{ $t('utility.dataToMermaidTool.showValuesInThePieChart') }}</span>
+        </label>
+      </div>
+
+      <div v-if="fieldOptions.length" class="flex flex-wrap gap-2">
+        <Tag
+          v-for="field of fieldOptions"
+          :key="field.value"
+          :value="`${field.label}${field.numeric ? ' • number' : ' • text'}`"
+          severity="contrast"
+        />
+      </div>
+    </template>
+
+    <template #result>
+      <div v-if="parsedState.error" class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-300">
+        {{ parsedState.error }}
+      </div>
+
+      <div v-else-if="!parsedState.rows.length" class="rounded-xl border border-dashed border-neutral-300 bg-white/70 p-4 text-sm text-neutral-500 dark:border-neutral-700 dark:bg-neutral-900/40 dark:text-neutral-400">
+        Add some structured data to generate a Mermaid chart.
+      </div>
+
+      <template v-else>
+        <div class="grid gap-3 md:grid-cols-4">
+          <div
+            v-for="entry of [
+              ['Format', stats.format],
+              ['Rows', stats.rows],
+              ['Fields', stats.fields],
+              ['Series', stats.series],
+            ]"
+            :key="entry[0]"
+            class="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+          >
+            <div class="text-sm text-neutral-500 dark:text-neutral-400">{{ entry[0] }}</div>
+            <div class="mt-2 text-xl font-semibold">{{ entry[1] }}</div>
+          </div>
+        </div>
+
+        <div v-if="seriesConfig.warnings.length" class="mt-4 flex flex-wrap gap-2">
+          <Tag
+            v-for="warning of seriesConfig.warnings"
+            :key="warning"
+            :value="warning"
+            severity="warn"
+          />
+        </div>
+
+        <div v-if="yAxisRange.warning" class="mt-4 flex flex-wrap gap-2">
+          <Tag :value="yAxisRange.warning" severity="warn" />
+        </div>
+
+        <div class="mt-4 overflow-hidden rounded-xl border border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900">
+          <MermaidViewer v-if="mermaidCode" :mermaid-code="mermaidCode" />
+          <div
+            v-else
+            class="p-4 text-sm text-neutral-500 dark:text-neutral-400"
+          >
+            Pick a category field and at least one usable numeric field to render a chart.
+          </div>
+        </div>
+
+        <div class="mt-4 overflow-hidden rounded-xl border border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-900">
+          <Highlighted :contents="mermaidCode || '%% Mermaid chart will appear here'" file-name="chart.mmd" />
+        </div>
+      </template>
+    </template>
+
+    <template #footer>
+      <UtilityResultActions :result="mermaidCode" file-name="chart.mmd" />
+    </template>
+  </UtilityShell>
+</template>
