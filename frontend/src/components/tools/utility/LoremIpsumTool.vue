@@ -39,3 +39,44 @@ const generate = () => {
       return `${sentence.charAt(0).toUpperCase()}${sentence.slice(1)}.`
     }).join(' ')
     return
+  }
+
+  output.value = Array.from({ length: target }, (_, index) => {
+    const start = index * 40
+    return Array.from({ length: 4 }, (_, sentenceIndex) => {
+      const sentence = Array.from({ length: 10 }, (_, wordIndex) =>
+        wordAt(start + sentenceIndex * 10 + wordIndex),
+      ).join(' ')
+      return `${sentence.charAt(0).toUpperCase()}${sentence.slice(1)}.`
+    }).join(' ')
+  }).join('\n\n')
+}
+
+watch([mode, count], generate, { immediate: true })
+
+const result = computed(() => output.value)
+</script>
+
+<template>
+  <UtilityShell>
+    <template #controls>
+      <label class="text-sm font-medium">{{ $t('utility.loremIpsumTool.mode') }}</label>
+      <Select v-model="mode" :options="modeOptions" option-label="label" option-value="value" />
+      <label class="text-sm font-medium">{{ $t('utility.loremIpsumTool.count') }}</label>
+      <InputNumber v-model="count" :min="1" :max="20" fluid />
+      <div>
+        <Button @click="generate()" :label="$t('utility.loremIpsumTool.generateAgain')" icon="ti ti-refresh" severity="contrast" outlined />
+      </div>
+    </template>
+
+    <template #result>
+      <div class="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900">
+        <code class="block whitespace-pre-wrap text-sm">{{ output }}</code>
+      </div>
+    </template>
+
+    <template #footer>
+      <UtilityResultActions :result="result" file-name="lorem-ipsum.txt" />
+    </template>
+  </UtilityShell>
+</template>

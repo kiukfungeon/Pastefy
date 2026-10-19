@@ -51,3 +51,57 @@ public class Folder extends Model {
     }
 
     public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public List<Paste> getPastes(boolean showPrivatePastes) {
+        Query<Paste> query = Repo.get(Paste.class).where("folder", key).order("updated_at", true);
+
+        if (!showPrivatePastes)
+            query.where("visibility", "!=", Paste.Visibility.PRIVATE);
+
+        return query.all();
+    }
+
+    public List<Paste> getPastes() {
+        return getPastes(false);
+    }
+
+    public List<Folder> getFolders() {
+        return Repo.get(Folder.class).where("parent", key).order("updated_at", true).all();
+    }
+
+    public void delete() {
+        getPastes().forEach(paste -> paste.delete());
+        getFolders().forEach(folder -> folder.delete());
+        super.delete();
+    }
+
+    public Folder getParent() {
+        return Repo.get(getClass()).where("key", parent).first();
+    }
+
+    public void setParent(String parent) {
+        this.parent = parent;
+    }
+
+    public void setParent(Folder parent) {
+        this.parent = parent.key;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
