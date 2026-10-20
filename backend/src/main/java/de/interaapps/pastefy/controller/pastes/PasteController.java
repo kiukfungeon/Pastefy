@@ -180,3 +180,94 @@ public class PasteController extends HttpController {
             paste.save();
             response.success = true;
         } else {
+            throw new PermissionsDeniedException();
+        }
+        return response;
+    }
+
+    @Get("/{id}")
+    @With({"auth-login-required-read", "awaiting-access-check", "blocked-check"})
+    public PasteResponse getPaste(Exchange exchange, @Path("id") String id, @Attrib("user") User user) {
+        Paste paste = Repo.get(Paste.class).where("key", id).first();
+
+        if (paste == null) {
+            throw new NotFoundException();
+        }
+
+        if (paste.isPrivate() && (user == null || !Objects.equals(user.id, paste.getUserId()))) {
+            throw new PastePrivateException();
+        }
+
+        if (paste.isPublic()) {
+            if (user == null || !Objects.equals(user.id, paste.getUserId())) {
+                Pastefy.getInstance().executeAsync(() ->
+                        PublicPasteEngagement.addInterestFromPaste(paste, "true".equalsIgnoreCase(exchange.query("from_frontend", "false")) ? (user == null ? 5 : 4) : 2));
+            }
+        }
+
+        if (Pastefy.getInstance().analyticsEnabled() && "true".equalsIgnoreCase(exchange.query("from_frontend", "false"))) {
+            Pastefy.getInstance().getAnalyticsService().track(exchange, paste, user, de.interaapps.pastefy.analytics.AnalyticsService.VisitType.PAGE);
+        }
+
+        return PasteResponse.create(paste, exchange, user);
+    }
+
+    @Delete("/{id}")
+    @With({"auth", "awaiting-access-check", "blocked-check"})
+    public ActionResponse deletePaste(Exchange exchange, @Path("id") String id, @Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
+        if (authKey != null)
+            authKey.checkPermission("pastes:delete");
+
+        ActionResponse response = new ActionResponse();
+        Paste paste = Repo.get(Paste.class).where("key", id).first();
+
+        if (paste == null) {
+            throw new NotFoundException();
+        }
+
+        if ((paste.getUserId() != null && paste.getUserId().equals(user.getId())) || user.type == User.Type.ADMIN) {
+            paste.delete();
+            response.success = true;
+        } else {
+            throw new PermissionsDeniedException();
+        }
+
+        return response;
+    }
+
+    @Post("/{id}/star")
+    @With({"auth-login-required-read", "awaiting-access-check", "blocked-check", "auth"})
+    public ActionResponse starPaste(@Path("id") String id, @Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
+        authKey.checkPermission("stars:create");
+        Paste paste = Paste.getAccessiblePasteOrFail(id, user);
+        user.star(paste);
+        return new ActionResponse(true);
+    }
+
+    @Delete("/{id}/star")
+    @With({"auth-login-required-read", "awaiting-access-check", "blocked-check", "auth"})
+    public ActionResponse unstarPaste(@Path("id") String id, @Attrib("user") User user, @Attrib("authkey") AuthKey authKey) {
+        authKey.checkPermission("stars:delete");
+        Paste paste = Paste.getAccessiblePasteOrFail(id, user);
+        user.unstar(paste);
+        return new ActionResponse(true);
+    }
+
+    @Post("/{id}/friend")
+    @Deprecated
+    @With({"auth", "awaiting-access-check", "blocked-check"})
+    public ActionResponse addFriend(Exchange exchange, @Body AddFriendToPasteRequest request, @Path("id") String id, @Attrib("user") User user, @Attrib("authkey") AuthKey requestAuthKey) {
+        throw new RuntimeException("NOT IMPLEMENTED");
+    }
+
+    @Post("/{id}/ai-analysis")
+    @With({"admin"})
+    public ActionResponse createAiAnalysisJob(@Path("id") String id, @Attrib("user") User user, @Attrib("authkey") AuthKey requestAuthKey) {
+        requestAuthKey.checkPermission("pastes.ai_analysis:create");
+        if (!Pastefy.getInstance().aiEnabled()) {
+            throw new RuntimeException("AI features are disabled");
+        }
+        Pastefy.getInstance().getPasteAIInfoService().enqueue(Paste.getAccessiblePasteOrFail(id, user));
+        return new ActionResponse(true);
+    }
+}
