@@ -42,3 +42,48 @@ public class AuthKey extends Model {
 
     public AuthKey() {
         key = RandomUtil.string(60);
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public boolean hasPermission(String permission) {
+        if (permission.equals(""))
+            return true;
+
+        return hasScope(permission) || hasScope(permission.split(":")[0]);
+    }
+
+    /**
+     * Standard: group.permission:action
+     * or pastefy|paste:read (Will passthrough the request but adds a user-id header)
+     */
+    public void checkPermission(String... permissions) {
+        for (String permission : permissions) {
+            if (hasPermission(permission))
+                return;
+        }
+        throw new PermissionsDeniedException();
+    }
+
+    public AuthKey addScope(String scope) {
+        if (scopes == null)
+            scopes = new AbstractArray();
+        scopes.add(scope);
+        return this;
+    }
+
+    private boolean hasScope(String scope) {
+        if (type != Type.ACCESS_TOKEN)
+            return true;
+
+        if (scopes == null)
+            return false;
+        return scopes.stream().anyMatch(scope1 -> scope1.string().equals(scope));
+    }
+
+    public enum Type {
+        API, USER, ACCESS_TOKEN
+    }
+}
