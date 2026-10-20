@@ -191,3 +191,68 @@ const { isLoading, error } = useAsyncState(async () => {
           <div
             v-if="paste.user"
             class="flex items-center gap-3 text-sm text-neutral-600 dark:text-neutral-300"
+          >
+            <img
+              :src="paste.user.avatar"
+              :alt="paste.user.display_name"
+              class="h-10 w-10 rounded-full border border-neutral-200 object-cover dark:border-neutral-700"
+            />
+            <div>
+              <p class="font-semibold">{{ paste.user.display_name }}</p>
+              <router-link
+                :to="{ name: 'user', params: { user: paste.user.name } }"
+                class="opacity-70 hover:underline"
+              >
+                @{{ paste.user.name }}
+              </router-link>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-center">
+            <Button
+              v-if="paste.type === 'MULTI_PASTE'"
+              as="router-link"
+              :to="{ name: 'paste', params: { paste: paste.id } }"
+              :label="$t('views.markdownArticleView.viewMultiPaste')"
+              text
+              rounded
+              size="small"
+              severity="contrast"
+            />
+            <Button
+              v-else
+              as="router-link"
+              :to="{ name: 'paste', params: { paste: paste.id } }"
+              :label="$t('views.markdownArticleView.viewPaste')"
+              size="small"
+              text
+              rounded
+              severity="contrast"
+            />
+            <PasteStarButton :paste="paste" :paste-id="paste.id!" size="small" />
+          </div>
+        </div>
+      </header>
+
+      <div class="px-2 py-4 md:px-6 md:py-8">
+        <div
+          v-if="paste.type === 'MULTI_PASTE' && markdownParts.length > 1"
+          class="mb-6 flex flex-wrap gap-2 px-2 md:px-4"
+        >
+          <Button
+            v-for="part in markdownParts"
+            :key="part.name"
+            :label="toArticleLabel(part.name)"
+            size="small"
+            severity="contrast"
+            :outlined="part.name !== activeMarkdownPart?.name"
+            @click="selectedPart = part.name"
+          />
+        </div>
+        <div class="markdown-article">
+          <MarkdownViewer :markdown="markdown" />
+        </div>
+      </div>
+    </article>
+  </main>
+</template>
