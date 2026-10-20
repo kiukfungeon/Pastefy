@@ -114,3 +114,32 @@ public class PasteMetaController extends HttpController {
                 String tagUrl = seo.absoluteUrl("/tags/" + seo.pathSegment(tag));
                 tagsHtml += "<a href=\"" + seo.escapeHtml(tagUrl) + "\" class=\"seo-tag\">" + seo.escapeHtml(tag) + "</a> ";
             }
+        }
+
+        String descriptionHtml = "";
+        if (aiDescription != null) {
+            descriptionHtml += "<h2>Description</h2><p>" + seo.escapeHtml(aiDescription) + "</p>";
+        }
+
+        return "<main id=\"seo-content\">"
+                + "<h1 title=\"paste-title\">" + seo.escapeHtml(title) + "</h1>"
+                + authorHtml
+                + "<p>View and share code snippets on Pastefy.</p>"
+                + "<pre><code>" + seo.escapeHtml(preview) + "</code></pre>"
+                + tagsHtml
+                +descriptionHtml
+                + "</main>";
+    }
+
+    private static class SeoAuthor {
+        private final String displayName;
+        private final String username;
+        private final String profileUrl;
+
+        private SeoAuthor(String displayName, String username, String profileUrl) {
+            this.displayName = displayName;
+            this.username = username;
+            this.profileUrl = profileUrl;
+        }
+    }
+}
