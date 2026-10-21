@@ -51,3 +51,30 @@ public class PasteThumbnailController extends HttpController {
         String[] lines = contents.split("\n");
         for (int i = 0; i < 5; i++) {
             String placeholder = "%content_" + (i + 1) + "%";
+            if (i < lines.length) {
+                svgContent = svgContent.replace(placeholder, StringEscapeUtils.escapeXml11(lines[i]));
+            } else {
+                svgContent = svgContent.replace(placeholder, "");
+            }
+        }
+
+        ByteArrayInputStream svgInputStream = new ByteArrayInputStream(svgContent.getBytes(StandardCharsets.UTF_8));
+        TranscoderInput input = new TranscoderInput(svgInputStream);
+
+        ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
+        TranscoderOutput output = new TranscoderOutput(pngOutputStream);
+
+        Transcoder transcoder = new PNGTranscoder();
+        transcoder.transcode(input, output);
+
+        pngOutputStream.flush();
+
+        InputStream pngInputStream = new ByteArrayInputStream(pngOutputStream.toByteArray());
+        exchange.write(pngInputStream);
+
+        pngInputStream.close();
+        pngOutputStream.close();
+        svgInputStream.close();
+        return null;
+    }
+}
