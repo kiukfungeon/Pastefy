@@ -86,3 +86,25 @@ public class TwitchOAuth2Provider implements OAuth2Provider {
             return new HTTPClient("https://api.twitch.tv/helix").bearer(accessToken);
         }
 
+        public OAuth2Profile getProfile() {
+            OAuth2Profile profile = new OAuth2Profile();
+
+            AbstractObject userData = createApiClient().get("/users")
+                    .header("Client-Id", clientId)
+                    .data().object().get("data").array().get(0).object();
+
+            if (userData.has("id"))
+                profile.id = userData.get("id").string();
+            if (userData.has("login"))
+                profile.name = userData.get("login").string();
+            if (userData.has("profile_image_url"))
+                profile.avatar = userData.get("profile_image_url").string();
+            if (userData.has("email"))
+                profile.mail = userData.get("email").string();
+            userData.forEach(profile::set);
+
+            return profile;
+        }
+    }
+
+}
