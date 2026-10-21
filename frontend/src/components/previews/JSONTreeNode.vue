@@ -112,3 +112,42 @@ const valueClass = computed(() => {
   <div v-if="isVisible" class="font-[JetBrains_Mono_Variable] text-[0.92rem]">
     <div
       class="flex items-start gap-2 rounded-lg px-2 py-1 transition-colors hover:bg-neutral-100/80 dark:hover:bg-neutral-800/70"
+      :style="{ paddingLeft: `${depth * 18 + 8}px` }"
+    >
+      <button
+        v-if="isCollapsible"
+        class="mt-0.5 flex h-5 w-5 items-center justify-center rounded text-neutral-500 hover:bg-neutral-200 dark:hover:bg-neutral-700"
+        @click="toggle"
+      >
+        <i :class="`ti ti-chevron-${expanded ? 'down' : 'right'} text-sm`" />
+      </button>
+      <span v-else class="block h-5 w-5" />
+
+      <div class="min-w-0 flex-1">
+        <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
+          <span v-if="label" class="font-semibold text-neutral-800 dark:text-neutral-100">
+            {{ label }}
+          </span>
+          <span v-if="label" class="opacity-40">:</span>
+          <span :class="valueClass">
+            {{ summary }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="isCollapsible && expanded">
+      <JSONTreeNode
+        v-for="entry in entries"
+        :key="entry.childPath"
+        :label="entry.key"
+        :value="entry.value"
+        :path="entry.childPath"
+        :depth="depth + 1"
+        :search="search"
+        :is-expanded="isExpanded"
+        :set-expanded="setExpanded"
+      />
+    </div>
+  </div>
+</template>
