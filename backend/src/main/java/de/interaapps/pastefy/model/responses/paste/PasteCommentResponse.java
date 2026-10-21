@@ -20,3 +20,26 @@ public class PasteCommentResponse {
     public List<PasteCommentResponse> replies = new ArrayList<>();
 
     public PasteCommentResponse(PasteComment comment, boolean fetchReplies) {
+        id = comment.getId();
+        content = comment.getContent();
+        parentId = comment.getParentId();
+        lineFrom = comment.getLineFrom();
+        lineTo = comment.getLineTo();
+        createdAt = comment.createdAt.toString();
+
+        User commentUser = comment.getUser();
+        if (commentUser != null) {
+            user = new PublicUserResponse(commentUser);
+        }
+
+        if (fetchReplies) {
+            replies = Repo.get(PasteComment.class)
+                    .where("parentId", comment.getId())
+                    .order("created_at")
+                    .all()
+                    .stream()
+                    .map(reply -> new PasteCommentResponse(reply, false))
+                    .collect(Collectors.toList());
+        }
+    }
+}
