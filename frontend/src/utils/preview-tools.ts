@@ -242,3 +242,248 @@ Grace,user,frontend
     slug: 'diff-viewer',
     title: 'Diff Viewer',
     shortTitle: 'Diff',
+    description:
+      'Review patches and code changes in a dedicated diff preview page that behaves more like a quick review tool.',
+    fileName: 'changes.diff',
+    type: 'diff',
+    icon: 'git-compare',
+    category: 'Docs',
+    keywords: ['diff', 'patch', 'review'],
+    example: `diff --git a/app.ts b/app.ts
+index 1111111..2222222 100644
+--- a/app.ts
++++ b/app.ts
+@@ -1,4 +1,5 @@
+ console.log("hello")
++console.log("pastefy")
+ const enabled = true
+`,
+  },
+  {
+    slug: 'env-viewer',
+    title: '.env / Config Viewer',
+    shortTitle: 'Config',
+    description:
+      'Inspect environment-style config files in a dedicated preview tool that is useful for app settings and deployment data.',
+    fileName: '.env',
+    type: 'properties',
+    icon: 'settings-code',
+    category: 'Infra',
+    keywords: ['env', 'properties', 'ini', 'config'],
+    example: `APP_NAME=Pastefy
+APP_ENV=production
+APP_DEBUG=false
+DB_HOST=postgres
+DB_PORT=5432
+DB_USER=pastefy
+DB_PASSWORD=supersecret
+REDIS_HOST=redis
+`,
+  },
+  {
+    slug: 'terraform-viewer',
+    title: 'Terraform / HCL Preview',
+    shortTitle: 'Terraform',
+    description:
+      'Edit Terraform and HCL files with a dedicated infrastructure preview, then publish the snippet when it is ready.',
+    fileName: 'main.tf',
+    type: 'hcl',
+    icon: 'building-warehouse',
+    category: 'Infra',
+    keywords: ['terraform', 'hcl', 'infrastructure as code'],
+    example: `terraform {
+  required_version = ">= 1.5.0"
+}
+
+provider "aws" {
+  region = "eu-central-1"
+}
+
+resource "aws_s3_bucket" "assets" {
+  bucket = "pastefy-assets-demo"
+}
+
+variable "environment" {
+  type    = string
+  default = "staging"
+}
+`,
+  },
+  {
+    slug: 'log-viewer',
+    title: 'Log Viewer',
+    shortTitle: 'Logs',
+    description:
+      'Paste application or server logs into a live viewer to filter and inspect them before creating a shareable paste.',
+    fileName: 'app.log',
+    type: 'log',
+    icon: 'logs',
+    category: 'Operations',
+    keywords: ['logs', 'viewer', 'server logs'],
+    example: `2026-03-20 10:00:01 INFO  Starting Pastefy
+2026-03-20 10:00:02 INFO  Connected to postgres
+2026-03-20 10:00:03 WARN  Redis latency is high
+2026-03-20 10:00:04 ERROR Failed to index paste 4a8f1
+2026-03-20 10:00:05 DEBUG Retrying elastic sync
+`,
+  },
+  {
+    slug: 'http-viewer',
+    title: 'HTTP / cURL Preview',
+    shortTitle: 'HTTP',
+    description:
+      'Compose HTTP requests or cURL calls and inspect them in a dedicated request preview before publishing or sharing.',
+    fileName: 'request.http',
+    type: 'http',
+    icon: 'api',
+    category: 'API',
+    keywords: ['http', 'curl', 'rest', 'api request'],
+    example: `POST https://api.pastefy.app/api/v2/paste
+Authorization: Bearer demo-token
+Content-Type: application/json
+
+{
+  "title": "hello.txt",
+  "content": "Hello World",
+  "visibility": "UNLISTED"
+}
+`,
+  },
+  {
+    slug: 'github-actions-viewer',
+    title: 'GitHub Actions Workflow Preview',
+    shortTitle: 'Actions',
+    description:
+      'Inspect workflow YAML with a specialized GitHub Actions preview that highlights jobs and steps while you edit.',
+    fileName: 'deploy.workflow.yml',
+    type: 'yaml',
+    icon: 'brand-github',
+    category: 'Automation',
+    keywords: ['github actions', 'workflow', 'ci'],
+    example: `name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install
+        run: npm ci
+      - name: Test
+        run: npm test
+`,
+  },
+  {
+    slug: 'ansible-viewer',
+    title: 'Ansible Playbook Preview',
+    shortTitle: 'Ansible',
+    description:
+      'Work on Ansible playbooks in a split editor and preview tasks, roles, and hosts in a clearer operational view.',
+    fileName: 'playbook.yml',
+    type: 'yaml',
+    icon: 'server-cog',
+    category: 'Automation',
+    keywords: ['ansible', 'playbook', 'automation'],
+    example: `- name: Deploy Pastefy
+  hosts: app_servers
+  become: true
+
+  roles:
+    - docker
+    - pastefy
+
+  tasks:
+    - name: Pull latest image
+      ansible.builtin.shell: docker pull pastefy/backend:latest
+
+    - name: Restart service
+      ansible.builtin.service:
+        name: pastefy
+        state: restarted
+`,
+  },
+  {
+    slug: 'prometheus-rules-viewer',
+    title: 'Prometheus / Alert Rules Preview',
+    shortTitle: 'Alerts',
+    description:
+      'Preview monitoring rules and alert groups in a page tailored to observability configs and alert definitions.',
+    fileName: 'alerts.yml',
+    type: 'yaml',
+    icon: 'activity-heartbeat',
+    category: 'Operations',
+    keywords: ['prometheus', 'grafana', 'alerts', 'monitoring'],
+    example: `groups:
+  - name: pastefy-alerts
+    rules:
+      - alert: PastefyHighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) > 1
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: High error rate detected
+`,
+  },
+  {
+    slug: 'regex-lab',
+    title: 'Regex Tester',
+    shortTitle: 'Regex',
+    description:
+      'Prototype, inspect, and share regular expressions with a dedicated regex-focused preview.',
+    fileName: 'pattern.regex',
+    type: 'regex',
+    icon: 'regex',
+    category: 'Security',
+    keywords: ['regex', 'pattern', 'validation', 'search'],
+    example: `^(?<protocol>https?):\\/\\/(?<host>[\\w.-]+)(?<path>\\/.*)?$`,
+  },
+  {
+    slug: 'terminal-cast-viewer',
+    title: 'Terminal Cast Preview',
+    shortTitle: 'Terminal Cast',
+    description:
+      'Preview recorded terminal sessions and shell demos before you publish them as pastes.',
+    fileName: 'session.cast',
+    type: 'cast',
+    icon: 'terminal-2',
+    category: 'Terminal',
+    keywords: ['terminal', 'asciinema', 'cast', 'shell demo'],
+    example: `{"version": 2, "width": 80, "height": 24, "timestamp": 1700000000, "env": {"SHELL": "/bin/bash", "TERM": "xterm-256color"}}
+[0.1, "o", "$ echo hello from pastefy\\r\\nhello from pastefy\\r\\n"]
+[0.8, "o", "$ ls\\r\\nREADME.md  src  package.json\\r\\n"]`,
+  },
+  {
+    slug: 'calendar-viewer',
+    title: 'ICS Calendar Preview',
+    shortTitle: 'Calendar',
+    description:
+      'Inspect calendar invites and event schedules in a quick reader-friendly preview.',
+    fileName: 'calendar.ics',
+    type: 'ics',
+    icon: 'calendar-event',
+    category: 'Docs',
+    keywords: ['ics', 'calendar', 'events', 'schedule'],
+    example: `BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+UID:pastefy-demo
+DTSTAMP:20260317T120000Z
+DTSTART:20260318T090000Z
+DTEND:20260318T100000Z
+SUMMARY:Pastefy Demo
+DESCRIPTION:Preview an ICS file in Pastefy tools.
+END:VEVENT
+END:VCALENDAR`,
+  },
+]
+
+export function findPreviewTool(slug?: string) {
+  return previewTools.find((tool) => tool.slug === slug)
+}

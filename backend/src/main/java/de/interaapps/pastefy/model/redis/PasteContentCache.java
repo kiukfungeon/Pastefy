@@ -28,3 +28,11 @@ public class PasteContentCache {
 
     public static void deleteCachedContent(Paste paste) {
         if (!Pastefy.getInstance().isRedisEnabled()) return;
+        try {
+            Pastefy.getInstance().getRedisClient().del("paste:" + paste.getId());
+        } catch (Exception e) {
+            System.out.println("Failed to delete cached content for paste " + paste.getId());
+            e.printStackTrace();
+        }
+    }
+}
