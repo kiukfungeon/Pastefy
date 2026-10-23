@@ -60,3 +60,34 @@ const {
     <div class="mb-9">
       <h2 class="mb-3 text-2xl font-bold">{{ $t('paste.pastes') }}</h2>
       <div class="grid w-full grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
+        <StatsCard :top="stats.created_pastes" description="Created Pastes" />
+        <StatsCard :top="stats.logged_in_pastes" description="Logged in Pastes" />
+        <StatsCard
+          v-if="'indexed_pastes' in stats"
+          :top="stats.indexed_pastes"
+          description="Indexed Pastes"
+        />
+        <StatsCard v-if="'s3pastes' in stats" :top="stats.s3pastes" description="S3 Pastes" />
+      </div>
+    </div>
+
+    <div class="mb-9">
+      <h2 class="mb-3 text-2xl font-bold">{{ $t('paste.folders') }}</h2>
+      <div class="grid w-full grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
+        <StatsCard :top="stats.folder_count" description="folders" />
+      </div>
+    </div>
+    <div class="mb-9">
+      <h2 class="mb-3 text-2xl font-bold">{{ $t('common.users') }}</h2>
+      <div class="grid w-full grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
+        <StatsCard :top="stats.user_count" description="Users" />
+      </div>
+    </div>
+    <div class="mb-9">
+      <h2 class="mb-3 text-2xl font-bold">{{ $t('common.tags') }}</h2>
+      <div class="grid w-full grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
+        <StatsCard :top="stats.tag_count" description="Tags" />
+      </div>
+    </div>
+  </div>
+</template>
