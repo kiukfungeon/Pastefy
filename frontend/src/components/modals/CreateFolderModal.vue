@@ -30,3 +30,35 @@ const {
 } = useAsyncState(
   async () => {
     const folder = (
+      await client.post('/api/v2/folder', {
+        name: name.value,
+        parent: props.parent,
+      })
+    ).data.folder as Folder
+
+    visible.value = false
+    userFolderStore.fetchFolders()
+    router.push({
+      name: 'folder',
+      params: {
+        folder: folder.id,
+      },
+    })
+  },
+  undefined,
+  {
+    immediate: false,
+  },
+)
+</script>
+<template>
+  <Dialog v-model:visible="visible" modal :header="$t('folder.createTitle')" class="w-[30rem] max-w-full">
+    <form class="flex flex-col justify-center gap-3" @submit.prevent="() => createFolder()">
+      <InputText autofocus v-model="name" :placeholder="$t('folder.name')" fluid />
+
+      <Button type="submit" :label="$t('folder.create')" :loading="isLoading" />
+
+      <ErrorContainer v-if="error" :error="error as any" />
+    </form>
+  </Dialog>
+</template>

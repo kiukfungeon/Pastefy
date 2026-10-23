@@ -191,3 +191,197 @@ const copyImage = async () => {
       detail: 'Your browser did not allow copying the image.',
       life: 4000,
     })
+  }
+}
+</script>
+<template>
+  <Dialog v-model:visible="visible" modal :header="$t('modals.screenshotPaste.screenshot')" class="w-[75rem] max-w-full">
+    <div class="grid gap-5 xl:grid-cols-[minmax(0,1fr)_23rem]">
+      <div
+        class="overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-100 p-4 dark:border-neutral-700 dark:bg-neutral-900"
+      >
+        <div class="flex min-h-[24rem] items-center justify-center overflow-auto rounded-xl">
+          <div
+            ref="screenshotAreaRef"
+            class="relative transition-all"
+            :class="[background, screenshotThemeClass]"
+            :style="{
+              width: `${Math.max(320, width)}px`,
+              padding: `${Math.max(0, padding)}px`,
+            }"
+          >
+            <div
+              class="overflow-hidden rounded-[1.25rem] border backdrop-blur-xl"
+              :class="codeShellClass"
+            >
+              <div
+                v-if="showTitleBar"
+                class="flex w-full items-center justify-between px-4 pt-4 pb-1"
+                :class="theme === 'dark' ? 'text-white' : 'text-neutral-900'"
+              >
+                <div class="flex gap-1.5">
+                  <div
+                    v-for="ignored of [1, 2, 3]"
+                    :key="ignored"
+                    class="h-[11px] w-[11px] rounded-full"
+                    :class="theme === 'dark' ? 'bg-white/20' : 'bg-neutral-300'"
+                  />
+                </div>
+                <span class="truncate px-3 text-xs font-medium opacity-60">{{ fileLabel }}</span>
+                <div class="w-[55px]" />
+              </div>
+
+              <Highlighted
+                class="w-full overflow-hidden"
+                hide-divider
+                :contents="selectedLines"
+                :file-name="fileName"
+                :starting-line-number="Math.max(fromLine - 1, 0)"
+                :hide-line-numbering="!showLineNumbers"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <section
+          class="rounded-2xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <h3 class="mb-8 text-sm font-semibold tracking-[0.2em] uppercase opacity-60">{{ $t('modals.screenshotPaste.style') }}</h3>
+          <div class="space-y-7">
+            <FloatLabel>
+              <Select
+                v-model="theme"
+                :options="themes"
+                option-label="label"
+                option-value="value"
+                fluid
+              />
+              <label>{{ $t('settings.theme') }}</label>
+            </FloatLabel>
+            <FloatLabel>
+              <Select
+                v-model="background"
+                :options="backgrounds"
+                option-label="name"
+                option-value="value"
+                fluid
+              >
+                <template #value="{ value }">
+                  <div class="flex items-center gap-2">
+                    <div
+                      class="h-[1rem] w-[1rem] rounded-full border border-neutral-400"
+                      :class="value"
+                    />
+                    <span>{{ backgrounds.find((option) => option.value === value)?.name }}</span>
+                  </div>
+                </template>
+                <template #option="{ option }">
+                  <div class="flex items-center gap-2">
+                    <div
+                      class="h-[1rem] w-[1rem] rounded-full border border-neutral-400"
+                      :class="option.value"
+                    />
+                    <span>{{ option.name }}</span>
+                  </div>
+                </template>
+              </Select>
+              <label>{{ $t('modals.screenshotPaste.background') }}</label>
+            </FloatLabel>
+            <FloatLabel>
+              <InputNumber v-model="width" :min="320" :max="2200" fluid />
+              <label>{{ $t('modals.screenshotPaste.canvasWidthPx') }}</label>
+            </FloatLabel>
+            <FloatLabel>
+              <InputNumber v-model="padding" :min="0" :max="160" fluid />
+              <label>{{ $t('modals.screenshotPaste.outerPaddingPx') }}</label>
+            </FloatLabel>
+          </div>
+        </section>
+
+        <section
+          class="rounded-2xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <h3 class="mb-8 text-sm font-semibold tracking-[0.2em] uppercase opacity-60">{{ $t('common.content') }}</h3>
+          <div class="space-y-7">
+            <FloatLabel>
+              <InputGroup>
+                <InputNumber v-model="fromLine" :min="1" :max="totalLines" fluid />
+                <InputGroupAddon class="bg-transparent">{{ $t('modals.screenshotPaste.to') }}</InputGroupAddon>
+                <InputNumber v-model="toLine" :min="fromLine" :max="totalLines" fluid />
+              </InputGroup>
+              <label>{{ $t('modals.screenshotPaste.lineRange') }}</label>
+            </FloatLabel>
+            <div class="grid gap-3">
+              <label
+                class="flex items-center justify-between gap-3 rounded-xl border border-neutral-200 p-3 dark:border-neutral-700"
+              >
+                <span class="text-sm font-medium">{{ $t('modals.screenshotPaste.showTitleBar') }}</span>
+                <Checkbox v-model="showTitleBar" binary />
+              </label>
+              <label
+                class="flex items-center justify-between gap-3 rounded-xl border border-neutral-200 p-3 dark:border-neutral-700"
+              >
+                <span class="text-sm font-medium">{{ $t('modals.screenshotPaste.showLineNumbers') }}</span>
+                <Checkbox v-model="showLineNumbers" binary />
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <section
+          class="rounded-2xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-neutral-900"
+        >
+          <h3 class="mb-8 text-sm font-semibold tracking-[0.2em] uppercase opacity-60">{{ $t('common.export') }}</h3>
+          <div class="space-y-7">
+            <FloatLabel>
+              <Select
+                v-model="exportFormat"
+                :options="exportFormats"
+                option-label="label"
+                option-value="value"
+                fluid
+              />
+              <label>{{ $t('common.format') }}</label>
+            </FloatLabel>
+            <FloatLabel>
+              <Select
+                v-model="exportScale"
+                :options="scaleOptions"
+                option-label="label"
+                option-value="value"
+                fluid
+              />
+              <label>{{ $t('modals.screenshotPaste.sharpness') }}</label>
+            </FloatLabel>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400">
+              Higher sharpness creates larger files but produces crisper screenshots.
+            </p>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <template #footer>
+      <div
+        class="flex w-full flex-col gap-3 border-t border-neutral-200 pt-5 md:flex-row md:items-center md:justify-between dark:border-neutral-700"
+      >
+        <span class="text-sm text-neutral-500 dark:text-neutral-400">
+          {{ totalLines }} total lines, exporting {{ Math.max(toLine - fromLine + 1, 0) }} lines.
+        </span>
+        <div class="flex flex-wrap justify-end gap-2">
+          <Button
+            v-if="canCopyImage"
+            :label="$t('common.copyImage')"
+            icon="ti ti-copy"
+            severity="contrast"
+            outlined
+            @click="copyImage"
+          />
+          <Button :label="$t('common.download')" @click="download" icon="ti ti-download" />
+        </div>
+      </div>
+    </template>
+  </Dialog>
+</template>
