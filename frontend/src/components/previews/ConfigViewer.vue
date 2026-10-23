@@ -102,3 +102,55 @@ const exportConfig = () => {
 
       <div class="grid gap-3 xl:grid-cols-[minmax(0,1fr)_auto]">
         <InputText v-model="search" :placeholder="$t('previews.configViewer.searchSectionsKeysAndValues')" fluid />
+        <div class="flex flex-wrap gap-2">
+          <Button
+            icon="ti ti-copy"
+            :label="$t('common.copy')"
+            size="small"
+            severity="contrast"
+            outlined
+            @click="clipboard.copy(contents)"
+          />
+          <Button
+            icon="ti ti-download"
+            :label="$t('common.export')"
+            size="small"
+            severity="contrast"
+            outlined
+            @click="exportConfig"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="max-h-[22rem] overflow-auto border-b border-neutral-200 dark:border-neutral-700">
+      <div v-if="filteredLines.length === 0" class="p-4 text-sm opacity-60">{{ $t('previews.configViewer.noMatchingLines') }}</div>
+      <div
+        v-for="entry in filteredLines"
+        :key="entry.index"
+        class="grid grid-cols-[auto_minmax(0,1fr)] gap-3 border-b border-neutral-100 px-4 py-2 font-[JetBrains_Mono_Variable] text-[0.9rem] last:border-b-0 dark:border-neutral-800"
+      >
+        <span class="text-right text-xs opacity-40">{{ entry.index + 1 }}</span>
+        <div class="min-w-0">
+          <span v-if="entry.isSection" class="font-semibold text-sky-700 dark:text-sky-300">
+            {{ entry.line }}
+          </span>
+          <span v-else-if="entry.isComment" class="opacity-50">{{ entry.line }}</span>
+          <template v-else-if="entry.key">
+            <span class="text-amber-700 dark:text-amber-300">{{ entry.key }}</span>
+            <span class="opacity-50"> = </span>
+            <span class="break-all text-emerald-700 dark:text-emerald-300">{{ entry.value }}</span>
+          </template>
+          <span v-else class="break-all">{{ entry.line }}</span>
+        </div>
+      </div>
+    </div>
+
+    <Highlighted
+      class="max-h-[20rem] overflow-auto"
+      :file-name="fileName || `config.${type}`"
+      :contents="contents"
+      show-copy-button
+    />
+  </div>
+</template>

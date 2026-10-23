@@ -32,3 +32,37 @@ public class TagListing extends Model {
 
     @Column
     public String icon;
+
+    @Column
+    public int pasteCount = 0;
+
+
+    public static TagListing getOrCreate(String tag) {
+        if (tag.length() > 30)
+            tag = tag.substring(0, 30);
+
+        TagListing tagListing = Repo.get(TagListing.class).get(tag);
+        if (tagListing == null) {
+            tagListing = new TagListing();
+            tagListing.tag = tag;
+            tagListing.save();
+
+            if (Pastefy.getInstance().aiEnabled()) {
+                try {
+                    final TagListing finalTagListing = tagListing;
+                    new Thread(() -> {
+                        finalTagListing.description = Pastefy.getInstance().getPasteAI().generateTagDescription(finalTagListing);
+                        finalTagListing.save();
+                    }).start();
+                } catch (Exception ignored) {}
+            }
+        }
+        return tagListing;
+    }
+
+    public static void updateCount(String tag) {
+        TagListing tagListing = getOrCreate(tag);
+        tagListing.pasteCount = Repo.get(PasteTag.class).where("tag", tag).count();
+        tagListing.save();
+    }
+}
